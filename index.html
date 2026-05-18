@@ -74,10 +74,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-btn{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .key-btn:active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
-.lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:2.2;white-space:pre-wrap;word-break:break-word;margin-top:20px}
-.chord-line{display:block;line-height:1.4}
-.chord-span{display:inline-block;color:#e53935;font-size:24px;font-family:var(--font-head);user-select:none;cursor:default;background:rgba(229,57,53,.08);border-radius:3px;padding:0 2px}
-.text-line{display:block;line-height:1.8;font-size:20px}
+.lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:1.5;word-break:break-word;margin-top:20px}
+.chord-line{display:block;margin-bottom:6px}
+.chord-word{display:inline-block;vertical-align:bottom;margin-right:1px}
+.chord-span{display:block;color:#e53935;font-size:14px;font-family:var(--font-head);font-weight:700;line-height:1.2;min-width:4px;user-select:none}
+.word-text{display:block;font-size:20px;line-height:1.4}
+.text-line{display:block;line-height:1.6;font-size:20px;margin-bottom:4px}
 .section-label{display:block;font-family:var(--font-head);font-size:9px;color:var(--accent);letter-spacing:2px;margin:14px 0 4px;opacity:.9;font-weight:600}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -389,7 +391,7 @@ let isEditor=false;
 
 // ── EDITOR AUTH ────────────────────────────────────────────────────────────
 function checkEditorSession(){
-  isEditor=sessionStorage.getItem('cb_editor')==='1';
+  isEditor=localStorage.getItem('cb_editor')==='1';
   applyEditorUI();
 }
 function applyEditorUI(){
@@ -429,7 +431,7 @@ window.doLogin=async function(){
     const snap=await getDoc(doc(db,'config','editor'));
     const stored=snap.exists()?snap.data().password:'';
     if(pw===stored){
-      sessionStorage.setItem('cb_editor','1');
+      localStorage.setItem('cb_editor','1');
       isEditor=true;
       closeModal('loginModal');
       document.getElementById('loginPassword').value='';
@@ -441,7 +443,7 @@ window.doLogin=async function(){
   }catch(e){showToast('Ошибка подключения');}
 };
 function doLogout(){
-  sessionStorage.removeItem('cb_editor');
+  localStorage.removeItem('cb_editor');
   isEditor=false;
   applyEditorUI();
   showToast('Вы вышли из режима редактора');
@@ -488,9 +490,9 @@ window.changeFontSize=function(delta){
 };
 function applyFontSize(){
   const lb=document.getElementById('viewLyrics');if(!lb)return;
-  lb.style.fontSize=fontSize+'px';
+  lb.querySelectorAll('.word-text').forEach(el=>el.style.fontSize=fontSize+'px');
   lb.querySelectorAll('.text-line').forEach(el=>el.style.fontSize=fontSize+'px');
-  lb.querySelectorAll('.chord-span').forEach(el=>el.style.fontSize=(fontSize+4)+'px');
+  lb.querySelectorAll('.chord-span').forEach(el=>el.style.fontSize=Math.max(11,Math.round(fontSize*0.65))+'px');
 }
 
 // ── RENDER LYRICS ──────────────────────────────────────────────────────────
@@ -498,16 +500,37 @@ function renderLyrics(raw,n){
   const text=transposeAll(raw,n);
   let html='';
   for(const line of text.split('\n')){
+    // Section label like [Куплет 1]
     if(/^\[[а-яёА-ЯЁ\s0-9]+\]$/.test(line.trim())){
       html+=`<span class="section-label">${line.replace(/[\[\]]/g,'').toUpperCase()}</span>`;continue;
     }
-    if(!line.trim()){html+='<br>';continue;}
+    if(!line.trim()){html+='<div style="height:10px"></div>';continue;}
     const parts=line.split(/(\[[^\[\]]+\])/g);
-    if(parts.some(p=>/^\[[A-G]/.test(p))){
+    const hasChord=parts.some(p=>/^\[[A-G]/.test(p));
+    if(hasChord){
+      // Build chord-above-word layout
+      // parts alternates: text, [chord], text, [chord], text ...
       let out='<span class="chord-line">';
-      for(const p of parts)out+=/^\[([A-G][^\[\]]*)\]$/.test(p)?`<span class="chord-span">${p.slice(1,-1)}</span>`:p.replace(/</g,'&lt;');
-      html+=out+'</span>';
-    }else{html+=`<span class="text-line">${line.replace(/</g,'&lt;')}</span>`;}
+      let i=0;
+      while(i<parts.length){
+        const p=parts[i];
+        if(/^\[([A-G][^\[\]]*)\]$/.test(p)){
+          // chord token — pair with following text fragment
+          const chord=p.slice(1,-1);
+          const wordText=(i+1<parts.length&&!/^\[/.test(parts[i+1]))?parts[i+1].replace(/</g,'&lt;'):'';
+          out+=`<span class="chord-word"><span class="chord-span">${chord}</span><span class="word-text">${wordText||'\u00a0'}</span></span>`;
+          i+= wordText!=='' ? 2 : 1;
+        } else {
+          // plain text before any chord — wrap without chord above
+          if(p.trim()) out+=`<span class="chord-word"><span class="chord-span">\u00a0</span><span class="word-text">${p.replace(/</g,'&lt;')}</span></span>`;
+          i++;
+        }
+      }
+      out+='</span>';
+      html+=out;
+    }else{
+      html+=`<span class="text-line">${line.replace(/</g,'&lt;')}</span>`;
+    }
   }
   return html;
 }
