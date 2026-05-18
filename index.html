@@ -11,13 +11,13 @@
 <meta name="apple-mobile-web-app-title" content="ChordBook">
 <meta name="theme-color" content="#006fb9">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#f5f7fa;--surface:#ffffff;--surface2:#eef1f5;--border:#d8dde6;
   --accent:#006fb9;--accent2:#e53935;--text:#1a1f2e;--muted:#6b7280;
-  --font-head:'Inter',sans-serif;--font-mono:'Space Mono',monospace;
+  --font-head:'Inter',sans-serif;--font-mono:'Roboto Condensed',sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
 
@@ -86,13 +86,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-btn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .key-btn:active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
-.lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:1.5;word-break:break-word;margin-top:20px}
-.chord-line{display:block;margin-bottom:6px}
-.chord-word{display:inline-block;vertical-align:bottom;margin-right:1px}
-.chord-span{display:block;color:#e53935;font-size:14px;font-family:var(--font-head);font-weight:700;line-height:1.2;min-width:4px;user-select:none}
-.word-text{display:block;font-size:20px;line-height:1.4}
-.text-line{display:block;line-height:1.6;font-size:20px;margin-bottom:4px}
-.section-label{display:block;font-family:var(--font-head);font-size:11px;color:var(--accent);letter-spacing:2px;margin:14px 0 4px;opacity:.9;font-weight:600}
+.lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:1.4;word-break:break-word;margin-top:20px;overflow-x:auto}
+.chord-row{display:block;color:#e53935;font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.1;white-space:pre}
+.lyric-row{display:block;font-size:20px;line-height:1.3;white-space:pre;margin-bottom:2px}
+.lyrics-gap{height:10px;display:block}
+.section-label{display:block;font-family:var(--font-head);font-size:11px;color:var(--accent);letter-spacing:2px;margin:16px 0 6px;opacity:.9;font-weight:700;text-transform:uppercase}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal-overlay.open{opacity:1;pointer-events:all}
@@ -509,9 +507,8 @@ window.changeFontSize=function(delta){
 };
 function applyFontSize(){
   const lb=document.getElementById('viewLyrics');if(!lb)return;
-  lb.querySelectorAll('.word-text').forEach(el=>el.style.fontSize=fontSize+'px');
-  lb.querySelectorAll('.text-line').forEach(el=>el.style.fontSize=fontSize+'px');
-  lb.querySelectorAll('.chord-span').forEach(el=>el.style.fontSize=(fontSize+4)+'px');
+  lb.querySelectorAll('.lyric-row').forEach(el=>el.style.fontSize=fontSize+'px');
+  lb.querySelectorAll('.chord-row').forEach(el=>el.style.fontSize=(fontSize+4)+'px');
 }
 
 // ── RENDER LYRICS ──────────────────────────────────────────────────────────
@@ -519,40 +516,45 @@ function renderLyrics(raw,n){
   const text=transposeAll(raw,n);
   let html='';
   for(const line of text.split('\n')){
-    // Section label like [Куплет 1]
+    // Section label [Куплет 1]
     if(/^\[[а-яёА-ЯЁ\s0-9]+\]$/.test(line.trim())){
-      html+=`<span class="section-label">${line.replace(/[\[\]]/g,'').toUpperCase()}</span>`;continue;
+      html+=`<div class="section-label">${line.replace(/[\[\]]/g,'').toUpperCase()}</div>`;
+      continue;
     }
-    if(!line.trim()){html+='<div style="height:10px"></div>';continue;}
+    if(!line.trim()){html+='<div class="lyrics-gap"></div>';continue;}
+
     const parts=line.split(/(\[[^\[\]]+\])/g);
     const hasChord=parts.some(p=>/^\[[A-G]/.test(p));
+
     if(hasChord){
-      // Build chord-above-word layout
-      // parts alternates: text, [chord], text, [chord], text ...
-      let out='<span class="chord-line">';
-      let i=0;
-      while(i<parts.length){
-        const p=parts[i];
+      // Build two parallel strings: chord line and lyric line
+      let chordRow='';
+      let lyricRow='';
+      for(const p of parts){
         if(/^\[([A-G][^\[\]]*)\]$/.test(p)){
-          // chord token — pair with following text fragment
           const chord=p.slice(1,-1);
-          const wordText=(i+1<parts.length&&!/^\[/.test(parts[i+1]))?parts[i+1].replace(/</g,'&lt;'):'';
-          out+=`<span class="chord-word"><span class="chord-span">${chord}</span><span class="word-text">${wordText||'\u00a0'}</span></span>`;
-          i+= wordText!=='' ? 2 : 1;
+          // pad chord row to align with lyric position
+          if(chordRow.length < lyricRow.length){
+            chordRow+='\u00a0'.repeat(lyricRow.length - chordRow.length);
+          }
+          chordRow+=chord;
         } else {
-          // plain text before any chord — wrap without chord above
-          if(p.trim()) out+=`<span class="chord-word"><span class="chord-span">\u00a0</span><span class="word-text">${p.replace(/</g,'&lt;')}</span></span>`;
-          i++;
+          // plain text fragment
+          if(lyricRow.length < chordRow.length){
+            lyricRow+='\u00a0'.repeat(chordRow.length - lyricRow.length);
+          }
+          lyricRow+=p;
         }
       }
-      out+='</span>';
-      html+=out;
-    }else{
-      html+=`<span class="text-line">${line.replace(/</g,'&lt;')}</span>`;
+      if(chordRow.trim()) html+=`<div class="chord-row">${esc2(chordRow)}</div>`;
+      if(lyricRow.trim()) html+=`<div class="lyric-row">${esc2(lyricRow)}</div>`;
+    } else {
+      html+=`<div class="lyric-row">${esc2(line)}</div>`;
     }
   }
   return html;
 }
+function esc2(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ── ALPHABET ───────────────────────────────────────────────────────────────
 function renderAlphaNav(songArr){
