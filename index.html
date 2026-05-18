@@ -71,6 +71,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .song-action-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .song-action-btn svg{display:block;flex-shrink:0}
 .song-action-btn:active{background:var(--surface2)}
+.rep-key-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--accent);background:none;color:var(--accent);font-family:var(--font-head);font-size:10px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.rep-key-btn:active{background:rgba(0,111,185,.1)}
 
 .song-view{display:none;padding:16px 16px 100px}
 .song-view.has-nav{padding-bottom:110px}
@@ -88,13 +90,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
 .key-display{font-family:var(--font-head);font-size:14px;color:var(--accent);min-width:28px;text-align:center}
 .size-display{font-size:13px;color:var(--muted);min-width:30px;text-align:center}
+.key-meta{font-size:12px;color:var(--muted);white-space:nowrap;font-family:var(--font-head)}
 .key-btn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .key-btn:active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 .lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:1.4;word-break:break-word;margin-top:20px;overflow-x:auto}
-.chord-row{display:block;color:#e53935;font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.0;white-space:pre}
-.lyric-row{display:block;font-size:20px;line-height:1.2;white-space:pre;margin-bottom:1px}
-.lyrics-gap{height:10px;display:block}
+.chord-row{display:block;color:#e53935;font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.0;white-space:pre;margin-top:8px}
+.lyric-row{display:block;font-size:20px;line-height:1.2;white-space:pre;margin-bottom:0}
+.lyrics-gap{height:6px;display:block}
 .section-label{display:block;font-family:var(--font-head);font-size:11px;color:var(--accent);letter-spacing:2px;margin:16px 0 6px;opacity:.9;font-weight:700;text-transform:uppercase}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -251,8 +254,11 @@ select.form-input option{background:var(--surface)}
     <button class="key-btn" onclick="changeFontSize(2)">А+</button>
     <div class="key-divider"></div>
     <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+    <span class="key-divider" id="metaDivider" style="display:none"></span>
+    <span class="key-meta" id="viewTempo" style="display:none"></span>
+    <span class="key-meta" id="viewMeter" style="display:none"></span>
   </div>
-  <div class="song-meta" id="viewMeta"></div>
+  <div class="song-meta" id="viewMeta" style="display:none"></div>
   <div class="lyrics-block" id="viewLyrics"></div>
 </div>
 
@@ -703,7 +709,7 @@ function renderSongList(){
             ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
           </div>
           <div class="song-actions" onclick="event.stopPropagation()">
-            ${isEditor?`<button class="song-action-btn" onclick="openRepKeyModal('${s.id}')" title="Тональность репертуара"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button>`:''}
+            ${isEditor?`<button class="rep-key-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность">Изм. тональность</button>`:''}
             ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="removeSongFromRep('${s.id}')" title="Убрать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
           </div>
         </div>
@@ -783,13 +789,16 @@ function renderSongView(id){
   document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',totalTranspose);
   applyFontSize();
 
-  // Meta block (tempo, meter)
-  const meta=document.getElementById('viewMeta');
-  const metaItems=[];
-  if(s.tempo) metaItems.push(`<div class="song-meta-item">Темп: <span>${s.tempo} BPM</span></div>`);
-  if(s.meter) metaItems.push(`<div class="song-meta-item">Размер: <span>${s.meter}</span></div>`);
-  meta.innerHTML=metaItems.join('');
-  meta.style.display=metaItems.length?'flex':'none';
+  // Meta: tempo and meter in key-bar
+  const tempoEl=document.getElementById('viewTempo');
+  const meterEl=document.getElementById('viewMeter');
+  const metaDivider=document.getElementById('metaDivider');
+  const hasMeta=s.tempo||s.meter;
+  if(s.tempo){tempoEl.textContent=s.tempo+' BPM';tempoEl.style.display='';}
+  else tempoEl.style.display='none';
+  if(s.meter){meterEl.textContent=s.meter;meterEl.style.display='';}
+  else meterEl.style.display='none';
+  metaDivider.style.display=hasMeta?'':'none';
 
   // always sync edit button
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
