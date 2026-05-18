@@ -50,13 +50,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .search-input::placeholder{color:var(--muted)}
 .search-input:focus{border-color:var(--accent)}
 
-.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:0;z-index:90;background:var(--bg);border-bottom:1px solid var(--border)}
+.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:108px;z-index:90;background:var(--bg);border-bottom:1px solid var(--border)}
 .alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
 .alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
 .alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
 
 .song-list{padding:8px 16px 100px}
-.alpha-section{margin-bottom:16px;scroll-margin-top:120px}
+.alpha-section{margin-bottom:16px;scroll-margin-top:160px}
 .alpha-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-left:2px;letter-spacing:1px;text-align:center}
 .song-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
 .song-card:active{border-color:var(--accent);transform:scale(.99)}
@@ -710,6 +710,15 @@ window.scrollToLetter=function(l){const el=document.getElementById('alpha-'+l);i
 // ── ALPHA SCROLL OBSERVER ─────────────────────────────────────────────────
 let alphaObserver=null;
 function initAlphaObserver(){
+  // Set sticky top dynamically
+  const alphaNav=document.getElementById('alphaNav');
+  if(alphaNav){
+    const header=document.getElementById('mainHeader');
+    const tabs=document.getElementById('tabsNav');
+    const headerH=header?header.offsetHeight:0;
+    const tabsH=tabs?tabs.offsetHeight:0;
+    alphaNav.style.top=(headerH+tabsH)+'px';
+  }
   if(alphaObserver) alphaObserver.disconnect();
   const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
   if(!sections.length) return;
