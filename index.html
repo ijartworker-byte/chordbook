@@ -95,7 +95,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-btn:active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 .lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:1.4;word-break:break-word;margin-top:20px;overflow-x:auto}
-.chord-row{display:block;color:#e53935;font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.0;white-space:pre;margin-top:8px}
+.chord-row{display:block;color:var(--accent);font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.0;white-space:pre;margin-top:8px}
 .lyric-row{display:block;font-size:20px;line-height:1.2;white-space:pre;margin-bottom:0}
 .lyrics-gap{height:6px;display:block}
 .section-label{display:block;font-family:var(--font-head);font-size:11px;color:var(--accent);letter-spacing:2px;margin:16px 0 6px;opacity:.9;font-weight:700;text-transform:uppercase}
@@ -796,12 +796,14 @@ function renderSongView(id){
   const tempoEl=document.getElementById('viewTempo');
   const meterEl=document.getElementById('viewMeter');
   const metaDivider=document.getElementById('metaDivider');
-  const hasMeta=s.tempo||s.meter;
-  if(s.tempo){tempoEl.textContent=s.tempo+' BPM';tempoEl.style.display='';}
+  const tempo=s.tempo?String(s.tempo).trim():'';
+  const meter=s.meter?String(s.meter).trim():'';
+  const hasMeta=tempo||meter;
+  if(tempo){tempoEl.textContent=tempo+' BPM';tempoEl.style.display='inline';}
   else tempoEl.style.display='none';
-  if(s.meter){meterEl.textContent=s.meter;meterEl.style.display='';}
+  if(meter){meterEl.textContent=meter;meterEl.style.display='inline';}
   else meterEl.style.display='none';
-  metaDivider.style.display=hasMeta?'':'none';
+  metaDivider.style.display=hasMeta?'inline-block':'none';
 
   // always sync edit button
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
