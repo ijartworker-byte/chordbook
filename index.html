@@ -183,6 +183,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .active-rep-name:active{color:var(--accent)}
 .active-rep-count{font-size:13px;color:var(--muted);margin-top:2px}
 
+/* Inline repertoire cards on main page */
+.rep-inline-section{padding:12px 16px 0}
+.rep-inline-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.rep-inline-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border)}
+.rep-inline-header:active{background:var(--surface2)}
+.rep-inline-name{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text)}
+.rep-inline-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.rep-inline-arrow{font-size:18px;color:var(--muted)}
+.rep-inline-songs{padding:8px 0}
+.rep-inline-song{display:flex;align-items:center;padding:8px 16px;cursor:pointer;gap:12px;transition:background .15s}
+.rep-inline-song:active{background:var(--surface2)}
+.rep-inline-num{font-family:var(--font-head);font-size:11px;color:var(--muted);min-width:18px}
+.rep-inline-title{font-family:var(--font-head);font-size:13px;flex:1}
+.rep-inline-key{font-size:12px;color:var(--accent);font-family:var(--font-head)}
+.rep-inline-more{padding:8px 16px 12px;font-family:var(--font-head);font-size:11px;color:var(--accent);cursor:pointer;text-align:center;border-top:1px solid var(--border)}
+.rep-inline-more:active{background:var(--surface2)}
+
 /* loading */
 .loading{display:flex;align-items:center;justify-content:center;padding:60px 20px;gap:12px;color:var(--muted);font-size:12px}
 .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
@@ -589,9 +606,14 @@ function transposeAll(text,n){
   });
 }
 function transposeKeyStr(key,n){
-  const norm=normRoot(key.split('/')[0].trim());
+  const base=key.split('/')[0].trim();
+  const m=base.match(/^([A-GH][#b]?)/);
+  if(!m)return key;
+  const norm=normRoot(m[1]);
   const idx=CHROMATIC.indexOf(norm);
-  return idx===-1?key:CHROMATIC[((idx+n)%12+12)%12];
+  if(idx===-1)return key;
+  const suf=base.slice(m[1].length);
+  return CHROMATIC[((idx+n)%12+12)%12]+suf;
 }
 window.transposeUp=function(){currentTranspose++;renderSongView(currentSongId);};
 window.transposeDown=function(){currentTranspose--;renderSongView(currentSongId);};
@@ -783,9 +805,15 @@ function renderSongView(id){
     const repKeys=rep&&rep.songKeys?rep.songKeys:{};
     const repKey=repKeys[id];
     if(repKey){
-      const fromIdx=CHROMATIC.indexOf(normRoot(s.key.split('/')[0].trim()));
-      const toIdx=CHROMATIC.indexOf(normRoot(repKey.split('/')[0].trim()));
-      if(fromIdx!==-1&&toIdx!==-1) autoTranspose=((toIdx-fromIdx)%12+12)%12;
+      const fromBase=s.key.split('/')[0].trim();
+      const fromM=fromBase.match(/^([A-GH][#b]?)/);
+      const toBase=repKey.split('/')[0].trim();
+      const toM=toBase.match(/^([A-GH][#b]?)/);
+      if(fromM&&toM){
+        const fromIdx=CHROMATIC.indexOf(normRoot(fromM[1]));
+        const toIdx=CHROMATIC.indexOf(normRoot(toM[1]));
+        if(fromIdx!==-1&&toIdx!==-1) autoTranspose=((toIdx-fromIdx)%12+12)%12;
+      }
     }
   }
   const totalTranspose=currentTranspose+autoTranspose;
@@ -1113,20 +1141,42 @@ function renderRepPage(){
     list.innerHTML=`<div class="empty"><div class="empty-icon">📂</div><div class="empty-text">Нет репертуаров.<br>Создайте через вкладку ＋</div></div>`;
     return;
   }
-  list.innerHTML=repertoires.map(r=>`
-    <div class="rep-page-card" onclick="goToRep('${r.id}')">
-      <div>
-        <div class="rep-page-card-name">${esc(r.name)}</div>
-        <div class="rep-page-card-count">${r.songs.length} ${songWord(r.songs.length)}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
-        ${isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${r.id}')" title="Актуальный репертуар">
-          <span class="toggle-label">Актуальный</span>
-          <div class="toggle${r.active?' on':''}"></div>
+  let html='';
+  for(const rep of repertoires){
+    const repSongs=rep.songs.map(id=>songs.find(s=>s.id===id)).filter(Boolean);
+    const preview=repSongs.slice(0,4);
+    const hasMore=repSongs.length>4;
+    const repKeys=rep.songKeys||{};
+    const trashIcon=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
+    html+=`<div class="rep-inline-card">
+      <div class="rep-inline-header" onclick="goToRep('${rep.id}')">
+        <div>
+          <div class="rep-inline-name">${esc(rep.name)}${rep.active?' ⚡':''}</div>
+          <div class="rep-inline-meta">${repSongs.length} ${songWord(repSongs.length)}</div>
         </div>
-        <button class="rep-del-btn" onclick="openConfirmDeleteRep('${r.id}')" title="Удалить репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
+        <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
+          ${isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')" title="Актуальный">
+            <span class="toggle-label">Актуальный</span>
+            <div class="toggle${rep.active?' on':''}"></div>
+          </div>
+          <button class="rep-del-btn" onclick="openConfirmDeleteRep('${rep.id}')" title="Удалить">${trashIcon}</button>`:''}
+          <span class="rep-inline-arrow">›</span>
+        </div>
       </div>
-    </div>`).join('');
+      ${repSongs.length?`<div class="rep-inline-songs">
+        ${preview.map((s,idx)=>{
+          const displayKey=repKeys[s.id]||s.key;
+          return `<div class="rep-inline-song" onclick="openSongFromRep('${s.id}','${rep.id}')">
+            <span class="rep-inline-num">${idx+1}</span>
+            <span class="rep-inline-title">${esc(s.title)}</span>
+            <span class="rep-inline-key">${esc(displayKey)}</span>
+          </div>`;
+        }).join('')}
+        ${hasMore?`<div class="rep-inline-more" onclick="goToRep('${rep.id}')">Ещё ${repSongs.length-4} ${songWord(repSongs.length-4)} →</div>`:''}
+      </div>`:''}
+    </div>`;
+  }
+  list.innerHTML=html;
 }
 window.goToRep=function(id){closeRepPage();switchTab(id);};
 function songWord(n){
@@ -1152,7 +1202,27 @@ window.setActiveRep=async function(id){
   }catch(e){showToast('Ошибка сохранения');}
 };
 window.toggleActiveRep=function(){if(currentTab!=='all')window.setActiveRep(currentTab);};
-function renderActiveRepBlock(){
+
+window.openSongFromRep=function(songId,repId){
+  currentTab=repId;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===repId));
+  updateHeaders();
+  const rep=repertoires.find(r=>r.id===repId);
+  navSongList=rep?rep.songs.map(id=>songs.find(s=>s.id===id)).filter(Boolean).map(s=>s.id):[];
+  navIndex=navSongList.indexOf(songId);
+  currentSongId=songId;currentTranspose=0;
+  renderSongView(songId);
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('songView').style.display='block';
+  document.getElementById('repPage').style.display='none';
+  document.getElementById('fabBtn').style.display='none';
+  document.getElementById('tabsNav').style.display='none';
+  document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
+  document.getElementById('repActiveLabel').style.display='none';
+  document.getElementById('repActiveToggle').style.display='none';
+  document.getElementById('repAddSongsBtn').style.display='none';
+  document.getElementById('mainHeader').style.display='none';
+};
   const rep=getActiveRep();
   const block=document.getElementById('activeRepBlock');
   if(!rep){block.style.display='none';return;}
