@@ -50,12 +50,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .search-input::placeholder{color:var(--muted)}
 .search-input:focus{border-color:var(--accent)}
 
-.alpha-nav{padding:4px 16px 8px;display:flex;flex-wrap:wrap;gap:4px}
+.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:0;z-index:90;background:var(--bg);border-bottom:1px solid var(--border)}
 .alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
-.alpha-btn:active,.alpha-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
+.alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
 
 .song-list{padding:8px 16px 100px}
-.alpha-section{margin-bottom:16px;scroll-margin-top:60px}
+.alpha-section{margin-bottom:16px;scroll-margin-top:120px}
 .alpha-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-left:2px;letter-spacing:1px;text-align:center}
 .song-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
 .song-card:active{border-color:var(--accent);transform:scale(.99)}
@@ -358,9 +359,18 @@ select.form-input option{background:var(--surface)}
     <div class="form-group">
       <label class="form-label">Тональность</label>
       <select class="form-input" id="songKey">
-        <option>C</option><option>C#/Db</option><option>D</option><option>D#/Eb</option>
-        <option>E</option><option>F</option><option>F#/Gb</option><option>G</option>
-        <option>G#/Ab</option><option>A</option><option>A#/Bb</option><option>B</option>
+        <option>C</option><option>Cm</option>
+        <option>C#/Db</option><option>C#m/Dbm</option>
+        <option>D</option><option>Dm</option>
+        <option>D#/Eb</option><option>D#m/Ebm</option>
+        <option>E</option><option>Em</option>
+        <option>F</option><option>Fm</option>
+        <option>F#/Gb</option><option>F#m/Gbm</option>
+        <option>G</option><option>Gm</option>
+        <option>G#/Ab</option><option>G#m/Abm</option>
+        <option>A</option><option>Am</option>
+        <option>A#/Bb</option><option>A#m/Bbm</option>
+        <option>B</option><option>Bm</option>
       </select>
     </div>
     <div style="display:flex;gap:12px">
@@ -399,9 +409,18 @@ select.form-input option{background:var(--surface)}
       <label class="form-label">Выберите тональность для этого репертуара</label>
       <select class="form-input" id="repKeySelect">
         <option value="">Оригинальная</option>
-        <option>C</option><option>C#/Db</option><option>D</option><option>D#/Eb</option>
-        <option>E</option><option>F</option><option>F#/Gb</option><option>G</option>
-        <option>G#/Ab</option><option>A</option><option>A#/Bb</option><option>B</option>
+        <option>C</option><option>Cm</option>
+        <option>C#/Db</option><option>C#m/Dbm</option>
+        <option>D</option><option>Dm</option>
+        <option>D#/Eb</option><option>D#m/Ebm</option>
+        <option>E</option><option>Em</option>
+        <option>F</option><option>Fm</option>
+        <option>F#/Gb</option><option>F#m/Gbm</option>
+        <option>G</option><option>Gm</option>
+        <option>G#/Ab</option><option>G#m/Abm</option>
+        <option>A</option><option>Am</option>
+        <option>A#/Bb</option><option>A#m/Bbm</option>
+        <option>B</option><option>Bm</option>
       </select>
     </div>
     <div class="btn-row">
@@ -688,6 +707,32 @@ function renderAlphaNav(songArr){
 }
 window.scrollToLetter=function(l){const el=document.getElementById('alpha-'+l);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
 
+// ── ALPHA SCROLL OBSERVER ─────────────────────────────────────────────────
+let alphaObserver=null;
+function initAlphaObserver(){
+  if(alphaObserver) alphaObserver.disconnect();
+  const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
+  if(!sections.length) return;
+  alphaObserver=new IntersectionObserver((entries)=>{
+    // find topmost visible section
+    let topmost=null;
+    let topmostY=Infinity;
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const y=e.boundingClientRect.top;
+        if(y<topmostY){topmostY=y;topmost=e.target;}
+      }
+    });
+    if(topmost){
+      const letter=topmost.id.replace('alpha-','');
+      document.querySelectorAll('.alpha-btn').forEach(b=>{
+        b.classList.toggle('current',b.textContent===letter);
+      });
+    }
+  },{threshold:0,rootMargin:'-60px 0px -60% 0px'});
+  sections.forEach(s=>alphaObserver.observe(s));
+}
+
 // ── SONG LIST ──────────────────────────────────────────────────────────────
 function getSongsForTab(){
   if(currentTab==='all')return[...songs];
@@ -749,7 +794,7 @@ function renderSongList(){
     for(const s of arr){const l=s.title[0].toUpperCase();(groups[l]=groups[l]||[]).push(s);}
     list.innerHTML=Object.keys(groups).sort().map(l=>`
       <div class="alpha-section" id="alpha-${l}"><div class="alpha-label">${l}</div>
-      ${groups[l].map(s=>{
+      ${groups[l].map((s)=>{
         const metaStr=[s.tempo?s.tempo+' BPM':'',s.meter||''].filter(Boolean).join(' · ');
         return `
       <div class="song-card" onclick="openSongView('${s.id}')">
@@ -766,6 +811,8 @@ function renderSongList(){
         </div>
       </div>`;}).join('')}
       </div>`).join('');
+    // init scroll observer for active letter
+    requestAnimationFrame(()=>initAlphaObserver());
   }
 }
 
