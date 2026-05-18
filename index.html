@@ -71,7 +71,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .song-action-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .song-action-btn svg{display:block;flex-shrink:0}
 .song-action-btn:active{background:var(--surface2)}
-.rep-key-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--accent);background:none;color:var(--accent);font-family:var(--font-head);font-size:10px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.rep-key-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--accent);background:none;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .rep-key-btn:active{background:rgba(0,111,185,.1)}
 
 .song-view{display:none;padding:16px 16px 100px}
@@ -91,6 +91,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-display{font-family:var(--font-head);font-size:14px;color:var(--accent);min-width:28px;text-align:center}
 .size-display{font-size:13px;color:var(--muted);min-width:30px;text-align:center}
 .key-meta{font-size:12px;color:var(--muted);white-space:nowrap;font-family:var(--font-head)}
+.key-meta-col{display:flex;flex-direction:column;gap:2px}
 .key-btn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .key-btn:active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
@@ -252,11 +253,13 @@ select.form-input option{background:var(--surface)}
     <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
     <span class="size-display" id="sizeDisplay">22px</span>
     <button class="key-btn" onclick="changeFontSize(2)">А+</button>
-    <div class="key-divider"></div>
+    <div class="key-divider" id="metaDivider" style="display:none"></div>
+    <div class="key-meta-col" id="keyMetaCol" style="display:none">
+      <span class="key-meta" id="viewTempo"></span>
+      <span class="key-meta" id="viewMeter"></span>
+    </div>
+    <div style="flex:1"></div>
     <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-    <span class="key-divider" id="metaDivider" style="display:none"></span>
-    <span class="key-meta" id="viewTempo" style="display:none"></span>
-    <span class="key-meta" id="viewMeter" style="display:none"></span>
   </div>
   <div class="song-meta" id="viewMeta" style="display:none"></div>
   <div class="lyrics-block" id="viewLyrics"></div>
@@ -712,7 +715,7 @@ function renderSongList(){
             ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
           </div>
           <div class="song-actions" onclick="event.stopPropagation()">
-            ${isEditor?`<button class="rep-key-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность">Изм. тональность</button>`:''}
+            ${isEditor?`<button class="rep-key-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>`:''}
             ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="removeSongFromRep('${s.id}')" title="Убрать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
           </div>
         </div>
@@ -792,18 +795,20 @@ function renderSongView(id){
   document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',totalTranspose);
   applyFontSize();
 
-  // Meta: tempo and meter in key-bar
+  // Meta: tempo and meter in key-bar column
   const tempoEl=document.getElementById('viewTempo');
   const meterEl=document.getElementById('viewMeter');
   const metaDivider=document.getElementById('metaDivider');
+  const metaCol=document.getElementById('keyMetaCol');
   const tempo=s.tempo?String(s.tempo).trim():'';
   const meter=s.meter?String(s.meter).trim():'';
   const hasMeta=tempo||meter;
-  if(tempo){tempoEl.textContent=tempo+' BPM';tempoEl.style.display='inline';}
-  else tempoEl.style.display='none';
-  if(meter){meterEl.textContent=meter;meterEl.style.display='inline';}
-  else meterEl.style.display='none';
+  tempoEl.textContent=tempo?tempo+' BPM':'';
+  tempoEl.style.display=tempo?'':'none';
+  meterEl.textContent=meter||'';
+  meterEl.style.display=meter?'':'none';
   metaDivider.style.display=hasMeta?'inline-block':'none';
+  metaCol.style.display=hasMeta?'flex':'none';
 
   // always sync edit button
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
