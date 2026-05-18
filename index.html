@@ -1270,6 +1270,7 @@ window.openSongFromRep=function(songId,repId){
   document.getElementById('repAddSongsBtn').style.display='none';
   document.getElementById('mainHeader').style.display='none';
 };
+function renderActiveRepBlock(){
   const rep=getActiveRep();
   const block=document.getElementById('activeRepBlock');
   if(!rep){block.style.display='none';return;}
