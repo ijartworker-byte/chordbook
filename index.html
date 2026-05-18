@@ -607,7 +607,9 @@ function applyFontSize(){
 function renderLyrics(raw,n){
   const text=transposeAll(raw,n);
   let html='';
-  for(const line of text.split('\n')){
+  const lines=text.split('\n');
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
     // Section label [Куплет 1]
     if(/^\[[а-яёА-ЯЁ\s0-9]+\]$/.test(line.trim())){
       html+=`<div class="section-label">${line.replace(/[\[\]]/g,'').toUpperCase()}</div>`;
@@ -617,32 +619,33 @@ function renderLyrics(raw,n){
 
     const parts=line.split(/(\[[^\[\]]+\])/g);
     const hasChord=parts.some(p=>/^\[[A-G]/.test(p));
+    const hasCyr=/[а-яёА-ЯЁ]/.test(line);
 
-    if(hasChord){
-      // Build two parallel strings using character positions
+    if(hasChord && !hasCyr){
+      // Pure chord line — render as chord-row directly
+      const chordRow=line.replace(/\[([A-G][^\[\]]*)\]/g,'$1');
+      html+=`<div class="chord-row">${esc2(chordRow)}</div>`;
+    } else if(hasChord && hasCyr){
+      // Mixed line — split into chord row above + lyric row below
       let chordRow='';
       let lyricRow='';
       for(const p of parts){
         if(/^\[([A-G][^\[\]]*)\]$/.test(p)){
           const chord=p.slice(1,-1);
-          // align chordRow to current lyricRow position
-          const pos=Math.max(chordRow.length, lyricRow.length);
-          if(chordRow.length < pos) chordRow+='\u00a0'.repeat(pos - chordRow.length);
+          const pos=Math.max(chordRow.length,lyricRow.length);
+          if(chordRow.length<pos)chordRow+='\u00a0'.repeat(pos-chordRow.length);
           chordRow+=chord;
         } else {
-          // text fragment — align lyricRow to current chordRow position
-          const pos=Math.max(chordRow.length, lyricRow.length);
-          if(lyricRow.length < pos) lyricRow+='\u00a0'.repeat(pos - lyricRow.length);
+          const pos=Math.max(chordRow.length,lyricRow.length);
+          if(lyricRow.length<pos)lyricRow+='\u00a0'.repeat(pos-lyricRow.length);
           lyricRow+=p;
         }
       }
-      // Always show chord row if it has real chords
       if(chordRow.replace(/\u00a0/g,'').trim())
         html+=`<div class="chord-row">${esc2(chordRow)}</div>`;
-      // Show lyric row if it has real text
       if(lyricRow.replace(/\u00a0/g,'').trim())
         html+=`<div class="lyric-row">${esc2(lyricRow)}</div>`;
-      else if(chordRow.replace(/\u00a0/g,'').trim())
+      else
         html+=`<div class="lyric-row">\u00a0</div>`;
     } else {
       html+=`<div class="lyric-row">${esc2(line)}</div>`;
