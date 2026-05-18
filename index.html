@@ -25,7 +25,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .app-logo{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;display:flex;align-items:center}
 .app-logo span{color:var(--text)}
 .hdr-btns{display:flex;gap:8px;align-items:center}
-.icon-btn{background:none;border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s}
+.icon-btn{background:none;border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.icon-btn svg{display:block;flex-shrink:0}
 .icon-btn:active{background:var(--surface2);transform:scale(.95)}
 
 /* editor badge */
@@ -42,7 +43,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .tab-btn{flex-shrink:0;padding:8px 14px;font-family:var(--font-head);font-size:12px;color:var(--muted);border:none;background:none;cursor:pointer;position:relative;transition:color .15s;white-space:nowrap}
 .tab-btn.active{color:var(--accent)}
 .tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--accent);border-radius:2px 2px 0 0}
-.add-tab-btn{flex-shrink:0;padding:8px 12px;font-size:18px;color:var(--muted);border:none;background:none;cursor:pointer}
+.add-tab-btn{flex-shrink:0;padding:8px 12px;color:var(--muted);border:none;background:none;cursor:pointer;display:flex;align-items:center}
 
 .search-wrap{padding:12px 16px}
 .search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:15px;padding:10px 14px;border-radius:10px;outline:none}
@@ -60,14 +61,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .song-card:active{border-color:var(--accent);transform:scale(.99)}
 .song-card.dragging{opacity:.4;border-color:var(--accent);background:var(--surface2)}
 .song-card.drag-over{border-color:var(--accent);border-style:dashed;transform:scale(1.01)}
-.drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:0 8px 0 0;flex-shrink:0;touch-action:none}
+.drag-handle{color:var(--muted);cursor:grab;padding:0 8px 0 0;flex-shrink:0;touch-action:none;display:flex;align-items:center}
 .drag-handle:active{cursor:grabbing}
 .num-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;text-align:center}
 .song-info .song-title{font-family:var(--font-head);font-size:16px;margin-bottom:3px}
 .song-info .song-artist{font-size:13px;color:var(--muted)}
-.song-info .song-key{font-size:13px;color:var(--accent);margin-top:3px}
+.song-info .song-key{font-size:13px;color:var(--accent);margin-top:3px;display:flex;align-items:center;gap:4px}
 .song-actions{display:flex;gap:6px;flex-shrink:0}
-.song-action-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px}
+.song-action-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.song-action-btn svg{display:block;flex-shrink:0}
 .song-action-btn:active{background:var(--surface2)}
 
 .song-view{display:none;padding:16px 16px 100px}
@@ -132,7 +134,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .confirm-text{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:22px}
 .confirm-name{color:var(--accent2)}
 
-.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#000;border:none;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
+.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
+.fab svg{display:block}
+.fab:active{transform:scale(.93)}
 .fab:active{transform:scale(.93)}
 
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
@@ -183,8 +187,8 @@ select.form-input option{background:var(--surface)}
 <header class="app-header" id="mainHeader">
   <div class="app-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
   <div class="hdr-btns">
-    <button class="icon-btn" id="searchToggleBtn" title="Поиск">🔍</button>
-    <button class="icon-btn" id="repPageBtn" title="Репертуары">📂</button>
+    <button class="icon-btn" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    <button class="icon-btn" id="repPageBtn" title="Репертуары"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
     <button class="login-btn" id="authBtn" onclick="onAuthBtnClick()">Войти как редактор</button>
   </div>
 </header>
@@ -198,14 +202,14 @@ select.form-input option{background:var(--surface)}
       <span class="toggle-label" id="repActiveLabel">Актуальный</span>
       <div class="toggle" id="repActiveToggle"></div>
     </div>
-    <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни">＋</button>
+    <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
 </header>
 
 <!-- TABS -->
 <div class="tabs-nav" id="tabsNav">
   <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">Все песни</button>
-  <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none">＋</button>
+  <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -236,7 +240,7 @@ select.form-input option{background:var(--surface)}
     <span class="size-display" id="sizeDisplay">20px</span>
     <button class="key-btn" onclick="changeFontSize(2)">А+</button>
     <div class="key-divider"></div>
-    <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none">✏️</button>
+    <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
   </div>
   <div class="lyrics-block" id="viewLyrics"></div>
 </div>
@@ -257,7 +261,7 @@ select.form-input option{background:var(--surface)}
 </div>
 
 <!-- FAB (editor only) -->
-<button class="fab" id="fabBtn" onclick="onFabClick()" style="display:none">＋</button>
+<button class="fab" id="fabBtn" onclick="onFabClick()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -366,6 +370,18 @@ select.form-input option{background:var(--surface)}
   </div>
 </div>
 
+<!-- CONFIRM DELETE SONG -->
+<div class="confirm-overlay" id="confirmSongOverlay">
+  <div class="confirm-box">
+    <div class="confirm-title">Удалить песню?</div>
+    <div class="confirm-text">Вы действительно хотите удалить <span class="confirm-name" id="confirmSongName"></span>?<br>Песня удалится из всех репертуаров.</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="closeConfirmSong()">Отмена</button>
+      <button class="btn btn-danger" onclick="confirmDeleteSong()">Удалить</button>
+    </div>
+  </div>
+</div>
+
 <!-- FIREBASE -->
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -393,6 +409,7 @@ let currentTranspose=0;
 let editingSongId=null;
 let searchVisible=false;
 let repDeleteTarget=null;
+let songDeleteTarget=null;
 let pickedSongs=new Set();
 let navSongList=[];
 let navIndex=0;
@@ -413,7 +430,7 @@ function applyEditorUI(){
   const repActiveWrap=document.getElementById('repActiveWrap');
   if(isEditor){
     btn.className='editor-badge';
-    btn.textContent='✏️ Редактор · Выйти';
+    btn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Редактор · Выйти';
     fab.style.display='';
     addTab.style.display='';
     if(editBtn)editBtn.style.display='flex';
@@ -421,7 +438,7 @@ function applyEditorUI(){
     if(repActiveWrap)repActiveWrap.style.display='flex';
   }else{
     btn.className='login-btn';
-    btn.textContent='Войти как редактор';
+    btn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Войти как редактор';
     fab.style.display='none';
     addTab.style.display='none';
     if(editBtn)editBtn.style.display='none';
@@ -599,15 +616,15 @@ function renderSongList(){
           ontouchmove="onTouchMove(event)"
           ontouchend="onTouchEnd(event,${idx})"
           onclick="openSongView('${s.id}')">
-          ${isEditor?`<span class="drag-handle" onclick="event.stopPropagation()">⠿</span>`:''}
+          ${isEditor?`<span class="drag-handle" onclick="event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span>`:''}
           <div class="song-info">
             <div class="song-title">${esc(s.title)}</div>
             <div class="song-artist">${esc(s.artist)}</div>
-            <div class="song-key">🎵 ${esc(s.key)}</div>
+            <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(s.key)}</div>
           </div>
           <div class="song-actions" onclick="event.stopPropagation()">
-            ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать">✏️</button>`:''}
-            ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="removeSongFromRep('${s.id}')" title="Убрать">✕</button>`:''}
+            ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
+            ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="removeSongFromRep('${s.id}')" title="Убрать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
           </div>
         </div>
       </div>`).join('');
@@ -622,11 +639,12 @@ function renderSongList(){
         <div class="song-info">
           <div class="song-title">${esc(s.title)}</div>
           <div class="song-artist">${esc(s.artist)}</div>
-          <div class="song-key">🎵 ${esc(s.key)}</div>
+          <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(s.key)}</div>
         </div>
         <div class="song-actions" onclick="event.stopPropagation()">
-          ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать">✏️</button>`:''}
-          ${isEditor?`<button class="song-action-btn" onclick="openAddToRepModal('${s.id}')" title="В репертуар">📋</button>`:''}
+          ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
+          ${isEditor?`<button class="song-action-btn" onclick="openAddToRepModal('${s.id}')" title="В репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></button>`:''}
+          ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmDeleteSong('${s.id}')" title="Удалить песню"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
         </div>
       </div>`).join('')}
       </div>`).join('');
@@ -883,6 +901,36 @@ document.getElementById('confirmOverlay').addEventListener('click',e=>{
   if(e.target===document.getElementById('confirmOverlay'))closeConfirm();
 });
 
+// ── DELETE SONG ────────────────────────────────────────────────────────────
+window.openConfirmDeleteSong=function(id){
+  if(!isEditor)return;
+  songDeleteTarget=id;
+  const s=songs.find(x=>x.id===id);
+  document.getElementById('confirmSongName').textContent=s?`«${s.title}»`:'эту песню';
+  document.getElementById('confirmSongOverlay').classList.add('open');
+};
+window.closeConfirmSong=function(){
+  document.getElementById('confirmSongOverlay').classList.remove('open');
+  songDeleteTarget=null;
+};
+window.confirmDeleteSong=async function(){
+  if(!songDeleteTarget||!isEditor)return;
+  try{
+    await deleteDoc(doc(db,'songs',songDeleteTarget));
+    // remove from all repertoires locally (Firestore listener will refresh songs)
+    for(const r of repertoires){
+      if(r.songs.includes(songDeleteTarget)){
+        r.songs=r.songs.filter(id=>id!==songDeleteTarget);
+        await setDoc(doc(db,'repertoires',r.id),{name:r.name,songs:r.songs,active:r.active||false});
+      }
+    }
+    closeConfirmSong();
+  }catch(e){showToast('Ошибка удаления');}
+};
+document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('confirmSongOverlay'))closeConfirmSong();
+});
+
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
   document.getElementById('mainContent').style.display='none';
@@ -917,7 +965,7 @@ function renderRepPage(){
           <span class="toggle-label">Актуальный</span>
           <div class="toggle${r.active?' on':''}"></div>
         </div>
-        <button class="rep-del-btn" onclick="openConfirmDeleteRep('${r.id}')" title="Удалить репертуар">🗑</button>`:''}
+        <button class="rep-del-btn" onclick="openConfirmDeleteRep('${r.id}')" title="Удалить репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
       </div>
     </div>`).join('');
 }
