@@ -30,9 +30,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .icon-btn:active{background:var(--surface2);transform:scale(.95)}
 
 /* editor badge */
-.editor-badge{font-family:var(--font-head);font-size:11px;color:#fff;background:var(--accent);padding:3px 8px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.editor-badge{font-family:var(--font-head);font-size:11px;color:#fff;background:var(--accent);padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
 .editor-badge:active{opacity:.8}
-.login-btn{font-family:var(--font-head);font-size:11px;color:var(--muted);border:1px solid var(--border);background:none;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.login-btn{font-family:var(--font-head);font-size:11px;color:var(--muted);border:1px solid var(--border);background:none;padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
 .login-btn:active{background:var(--surface2)}
 
 .rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
@@ -81,6 +81,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .nav-counter{font-size:13px;color:var(--muted);white-space:nowrap;min-width:40px;text-align:center}
 .song-view-title{font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px}
 .song-view-artist{font-size:14px;color:var(--muted)}
+.song-meta{display:flex;flex-direction:column;gap:4px;margin-top:10px;padding:10px 14px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)}
+.song-meta-item{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.song-meta-item span{color:var(--text);font-weight:600}
 .key-bar{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 12px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
 .key-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
 .key-display{font-family:var(--font-head);font-size:14px;color:var(--accent);min-width:28px;text-align:center}
@@ -89,8 +92,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-btn:active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 .lyrics-block{font-family:var(--font-mono);font-size:20px;line-height:1.4;word-break:break-word;margin-top:20px;overflow-x:auto}
-.chord-row{display:block;color:#e53935;font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.1;white-space:pre}
-.lyric-row{display:block;font-size:20px;line-height:1.3;white-space:pre;margin-bottom:2px}
+.chord-row{display:block;color:#e53935;font-size:24px;font-family:var(--font-mono);font-weight:700;line-height:1.0;white-space:pre}
+.lyric-row{display:block;font-size:20px;line-height:1.2;white-space:pre;margin-bottom:1px}
 .lyrics-gap{height:10px;display:block}
 .section-label{display:block;font-family:var(--font-head);font-size:11px;color:var(--accent);letter-spacing:2px;margin:16px 0 6px;opacity:.9;font-weight:700;text-transform:uppercase}
 
@@ -137,6 +140,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
 .fab svg{display:block}
 .fab:active{transform:scale(.93)}
+
+.fab-action-btn{width:100%;display:flex;align-items:center;gap:16px;padding:14px 4px;background:none;border:none;border-bottom:1px solid var(--border);cursor:pointer;text-align:left;transition:background .15s;border-radius:0}
+.fab-action-btn:last-child{border-bottom:none}
+.fab-action-btn:active{background:var(--surface2)}
+.fab-action-icon{width:44px;height:44px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
+.fab-action-title{font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.fab-action-sub{font-size:12px;color:var(--muted)}
 .fab:active{transform:scale(.93)}
 
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
@@ -237,11 +247,12 @@ select.form-input option{background:var(--surface)}
     <button class="key-btn" onclick="transposeUp()">♯</button>
     <div class="key-divider"></div>
     <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
-    <span class="size-display" id="sizeDisplay">20px</span>
+    <span class="size-display" id="sizeDisplay">22px</span>
     <button class="key-btn" onclick="changeFontSize(2)">А+</button>
     <div class="key-divider"></div>
     <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
   </div>
+  <div class="song-meta" id="viewMeta"></div>
   <div class="lyrics-block" id="viewLyrics"></div>
 </div>
 
@@ -262,6 +273,28 @@ select.form-input option{background:var(--surface)}
 
 <!-- FAB (editor only) -->
 <button class="fab" id="fabBtn" onclick="onFabClick()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+
+<!-- FAB ACTION SHEET -->
+<div class="modal-overlay" id="fabSheet">
+  <div class="modal" style="padding-bottom:32px">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Что добавить?</div>
+    <button class="fab-action-btn" onclick="closeModal('fabSheet');openAddSongModal()">
+      <div class="fab-action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+      <div class="fab-action-text">
+        <div class="fab-action-title">Новая песня</div>
+        <div class="fab-action-sub">Добавить песню в общий список</div>
+      </div>
+    </button>
+    <button class="fab-action-btn" onclick="closeModal('fabSheet');openAddRepertoireModal()">
+      <div class="fab-action-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="fab-action-text">
+        <div class="fab-action-title">Новый репертуар</div>
+        <div class="fab-action-sub">Создать сборник из песен</div>
+      </div>
+    </button>
+  </div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -304,6 +337,20 @@ select.form-input option{background:var(--surface)}
         <option>G#/Ab</option><option>A</option><option>A#/Bb</option><option>B</option>
       </select>
     </div>
+    <div style="display:flex;gap:12px">
+      <div class="form-group" style="flex:1">
+        <label class="form-label">Темп (BPM)</label>
+        <input class="form-input" id="songTempo" type="number" min="20" max="300" placeholder="120">
+      </div>
+      <div class="form-group" style="flex:1">
+        <label class="form-label">Размер</label>
+        <select class="form-input" id="songMeter">
+          <option value="">—</option>
+          <option>2/4</option><option>3/4</option><option>4/4</option>
+          <option>6/8</option><option>12/8</option><option>5/4</option><option>7/8</option>
+        </select>
+      </div>
+    </div>
     <div class="form-group">
       <label class="form-label">Текст с аккордами</label>
       <textarea class="form-input form-textarea" id="songLyrics" rows="10" placeholder="[Куплет 1]&#10;[Am]Здесь начало [G]строки&#10;[F]Следующая [C]строка"></textarea>
@@ -312,6 +359,28 @@ select.form-input option{background:var(--surface)}
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="closeModal('addSongModal')">Отмена</button>
       <button class="btn btn-primary" onclick="saveSong()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: REP KEY -->
+<div class="modal-overlay" id="repKeyModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Тональность в репертуаре</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px" id="repKeyModalSongName"></div>
+    <div class="form-group">
+      <label class="form-label">Выберите тональность для этого репертуара</label>
+      <select class="form-input" id="repKeySelect">
+        <option value="">Оригинальная</option>
+        <option>C</option><option>C#/Db</option><option>D</option><option>D#/Eb</option>
+        <option>E</option><option>F</option><option>F#/Gb</option><option>G</option>
+        <option>G#/Ab</option><option>A</option><option>A#/Bb</option><option>B</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="closeModal('repKeyModal')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveRepKey()">Сохранить</button>
     </div>
   </div>
 </div>
@@ -544,27 +613,31 @@ function renderLyrics(raw,n){
     const hasChord=parts.some(p=>/^\[[A-G]/.test(p));
 
     if(hasChord){
-      // Build two parallel strings: chord line and lyric line
+      // Build two parallel strings using character positions
       let chordRow='';
       let lyricRow='';
       for(const p of parts){
         if(/^\[([A-G][^\[\]]*)\]$/.test(p)){
           const chord=p.slice(1,-1);
-          // pad chord row to align with lyric position
-          if(chordRow.length < lyricRow.length){
-            chordRow+='\u00a0'.repeat(lyricRow.length - chordRow.length);
-          }
+          // align chordRow to current lyricRow position
+          const pos=Math.max(chordRow.length, lyricRow.length);
+          if(chordRow.length < pos) chordRow+='\u00a0'.repeat(pos - chordRow.length);
           chordRow+=chord;
         } else {
-          // plain text fragment
-          if(lyricRow.length < chordRow.length){
-            lyricRow+='\u00a0'.repeat(chordRow.length - lyricRow.length);
-          }
+          // text fragment — align lyricRow to current chordRow position
+          const pos=Math.max(chordRow.length, lyricRow.length);
+          if(lyricRow.length < pos) lyricRow+='\u00a0'.repeat(pos - lyricRow.length);
           lyricRow+=p;
         }
       }
-      if(chordRow.trim()) html+=`<div class="chord-row">${esc2(chordRow)}</div>`;
-      if(lyricRow.trim()) html+=`<div class="lyric-row">${esc2(lyricRow)}</div>`;
+      // Always show chord row if it has real chords
+      if(chordRow.replace(/\u00a0/g,'').trim())
+        html+=`<div class="chord-row">${esc2(chordRow)}</div>`;
+      // Show lyric row if it has real text
+      if(lyricRow.replace(/\u00a0/g,'').trim())
+        html+=`<div class="lyric-row">${esc2(lyricRow)}</div>`;
+      else if(chordRow.replace(/\u00a0/g,'').trim())
+        html+=`<div class="lyric-row">\u00a0</div>`;
     } else {
       html+=`<div class="lyric-row">${esc2(line)}</div>`;
     }
@@ -603,8 +676,14 @@ function renderSongList(){
     return;
   }
   if(isRep){
+    const rep=repertoires.find(r=>r.id===currentTab);
+    const repKeys=rep&&rep.songKeys?rep.songKeys:{};
     // Numbered list with drag handles
-    list.innerHTML=arr.map((s,idx)=>`
+    list.innerHTML=arr.map((s,idx)=>{
+      const repKey=repKeys[s.id]||'';
+      const displayKey=repKey||s.key;
+      const metaStr=[s.tempo?s.tempo+' BPM':'',s.meter||''].filter(Boolean).join(' · ');
+      return `
       <div class="alpha-section">
         <div class="num-label">${idx+1}</div>
         <div class="song-card" draggable="${isEditor?'true':'false'}" data-id="${s.id}" data-idx="${idx}"
@@ -620,33 +699,38 @@ function renderSongList(){
           <div class="song-info">
             <div class="song-title">${esc(s.title)}</div>
             <div class="song-artist">${esc(s.artist)}</div>
-            <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(s.key)}</div>
+            <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(displayKey)}${repKey?` <span style="font-size:11px;color:var(--muted)">(ориг. ${esc(s.key)})</span>`:''}</div>
+            ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
           </div>
           <div class="song-actions" onclick="event.stopPropagation()">
-            ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
+            ${isEditor?`<button class="song-action-btn" onclick="openRepKeyModal('${s.id}')" title="Тональность репертуара"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button>`:''}
             ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="removeSongFromRep('${s.id}')" title="Убрать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
           </div>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   } else {
     // Alphabetical groups
     const groups={};
     for(const s of arr){const l=s.title[0].toUpperCase();(groups[l]=groups[l]||[]).push(s);}
     list.innerHTML=Object.keys(groups).sort().map(l=>`
       <div class="alpha-section" id="alpha-${l}"><div class="alpha-label">${l}</div>
-      ${groups[l].map(s=>`
+      ${groups[l].map(s=>{
+        const metaStr=[s.tempo?s.tempo+' BPM':'',s.meter||''].filter(Boolean).join(' · ');
+        return `
       <div class="song-card" onclick="openSongView('${s.id}')">
         <div class="song-info">
           <div class="song-title">${esc(s.title)}</div>
           <div class="song-artist">${esc(s.artist)}</div>
           <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(s.key)}</div>
+          ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
         </div>
         <div class="song-actions" onclick="event.stopPropagation()">
           ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" onclick="openAddToRepModal('${s.id}')" title="В репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmDeleteSong('${s.id}')" title="Удалить песню"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
         </div>
-      </div>`).join('')}
+      </div>`;}).join('')}
       </div>`).join('');
   }
 }
@@ -679,11 +763,35 @@ function renderSongView(id){
   const s=songs.find(x=>x.id===id);if(!s)return;
   document.getElementById('viewTitle').textContent=s.title;
   document.getElementById('viewArtist').textContent=s.artist;
-  document.getElementById('viewKey').textContent=transposeKeyStr(s.key,currentTranspose);
+
+  // Calculate transpose: if in repertoire and has custom key, auto-transpose
+  let autoTranspose=0;
+  if(currentTab!=='all'){
+    const rep=repertoires.find(r=>r.id===currentTab);
+    const repKeys=rep&&rep.songKeys?rep.songKeys:{};
+    const repKey=repKeys[id];
+    if(repKey){
+      const fromIdx=CHROMATIC.indexOf(normRoot(s.key.split('/')[0].trim()));
+      const toIdx=CHROMATIC.indexOf(normRoot(repKey.split('/')[0].trim()));
+      if(fromIdx!==-1&&toIdx!==-1) autoTranspose=((toIdx-fromIdx)%12+12)%12;
+    }
+  }
+  const totalTranspose=currentTranspose+autoTranspose;
+  const displayKey=transposeKeyStr(s.key,totalTranspose);
+  document.getElementById('viewKey').textContent=displayKey;
   document.getElementById('sizeDisplay').textContent=fontSize+'px';
-  document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',currentTranspose);
+  document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',totalTranspose);
   applyFontSize();
-  // always sync edit button with editor status
+
+  // Meta block (tempo, meter)
+  const meta=document.getElementById('viewMeta');
+  const metaItems=[];
+  if(s.tempo) metaItems.push(`<div class="song-meta-item">Темп: <span>${s.tempo} BPM</span></div>`);
+  if(s.meter) metaItems.push(`<div class="song-meta-item">Размер: <span>${s.meter}</span></div>`);
+  meta.innerHTML=metaItems.join('');
+  meta.style.display=metaItems.length?'flex':'none';
+
+  // always sync edit button
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
   const inRep=currentTab!=='all';
   const bar=document.getElementById('songNavBar');
@@ -758,7 +866,10 @@ function renderTabsNav(){
 }
 
 // ── FAB ────────────────────────────────────────────────────────────────────
-window.onFabClick=function(){currentTab==='all'?openAddSongModal():openPickSongsModal();};
+window.onFabClick=function(){
+  if(currentTab==='all') openModal('fabSheet');
+  else openPickSongsModal();
+};
 
 // ── MODALS ─────────────────────────────────────────────────────────────────
 function openModal(id){document.getElementById(id).classList.add('open');}
@@ -771,8 +882,9 @@ document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key
 function openAddSongModal(){
   editingSongId=null;
   document.getElementById('songModalTitle').textContent='Новая песня';
-  ['songTitle','songArtist','songLyrics'].forEach(id=>document.getElementById(id).value='');
+  ['songTitle','songArtist','songLyrics','songTempo'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('songKey').value='Am';
+  document.getElementById('songMeter').value='';
   openModal('addSongModal');
 }
 window._editCurrentSong=function(){
@@ -786,6 +898,8 @@ window.openEditSong=function(id){
   document.getElementById('songTitle').value=s.title;
   document.getElementById('songArtist').value=s.artist;
   document.getElementById('songKey').value=s.key;
+  document.getElementById('songTempo').value=s.tempo||'';
+  document.getElementById('songMeter').value=s.meter||'';
   document.getElementById('songLyrics').value=s.lyrics||'';
   openModal('addSongModal');
 };
@@ -795,10 +909,12 @@ window.saveSong=async function(){
   const artist=(document.getElementById('songArtist').value||'').trim();
   const key=document.getElementById('songKey').value;
   const lyrics=document.getElementById('songLyrics').value;
+  const tempo=document.getElementById('songTempo').value.trim();
+  const meter=document.getElementById('songMeter').value;
   if(!title)return;
   const id=editingSongId||'s'+Date.now();
   try{
-    await setDoc(doc(db,'songs',id),{title,artist,key,lyrics});
+    await setDoc(doc(db,'songs',id),{title,artist,key,lyrics,tempo:tempo||'',meter:meter||''});
     closeModal('addSongModal');
   }catch(e){showToast('Ошибка сохранения');}
 };
@@ -901,7 +1017,31 @@ document.getElementById('confirmOverlay').addEventListener('click',e=>{
   if(e.target===document.getElementById('confirmOverlay'))closeConfirm();
 });
 
-// ── DELETE SONG ────────────────────────────────────────────────────────────
+// ── REP KEY ────────────────────────────────────────────────────────────────
+let repKeySongId=null;
+window.openRepKeyModal=function(songId){
+  if(!isEditor)return;
+  repKeySongId=songId;
+  const s=songs.find(x=>x.id===songId);
+  const rep=repertoires.find(r=>r.id===currentTab);
+  const current=rep&&rep.songKeys&&rep.songKeys[songId]||'';
+  document.getElementById('repKeyModalSongName').textContent=s?`«${s.title}»`:'';
+  document.getElementById('repKeySelect').value=current;
+  openModal('repKeyModal');
+};
+window.saveRepKey=async function(){
+  if(!repKeySongId||!isEditor)return;
+  const rep=repertoires.find(r=>r.id===currentTab);if(!rep)return;
+  if(!rep.songKeys)rep.songKeys={};
+  const val=document.getElementById('repKeySelect').value;
+  if(val) rep.songKeys[repKeySongId]=val;
+  else delete rep.songKeys[repKeySongId];
+  try{
+    await setDoc(doc(db,'repertoires',rep.id),{name:rep.name,songs:rep.songs,active:rep.active||false,songKeys:rep.songKeys||{}});
+    closeModal('repKeyModal');
+    renderSongList();
+  }catch(e){showToast('Ошибка сохранения');}
+};
 window.openConfirmDeleteSong=function(id){
   if(!isEditor)return;
   songDeleteTarget=id;
@@ -1862,7 +2002,7 @@ onSnapshot(collection(db,'songs'),snap=>{
   renderActiveRepBlock();
 });
 onSnapshot(collection(db,'repertoires'),snap=>{
-  repertoires=snap.docs.map(d=>({id:d.id,...d.data(),songs:d.data().songs||[],active:d.data().active===true}));
+  repertoires=snap.docs.map(d=>({id:d.id,...d.data(),songs:d.data().songs||[],active:d.data().active===true,songKeys:d.data().songKeys||{}}));
   renderTabsNav();
   renderSongList();
   renderActiveRepBlock();
