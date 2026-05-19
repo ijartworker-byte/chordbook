@@ -89,6 +89,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .song-meta-item span{color:var(--text);font-weight:600}
 .key-bar{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 12px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
 .key-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
+.key-select{font-family:var(--font-head);font-size:13px;color:var(--accent);font-weight:700;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:4px 8px;cursor:pointer;outline:none;flex-shrink:0}
+.key-select:focus{border-color:var(--accent)}
 .key-display{font-family:var(--font-head);font-size:14px;color:var(--accent);min-width:28px;text-align:center}
 .size-display{font-size:13px;color:var(--muted);min-width:30px;text-align:center}
 .key-meta{font-size:12px;color:var(--muted);white-space:nowrap;font-family:var(--font-head)}
@@ -269,9 +271,21 @@ select.form-input option{background:var(--surface)}
   <div class="song-view-title" id="viewTitle"></div>
   <div class="song-view-artist" id="viewArtist"></div>
   <div class="key-bar">
-    <button class="key-btn" onclick="transposeDown()">♭</button>
-    <span class="key-display" id="viewKey">C</span>
-    <button class="key-btn" onclick="transposeUp()">♯</button>
+    <select class="key-select" id="viewKeySelect" onchange="transposeToKey(this.value)">
+      <option>C</option><option>Cm</option>
+      <option>C#/Db</option><option>C#m/Dbm</option>
+      <option>D</option><option>Dm</option>
+      <option>D#/Eb</option><option>D#m/Ebm</option>
+      <option>E</option><option>Em</option>
+      <option>F</option><option>Fm</option>
+      <option>F#/Gb</option><option>F#m/Gbm</option>
+      <option>G</option><option>Gm</option>
+      <option>G#/Ab</option><option>G#m/Abm</option>
+      <option>A</option><option>Am</option>
+      <option>A#/Bb</option><option>A#m/Bbm</option>
+      <option>B</option><option>Bm</option>
+      <option>H</option><option>Hm</option>
+    </select>
     <div class="key-divider"></div>
     <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
     <span class="size-display" id="sizeDisplay">22px</span>
@@ -643,8 +657,25 @@ function transposeKeyStr(key,n){
   const suf=base.slice(m[1].length);
   return CHROMATIC[((idx+n)%12+12)%12]+suf;
 }
-window.transposeUp=function(){currentTranspose++;renderSongView(currentSongId);};
-window.transposeDown=function(){currentTranspose--;renderSongView(currentSongId);};
+window.transposeToKey=function(selectedKey){
+  const s=songs.find(x=>x.id===currentSongId);if(!s)return;
+  // Calculate transpose from original key to selected key
+  const fromBase=s.key.split('/')[0].trim();
+  const fromM=fromBase.match(/^([A-GH][#b]?)/);
+  const toBase=selectedKey.split('/')[0].trim();
+  const toM=toBase.match(/^([A-GH][#b]?)/);
+  if(fromM&&toM){
+    const fromIdx=CHROMATIC.indexOf(normRoot(fromM[1]));
+    const toIdx=CHROMATIC.indexOf(normRoot(toM[1]));
+    if(fromIdx!==-1&&toIdx!==-1){
+      currentTranspose=((toIdx-fromIdx)%12+12)%12;
+      // re-render lyrics only (key select already shows correct value)
+      document.getElementById('sizeDisplay').textContent=fontSize+'px';
+      document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',currentTranspose);
+      applyFontSize();
+    }
+  }
+};
 window.changeFontSize=function(delta){
   fontSize=Math.max(10,Math.min(48,fontSize+delta));
   document.getElementById('sizeDisplay').textContent=fontSize+'px';
@@ -849,6 +880,7 @@ window.openSongView=function(id){
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsNav').style.display='none';
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
+  window.scrollTo(0,0);
   if(currentTab!=='all'){
     document.getElementById('repActiveLabel').style.display='none';
     document.getElementById('repActiveToggle').style.display='none';
@@ -883,7 +915,21 @@ function renderSongView(id){
   }
   const totalTranspose=currentTranspose+autoTranspose;
   const displayKey=transposeKeyStr(s.key,totalTranspose);
-  document.getElementById('viewKey').textContent=displayKey;
+  // Set select to closest matching option
+  const sel=document.getElementById('viewKeySelect');
+  if(sel){
+    // Try exact match first, then root note match
+    let matched=false;
+    for(const opt of sel.options){
+      if(opt.value===displayKey||opt.text===displayKey){opt.selected=true;matched=true;break;}
+    }
+    if(!matched){
+      // match by root note
+      for(const opt of sel.options){
+        if(opt.value.startsWith(displayKey)||opt.text.startsWith(displayKey)){opt.selected=true;break;}
+      }
+    }
+  }
   document.getElementById('sizeDisplay').textContent=fontSize+'px';
   document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',totalTranspose);
   applyFontSize();
