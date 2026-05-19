@@ -139,16 +139,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
   .song-modal-body{
     display:flex;
     gap:16px;
-    /* size by tallest column, but cap at viewport */
     max-height:calc(94vh - 100px);
-    overflow:visible;
+    overflow-y:auto;
   }
   .song-col{display:flex;flex-direction:column}
   .song-col-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;flex-shrink:0}
   .song-col-meta{
     flex:1;
     overflow-y:auto;
-    max-height:calc(94vh - 120px);
     border-right:1px solid var(--border);
     padding-right:16px;
   }
@@ -159,19 +157,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
     padding-right:16px;
     display:flex;
     flex-direction:column;
-    max-height:calc(94vh - 120px);
   }
   .song-col-preview{
     flex:1;
     min-width:0;
     overflow-y:auto;
-    max-height:calc(94vh - 120px);
   }
   .song-textarea{
     flex:1;
-    resize:none!important;
+    resize:vertical;
     min-height:200px;
-    max-height:calc(94vh - 260px);
   }
   .song-modal-btns{display:flex;gap:10px;padding:16px 0 20px;flex-shrink:0;border-top:1px solid var(--border);margin-top:12px}
   .song-modal-btns .btn{flex:1}
