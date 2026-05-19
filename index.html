@@ -123,25 +123,40 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .lyrics-preview .section-label{display:block;font-family:var(--font-head);font-size:10px;color:var(--accent);letter-spacing:2px;margin:10px 0 4px;font-weight:700}
 .lyrics-preview .lyrics-gap{height:6px;display:block}
 
-/* Desktop song modal: side-by-side */
+/* Desktop song modal: 3-column layout */
 @media (min-width: 768px){
   .modal-overlay#addSongModal{align-items:center}
   .modal-overlay#addSongModal .modal.song-modal-desktop{
-    border-radius:16px;max-height:92vh;max-width:90vw;width:90vw;padding:20px;
+    border-radius:16px;max-height:94vh;max-width:95vw;width:95vw;
+    padding:20px 20px 0;display:flex;flex-direction:column;
   }
-  .song-modal-body{display:flex;gap:20px;height:calc(85vh - 80px)}
-  .song-modal-form{flex:0 0 420px;overflow-y:auto;padding-right:8px}
-  .song-textarea{min-height:300px!important;resize:vertical}
-  .song-modal-preview{flex:1;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:12px;padding:14px;overflow-y:auto;background:var(--bg)}
-  .lyrics-preview-side{flex:1;overflow-y:auto;font-size:13px}
-  .lyrics-preview-side .chord-row{font-size:15px}
-  .lyrics-preview-side .lyric-row{font-size:13px}
+  .song-modal-body{
+    display:flex;gap:16px;flex:1;
+    min-height:0;overflow:hidden;
+    height:calc(90vh - 120px);
+  }
+  .song-col{display:flex;flex-direction:column;min-height:0}
+  .song-col-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;flex-shrink:0}
+  .song-col-meta{flex:0 0 220px;overflow-y:auto;padding-right:4px;border-right:1px solid var(--border);padding-right:16px}
+  .song-col-editor{flex:1;min-width:0;border-right:1px solid var(--border);padding-right:16px}
+  .song-col-preview{flex:1;min-width:0;overflow-y:auto}
+  .song-textarea{flex:1;resize:none!important;min-height:0!important;height:100%!important}
+  .song-col-editor{display:flex;flex-direction:column}
+  .song-modal-btns{display:flex;gap:10px;padding:16px 0 20px;flex-shrink:0;border-top:1px solid var(--border);margin-top:12px}
+  .song-modal-btns .btn{flex:1}
   #previewGroup{display:none!important}
+  .song-col-preview{display:flex!important}
+  .lyrics-preview-side{flex:1;overflow-y:auto;font-family:var(--font-mono);font-size:13px}
+  .lyrics-preview-side .chord-row{font-size:15px;margin-top:6px}
+  .lyrics-preview-side .lyric-row{font-size:13px}
 }
 @media (max-width: 767px){
   .song-modal-body{display:block}
-  .song-modal-preview{display:none!important}
+  .song-col-preview{display:none!important}
   .song-textarea{min-height:160px}
+  .song-col-title{font-family:var(--font-head);font-size:13px;font-weight:700;margin-bottom:12px}
+  .song-modal-btns{display:flex;gap:10px;margin-top:20px;padding-bottom:20px}
+  .song-modal-btns .btn{flex:1}
 }
 .btn-row{display:flex;gap:10px;margin-top:20px}
 .btn{flex:1;padding:12px;border-radius:10px;font-family:var(--font-head);font-size:13px;cursor:pointer;border:none;transition:all .15s}
@@ -387,10 +402,11 @@ select.form-input option{background:var(--surface)}
 <div class="modal-overlay" id="addSongModal">
   <div class="modal song-modal-desktop">
     <div class="modal-handle"></div>
+    <!-- DESKTOP: 3-column layout -->
     <div class="song-modal-body">
-      <!-- LEFT: form -->
-      <div class="song-modal-form">
-        <div class="modal-title" id="songModalTitle">Новая песня</div>
+      <!-- COL 1: meta fields -->
+      <div class="song-col song-col-meta">
+        <div class="song-col-title" id="songModalTitle">Новая песня</div>
         <div class="form-group">
           <label class="form-label">Название</label>
           <input class="form-input" id="songTitle" placeholder="Название песни">
@@ -416,39 +432,40 @@ select.form-input option{background:var(--surface)}
             <option>B</option><option>Bm</option>
           </select>
         </div>
-        <div style="display:flex;gap:12px">
-          <div class="form-group" style="flex:1">
-            <label class="form-label">Темп (BPM)</label>
-            <input class="form-input" id="songTempo" type="number" min="20" max="300" placeholder="120">
-          </div>
-          <div class="form-group" style="flex:1">
-            <label class="form-label">Размер</label>
-            <select class="form-input" id="songMeter">
-              <option value="">—</option>
-              <option>2/4</option><option>3/4</option><option>4/4</option>
-              <option>6/8</option><option>12/8</option><option>5/4</option><option>7/8</option>
-            </select>
-          </div>
+        <div class="form-group">
+          <label class="form-label">Темп (BPM)</label>
+          <input class="form-input" id="songTempo" type="number" min="20" max="300" placeholder="120">
         </div>
         <div class="form-group">
-          <label class="form-label">Текст с аккордами</label>
-          <textarea class="form-input form-textarea song-textarea" id="songLyrics" placeholder="[Куплет 1]&#10;[Am]Здесь начало [G]строки&#10;[F]Следующая [C]строка" oninput="updateLyricsPreview()"></textarea>
-          <div class="editor-hint">Аккорды: <code>[Am]</code> перед словом · Разделы: <code>[Куплет 1]</code> <code>[Припев]</code></div>
+          <label class="form-label">Размер</label>
+          <select class="form-input" id="songMeter">
+            <option value="">—</option>
+            <option>2/4</option><option>3/4</option><option>4/4</option>
+            <option>6/8</option><option>12/8</option><option>5/4</option><option>7/8</option>
+          </select>
         </div>
-        <div class="form-group" id="previewGroup" style="display:none">
+      </div>
+      <!-- COL 2: editor -->
+      <div class="song-col song-col-editor">
+        <div class="song-col-title">Текст с аккордами</div>
+        <textarea class="form-input song-textarea" id="songLyrics" placeholder="[Куплет 1]&#10;[Am]Здесь начало [G]строки&#10;[F]Следующая [C]строка" oninput="updateLyricsPreview()"></textarea>
+        <div class="editor-hint" style="margin-top:8px">Аккорды: <code>[Am]</code> перед словом · Разделы: <code>[Куплет 1]</code> <code>[Припев]</code></div>
+        <!-- mobile preview -->
+        <div class="form-group" id="previewGroup" style="display:none;margin-top:12px">
           <label class="form-label">Предпросмотр</label>
           <div class="lyrics-preview" id="lyricsPreviewMobile"></div>
         </div>
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="closeModal('addSongModal')">Отмена</button>
-          <button class="btn btn-primary" onclick="saveSong()">Сохранить</button>
-        </div>
       </div>
-      <!-- RIGHT: preview (desktop only) -->
-      <div class="song-modal-preview" id="songModalPreview">
-        <div class="form-label" style="margin-bottom:10px">Предпросмотр</div>
+      <!-- COL 3: preview (desktop only) -->
+      <div class="song-col song-col-preview" id="songModalPreview">
+        <div class="song-col-title">Предпросмотр</div>
         <div class="lyrics-preview lyrics-preview-side" id="lyricsPreview"></div>
       </div>
+    </div>
+    <!-- STICKY BUTTONS -->
+    <div class="song-modal-btns">
+      <button class="btn btn-secondary" onclick="closeModal('addSongModal')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveSong()">Сохранить</button>
     </div>
   </div>
 </div>
