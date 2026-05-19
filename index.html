@@ -127,25 +127,56 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 @media (min-width: 768px){
   .modal-overlay#addSongModal{align-items:center}
   .modal-overlay#addSongModal .modal.song-modal-desktop{
-    border-radius:16px;max-height:94vh;max-width:95vw;width:95vw;
-    padding:20px 20px 0;display:flex;flex-direction:column;
+    border-radius:16px;
+    max-height:94vh;
+    max-width:95vw;
+    width:95vw;
+    padding:20px 20px 0;
+    display:flex;
+    flex-direction:column;
+    height:auto;
   }
   .song-modal-body{
-    display:flex;gap:16px;flex:1;
-    min-height:0;overflow:hidden;
-    height:calc(90vh - 120px);
+    display:flex;
+    gap:16px;
+    /* size by tallest column, but cap at viewport */
+    max-height:calc(94vh - 100px);
+    overflow:visible;
   }
-  .song-col{display:flex;flex-direction:column;min-height:0}
+  .song-col{display:flex;flex-direction:column}
   .song-col-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;flex-shrink:0}
-  .song-col-meta{flex:1;overflow-y:auto;border-right:1px solid var(--border);padding-right:16px}
-  .song-col-editor{flex:1;min-width:0;border-right:1px solid var(--border);padding-right:16px}
-  .song-col-preview{flex:1;min-width:0;overflow-y:auto}
-  .song-textarea{flex:1;resize:none!important;min-height:0!important;height:100%!important}
-  .song-col-editor{display:flex;flex-direction:column}
+  .song-col-meta{
+    flex:1;
+    overflow-y:auto;
+    max-height:calc(94vh - 120px);
+    border-right:1px solid var(--border);
+    padding-right:16px;
+  }
+  .song-col-editor{
+    flex:1;
+    min-width:0;
+    border-right:1px solid var(--border);
+    padding-right:16px;
+    display:flex;
+    flex-direction:column;
+    max-height:calc(94vh - 120px);
+  }
+  .song-col-preview{
+    flex:1;
+    min-width:0;
+    overflow-y:auto;
+    max-height:calc(94vh - 120px);
+  }
+  .song-textarea{
+    flex:1;
+    resize:none!important;
+    min-height:200px;
+    max-height:calc(94vh - 260px);
+  }
   .song-modal-btns{display:flex;gap:10px;padding:16px 0 20px;flex-shrink:0;border-top:1px solid var(--border);margin-top:12px}
   .song-modal-btns .btn{flex:1}
   #previewGroup{display:none!important}
-  .song-col-preview{display:flex!important}
+  .song-col-preview{display:flex!important;flex-direction:column}
   .lyrics-preview-side{flex:1;overflow-y:auto;font-family:var(--font-mono);font-size:13px}
   .lyrics-preview-side .chord-row{font-size:15px;margin-top:6px}
   .lyrics-preview-side .lyric-row{font-size:13px}
