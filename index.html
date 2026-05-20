@@ -91,6 +91,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .key-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
 .key-select{font-family:var(--font-head);font-size:13px;color:var(--accent);font-weight:700;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:4px 8px;cursor:pointer;outline:none;flex-shrink:0}
 .key-select:focus{border-color:var(--accent)}
+.pedal-badge{font-family:var(--font-head);font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .key-display{font-family:var(--font-head);font-size:14px;color:var(--accent);min-width:28px;text-align:center}
 .size-display{font-size:13px;color:var(--muted);min-width:30px;text-align:center}
 .key-meta{font-size:12px;color:var(--muted);white-space:nowrap;font-family:var(--font-head)}
@@ -351,6 +352,7 @@ select.form-input option{background:var(--surface)}
       <option>B</option><option>Bm</option>
       <option>H</option><option>Hm</option>
     </select>
+    <span class="pedal-badge" id="viewPedalBadge" style="display:none"></span>
     <div class="key-divider"></div>
     <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
     <span class="size-display" id="sizeDisplay">22px</span>
@@ -1040,8 +1042,13 @@ function renderSongView(id){
   tempoEl.style.display=tempo?'':'none';
   meterEl.textContent=meter||'';
   meterEl.style.display=meter?'':'none';
+  const pedalBadge=document.getElementById('viewPedalBadge');
+  if(pedalBadge){
+    if(pedal){pedalBadge.textContent='('+pedal+')';pedalBadge.style.display='';}
+    else pedalBadge.style.display='none';
+  }
   const pedalEl=document.getElementById('viewPedal');
-  if(pedalEl){pedalEl.textContent=pedal?'Педаль: '+pedal:'';pedalEl.style.display=pedal?'':'none';}
+  if(pedalEl){pedalEl.style.display='none';}
   metaDivider.style.display=hasMeta?'inline-block':'none';
   metaCol.style.display=hasMeta?'flex':'none';
 
