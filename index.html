@@ -69,19 +69,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
 .alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
 
-.song-list{padding:8px 16px 100px}
+.song-list{padding:8px 16px 100px}.song-list .rep-item-wrap{user-select:none;-webkit-user-select:none}
 .alpha-section{margin-bottom:16px;scroll-margin-top:160px}
 .alpha-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-left:2px;letter-spacing:1px;text-align:center}
 .song-card{background:#fff;border:none;border-radius:12px;padding:14px 16px;margin-bottom:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
 .song-card:active{background:var(--surface2);transform:scale(.99)}
 .song-card.dragging{opacity:.4;border-color:var(--accent);background:var(--surface2)}
 .song-card.drag-over{border-color:var(--accent);border-style:dashed;transform:scale(1.01)}
-.drag-handle{color:var(--muted);cursor:grab;width:28px;flex-shrink:0;touch-action:none;display:flex;align-items:center;justify-content:center}
+.drag-handle{color:var(--muted);cursor:grab;width:28px;flex-shrink:0;touch-action:none;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
 .drag-handle:active{cursor:grabbing}
 .no-drag-spacer{width:28px;flex-shrink:0}
-.song-card-ghost{opacity:.4;background:#e8f0fb!important}
-.song-card-chosen{box-shadow:0 8px 24px rgba(0,111,185,.18)!important;transform:scale(1.01);z-index:10;background:#fff}
-.song-card-drag{box-shadow:0 12px 32px rgba(0,111,185,.22)!important;transform:scale(1.02);opacity:.95}
+.sortable-ghost .song-card{opacity:.3;background:#e8f0fb!important;box-shadow:none!important}
+.sortable-chosen .song-card{box-shadow:0 4px 16px rgba(0,111,185,.2)!important;background:#fff}
+.sortable-drag .song-card{box-shadow:0 8px 24px rgba(0,111,185,.25)!important;transform:scale(1.01);background:#fff;opacity:.95}
 .rep-item-wrap{margin-bottom:0}
 .num-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;text-align:center}
 .song-info{flex:1;min-width:0;overflow:hidden}
@@ -1723,12 +1723,18 @@ function initSortable(){
 
   sortableInstance=new Sortable(list,{
     handle:'.drag-handle',
-    animation:180,
-    ghostClass:'song-card-ghost',
-    chosenClass:'song-card-chosen',
-    dragClass:'song-card-drag',
+    animation:150,
+    ghostClass:'sortable-ghost',
+    chosenClass:'sortable-chosen',
+    dragClass:'sortable-drag',
+    forceFallback:false,
+    scroll:true,
+    bubbleScroll:true,
+    onChoose:function(evt){
+      // Prevent text selection
+      document.getSelection&&document.getSelection().removeAllRanges();
+    },
     onSort:function(){
-      // Update numbers visually
       list.querySelectorAll('.num-label').forEach((el,i)=>el.textContent=i+1);
     },
     onEnd:async function(){
