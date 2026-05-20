@@ -754,7 +754,6 @@ function transposeKeyStr(key,n){
 }
 window.transposeToKey=function(selectedKey){
   const s=songs.find(x=>x.id===currentSongId);if(!s)return;
-  // Calculate transpose from original key to selected key
   const fromBase=s.key.split('/')[0].trim();
   const fromM=fromBase.match(/^([A-GH][#b]?)/);
   const toBase=selectedKey.split('/')[0].trim();
@@ -764,10 +763,16 @@ window.transposeToKey=function(selectedKey){
     const toIdx=CHROMATIC.indexOf(normRoot(toM[1]));
     if(fromIdx!==-1&&toIdx!==-1){
       currentTranspose=((toIdx-fromIdx)%12+12)%12;
-      // re-render lyrics only (key select already shows correct value)
       document.getElementById('sizeDisplay').textContent=fontSize+'px';
       document.getElementById('viewLyrics').innerHTML=renderLyrics(s.lyrics||'',currentTranspose);
       applyFontSize();
+      // Transpose pedal note
+      const pedalBadge=document.getElementById('viewPedalBadge');
+      if(pedalBadge&&s.pedal){
+        const transposedPedal=transposeChord(s.pedal.trim(),currentTranspose);
+        pedalBadge.textContent='('+transposedPedal+')';
+        pedalBadge.style.display='';
+      }
     }
   }
 };
