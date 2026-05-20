@@ -20,6 +20,17 @@
   --font-head:'Inter',sans-serif;--font-mono:'Roboto Condensed',sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
+.app-wrap{max-width:900px;margin:0 auto;position:relative;min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.08)}
+@media(min-width:900px){
+  body{background:#e8edf2}
+  .app-header,.rep-header{position:sticky;top:0}
+  .fab{right:calc(50% - 450px + 20px)}
+  .song-nav-bar{left:calc(50% - 450px);right:calc(50% - 450px)}
+  .toast{bottom:90px}
+  .modal-overlay .modal:not(.song-modal-desktop){max-width:480px;border-radius:20px 20px 0 0}
+  .modal-overlay{align-items:flex-end}
+  .confirm-overlay .confirm-box{max-width:400px}
+}
 
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .app-logo{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;display:flex;align-items:center}
@@ -287,6 +298,7 @@ select.form-input option{background:var(--surface)}
 </style>
 </head>
 <body>
+<div class="app-wrap">
 
 <!-- DEFAULT HEADER -->
 <header class="app-header" id="mainHeader">
@@ -2381,5 +2393,6 @@ onSnapshot(collection(db,'repertoires'),snap=>{
 checkEditorSession();
 seedIfEmpty();
 </script>
+</div><!-- /app-wrap -->
 </body>
 </html>
