@@ -768,10 +768,15 @@ window.transposeToKey=function(selectedKey){
       applyFontSize();
       // Transpose pedal note
       const pedalBadge=document.getElementById('viewPedalBadge');
-      if(pedalBadge&&s.pedal){
-        const transposedPedal=transposeChord(s.pedal.trim(),currentTranspose);
-        pedalBadge.textContent='('+transposedPedal+')';
-        pedalBadge.style.display='';
+      if(pedalBadge){
+        const rawPedal=(s.pedal||'').trim();
+        if(rawPedal){
+          const transposedPedal=transposeChord(rawPedal,currentTranspose);
+          pedalBadge.textContent='('+transposedPedal+')';
+          pedalBadge.style.display='';
+        } else {
+          pedalBadge.style.display='none';
+        }
       }
     }
   }
@@ -1049,8 +1054,14 @@ function renderSongView(id){
   meterEl.style.display=meter?'':'none';
   const pedalBadge=document.getElementById('viewPedalBadge');
   if(pedalBadge){
-    if(pedal){pedalBadge.textContent='('+pedal+')';pedalBadge.style.display='';}
-    else pedalBadge.style.display='none';
+    const rawPedal=(s.pedal||'').trim();
+    if(rawPedal){
+      const transposedPedal=transposeChord(rawPedal,totalTranspose);
+      pedalBadge.textContent='('+transposedPedal+')';
+      pedalBadge.style.display='';
+    } else {
+      pedalBadge.style.display='none';
+    }
   }
   const pedalEl=document.getElementById('viewPedal');
   if(pedalEl){pedalEl.style.display='none';}
