@@ -83,6 +83,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .sortable-chosen .song-card{box-shadow:0 4px 16px rgba(0,111,185,.2)!important;background:#fff}
 .sortable-drag .song-card{box-shadow:0 8px 24px rgba(0,111,185,.25)!important;transform:scale(1.01);background:#fff;opacity:.95}
 .rep-item-wrap{margin-bottom:0}
+.sortable-list .rep-item-wrap{cursor:grab}
+.sortable-list .rep-item-wrap:active{cursor:grabbing}
 .num-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;text-align:center}
 .song-info{flex:1;min-width:0;overflow:hidden}
 .song-info .song-title{font-family:var(--font-head);font-size:16px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1720,18 +1722,23 @@ function initSortable(){
   if(!canEditRep(currentTab)||currentTab==='all')return;
   const list=document.getElementById('songList');
   if(!list||typeof Sortable==='undefined')return;
+  list.classList.add('sortable-list');
 
   sortableInstance=new Sortable(list,{
-    handle:'.drag-handle',
+    handle:'.rep-item-wrap',
     animation:150,
     ghostClass:'sortable-ghost',
     chosenClass:'sortable-chosen',
     dragClass:'sortable-drag',
+    delay:300,
+    delayOnTouchOnly:true,
+    touchStartThreshold:5,
     forceFallback:false,
     scroll:true,
     bubbleScroll:true,
-    onChoose:function(evt){
-      // Prevent text selection
+    filter:'.song-actions,.rep-key-btn,.song-action-btn,.drag-handle',
+    preventOnFilter:false,
+    onChoose:function(){
       document.getSelection&&document.getSelection().removeAllRanges();
     },
     onSort:function(){
