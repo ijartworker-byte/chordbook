@@ -1156,7 +1156,7 @@ document.querySelectorAll('.modal-overlay').forEach(m=>{
 });
 document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')window.doLogin();});
 
-function openAddSongModal(){
+window.openAddSongModal=function openAddSongModal(){
   editingSongId=null;
   document.getElementById('songModalTitle').textContent='Новая песня';
   ['songTitle','songArtist','songLyrics','songTempo','songPedal'].forEach(id=>{
