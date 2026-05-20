@@ -15,21 +15,24 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#f5f7fa;--surface:#ffffff;--surface2:#eef1f5;--border:#d8dde6;
+  --bg:#edeef0;--surface:#ffffff;--surface2:#eef1f5;--border:#d8dde6;
   --accent:#006fb9;--accent2:#e53935;--text:#1a1f2e;--muted:#6b7280;
   --font-head:'Inter',sans-serif;--font-mono:'Roboto Condensed',sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
-.app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.08)}
+.site-header{background:var(--surface);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+.site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static;max-width:1200px;margin:0 auto}
+.app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
 @media(min-width:1200px){
-  body{background:#e8edf2}
-  .app-header,.rep-header{position:sticky;top:0}
+  body{background:#edeef0}
   .fab{right:calc(50% - 600px + 20px)}
-  .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px)}
+  .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px);background:#fff}
   .toast{bottom:90px}
   .modal-overlay .modal:not(.song-modal-desktop){max-width:480px;border-radius:20px 20px 0 0}
   .modal-overlay{align-items:flex-end}
   .confirm-overlay .confirm-box{max-width:400px}
+  .alpha-nav{background:#edeef0;border-bottom:none}
+  .site-header{box-shadow:0 1px 8px rgba(0,0,0,.08)}
 }
 
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
@@ -49,12 +52,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
 
-.tabs-nav{display:flex;padding:12px 16px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);position:sticky;top:65px;z-index:95;background:var(--bg)}
+.tabs-nav{display:flex;padding:12px 16px;overflow-x:auto;scrollbar-width:none;gap:6px;background:transparent;border-bottom:none;position:static}
 .tabs-nav::-webkit-scrollbar{display:none}
-.tab-btn{flex-shrink:0;padding:8px 14px;font-family:var(--font-head);font-size:12px;color:var(--muted);border:none;background:none;cursor:pointer;position:relative;transition:color .15s;white-space:nowrap}
-.tab-btn.active{color:var(--accent)}
-.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--accent);border-radius:2px 2px 0 0}
-.add-tab-btn{flex-shrink:0;padding:8px 12px;color:var(--muted);border:none;background:none;cursor:pointer;display:flex;align-items:center}
+.tab-btn{flex-shrink:0;padding:6px 14px;font-family:var(--font-head);font-size:12px;color:var(--muted);border:none;background:#f5f6f7;cursor:pointer;position:relative;transition:all .15s;white-space:nowrap;border-radius:8px}
+.tab-btn:active{opacity:.8}
+.tab-btn.active{color:var(--accent);background:#e8f0fb;font-weight:600}
+.add-tab-btn{flex-shrink:0;padding:6px 10px;color:var(--muted);border:none;background:#f5f6f7;cursor:pointer;border-radius:8px;display:flex;align-items:center}
 
 .search-wrap{padding:12px 16px}
 .search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:15px;padding:10px 14px;border-radius:10px;outline:none}
@@ -62,15 +65,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .search-input:focus{border-color:var(--accent)}
 
 .alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:0;z-index:90;background:var(--bg);border-bottom:1px solid var(--border)}
-.alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
+.alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:transparent;border:none;color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
 .alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
 .alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
 
 .song-list{padding:8px 16px 100px}
 .alpha-section{margin-bottom:16px;scroll-margin-top:160px}
 .alpha-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-left:2px;letter-spacing:1px;text-align:center}
-.song-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
-.song-card:active{border-color:var(--accent);transform:scale(.99)}
+.song-card{background:#fff;border:none;border-radius:12px;padding:14px 16px;margin-bottom:4px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
+.song-card:active{background:var(--surface2);transform:scale(.99)}
 .song-card.dragging{opacity:.4;border-color:var(--accent);background:var(--surface2)}
 .song-card.drag-over{border-color:var(--accent);border-style:dashed;transform:scale(1.01)}
 .drag-handle{color:var(--muted);cursor:grab;padding:0 8px 0 0;flex-shrink:0;touch-action:none;display:flex;align-items:center}
@@ -298,8 +301,7 @@ select.form-input option{background:var(--surface)}
 </style>
 </head>
 <body>
-<div class="app-wrap">
-
+<div class="site-header">
 <!-- DEFAULT HEADER -->
 <header class="app-header" id="mainHeader">
   <div class="app-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
@@ -323,6 +325,9 @@ select.form-input option{background:var(--surface)}
   </div>
 </header>
 
+</div><!-- /site-header -->
+
+<div class="app-wrap">
 <!-- TABS -->
 <div class="tabs-nav" id="tabsNav">
   <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">Все песни</button>
