@@ -1159,10 +1159,12 @@ document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key
 function openAddSongModal(){
   editingSongId=null;
   document.getElementById('songModalTitle').textContent='Новая песня';
-  ['songTitle','songArtist','songLyrics','songTempo','songPedal'].forEach(id=>document.getElementById(id).value='');
+  ['songTitle','songArtist','songLyrics','songTempo','songPedal'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
   document.getElementById('songKey').value='Am';
-  document.getElementById('songMeter').value='';
-  document.getElementById('previewGroup').style.display='none';
+  const meterEl=document.getElementById('songMeter');if(meterEl)meterEl.value='';
+  const pg=document.getElementById('previewGroup');if(pg)pg.style.display='none';
   openModal('addSongModal');
 }
 window._editCurrentSong=function(){
@@ -1192,10 +1194,10 @@ window.openEditSong=function(id){
   document.getElementById('songTitle').value=s.title;
   document.getElementById('songArtist').value=s.artist;
   document.getElementById('songKey').value=s.key;
-  document.getElementById('songTempo').value=s.tempo||'';
-  document.getElementById('songMeter').value=s.meter||'';
+  const tempoEl=document.getElementById('songTempo');if(tempoEl)tempoEl.value=s.tempo||'';
+  const meterEl=document.getElementById('songMeter');if(meterEl)meterEl.value=s.meter||'';
   document.getElementById('songLyrics').value=s.lyrics||'';
-  document.getElementById('songPedal').value=s.pedal||'';
+  const pedalEl=document.getElementById('songPedal');if(pedalEl)pedalEl.value=s.pedal||'';
   openModal('addSongModal');
   setTimeout(()=>window.updateLyricsPreview(),50);
 };
