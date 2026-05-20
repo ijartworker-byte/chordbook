@@ -1038,7 +1038,7 @@ function renderSongView(id){
   const pedal=s.pedal?String(s.pedal).trim():'';
   const meter=s.meter?String(s.meter).trim():'';
   const hasMeta=tempo||meter||pedal;
-  tempoEl.textContent=tempo?tempo+' BPM':'';
+  tempoEl.textContent=tempo?tempo:'';
   tempoEl.style.display=tempo?'':'none';
   meterEl.textContent=meter||'';
   meterEl.style.display=meter?'':'none';
