@@ -138,6 +138,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .form-textarea{min-height:80px}
 .editor-hint{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
 .editor-hint code{color:var(--accent);background:rgba(200,255,87,.1);padding:1px 4px;border-radius:3px}
+.auth-tabs{display:flex;gap:8px;margin-bottom:20px}
+.auth-tab{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:var(--font-head);font-size:12px;cursor:pointer;transition:all .15s}
+.auth-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.auth-tab:active{opacity:.8}
 .lyrics-preview{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow-x:auto;font-family:var(--font-mono);font-size:14px}
 .lyrics-preview .chord-row{display:block;color:var(--accent);font-weight:700;line-height:1.1;white-space:pre;margin-top:6px;font-size:16px}
 .lyrics-preview .lyric-row{display:block;line-height:1.3;white-space:pre;font-size:14px;margin-bottom:0}
@@ -440,19 +444,58 @@ select.form-input option{background:var(--surface)}
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">Войти в ChordBook</div>
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email">
+    <!-- Auth tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="authTabLogin" onclick="switchAuthTab('login')">Войти</button>
+      <button class="auth-tab" id="authTabReg" onclick="switchAuthTab('register')">Регистрация</button>
     </div>
-    <div class="form-group">
-      <label class="form-label">Пароль</label>
-      <input class="form-input" id="loginPassword" type="password" placeholder="Пароль" autocomplete="current-password">
+
+    <!-- LOGIN FORM -->
+    <div id="authFormLogin">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" id="loginPassword" type="password" placeholder="Пароль" autocomplete="current-password">
+      </div>
+      <div id="loginError" style="font-size:12px;color:var(--accent2);display:none;margin-bottom:8px"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="closeModal('loginModal')">Отмена</button>
+        <button class="btn btn-primary" id="loginSubmitBtn" onclick="doLogin()">Войти</button>
+      </div>
     </div>
-    <div id="loginError" style="font-size:12px;color:var(--accent2);margin-top:-8px;display:none;margin-bottom:8px"></div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="closeModal('loginModal')">Отмена</button>
-      <button class="btn btn-primary" id="loginSubmitBtn" onclick="doLogin()">Войти</button>
+
+    <!-- REGISTER FORM -->
+    <div id="authFormRegister" style="display:none">
+      <div style="display:flex;gap:12px">
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Имя</label>
+          <input class="form-input" id="regFirstName" placeholder="Имя">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Фамилия</label>
+          <input class="form-input" id="regLastName" placeholder="Фамилия">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="regEmail" type="email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input class="form-input" id="regPassword" type="password" placeholder="Минимум 6 символов" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Повторите пароль</label>
+        <input class="form-input" id="regPassword2" type="password" placeholder="Повторите пароль" autocomplete="new-password">
+      </div>
+      <div id="regError" style="font-size:12px;color:var(--accent2);display:none;margin-bottom:8px"></div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="closeModal('loginModal')">Отмена</button>
+        <button class="btn btn-primary" id="regSubmitBtn" onclick="doRegister()">Зарегистрироваться</button>
+      </div>
     </div>
   </div>
 </div>
@@ -703,7 +746,7 @@ function applyEditorUI(){
   const repActiveWrap=document.getElementById('repActiveWrap');
 
   if(currentUser){
-    const name=currentUser.email.split('@')[0];
+    const name=currentUser.displayName||currentUser.email.split('@')[0];
     btn.className='editor-badge';
     if(isEditor){
       btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.border='none';
@@ -734,9 +777,17 @@ window.onAuthBtnClick=function(){
     document.getElementById('loginEmail').value='';
     document.getElementById('loginPassword').value='';
     document.getElementById('loginError').style.display='none';
+    switchAuthTab('login');
     openModal('loginModal');
     setTimeout(()=>document.getElementById('loginEmail').focus(),300);
   }
+};
+
+window.switchAuthTab=function(tab){
+  document.getElementById('authFormLogin').style.display=tab==='login'?'':'none';
+  document.getElementById('authFormRegister').style.display=tab==='register'?'':'none';
+  document.getElementById('authTabLogin').classList.toggle('active',tab==='login');
+  document.getElementById('authTabReg').classList.toggle('active',tab==='register');
 };
 
 window.doLogin=async function(){
@@ -757,6 +808,40 @@ window.doLogin=async function(){
       :'Ошибка входа';
     errEl.style.display='block';
   }finally{if(btn){btn.disabled=false;btn.textContent='Войти';}}
+};
+
+window.doRegister=async function(){
+  const firstName=(document.getElementById('regFirstName').value||'').trim();
+  const lastName=(document.getElementById('regLastName').value||'').trim();
+  const email=(document.getElementById('regEmail').value||'').trim();
+  const pw=document.getElementById('regPassword').value;
+  const pw2=document.getElementById('regPassword2').value;
+  const errEl=document.getElementById('regError');
+  const btn=document.getElementById('regSubmitBtn');
+  errEl.style.display='none';
+  if(!firstName||!lastName){errEl.textContent='Введите имя и фамилию';errEl.style.display='block';return;}
+  if(!email){errEl.textContent='Введите email';errEl.style.display='block';return;}
+  if(pw.length<6){errEl.textContent='Пароль минимум 6 символов';errEl.style.display='block';return;}
+  if(pw!==pw2){errEl.textContent='Пароли не совпадают';errEl.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Регистрация...';
+  try{
+    const {createUserWithEmailAndPassword,updateProfile}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const cred=await createUserWithEmailAndPassword(auth,email,pw);
+    await updateProfile(cred.user,{displayName:firstName+' '+lastName});
+    await setDoc(doc(db,'users',cred.user.uid),{
+      role:'user',
+      firstName,
+      lastName,
+      email
+    });
+    closeModal('loginModal');
+    showToast('Добро пожаловать, '+firstName+'!');
+  }catch(e){
+    errEl.textContent=e.code==='auth/email-already-in-use'?'Этот email уже зарегистрирован'
+      :e.code==='auth/invalid-email'?'Неверный формат email'
+      :'Ошибка регистрации: '+e.message;
+    errEl.style.display='block';
+  }finally{btn.disabled=false;btn.textContent='Зарегистрироваться';}
 };
 
 onAuthStateChanged(auth,async(user)=>{
@@ -839,7 +924,7 @@ window.transposeToKey=function(selectedKey){
         else pedalBadge.style.display='none';
       }
       // Auto-save to repertoire if we're in one
-      if(currentTab!=='all'){
+      if(currentTab!=='all'&&canEditRep(currentTab)){
         const rep=repertoires.find(r=>r.id===currentTab);
         if(rep){
           if(!rep.songKeys)rep.songKeys={};
@@ -1013,7 +1098,7 @@ function renderSongList(){
         <div class="num-label">${idx+1}</div>
         <div class="song-card" data-id="${s.id}"
           onclick="openSongView('${s.id}')">
-          ${isEditor?`<span class="drag-handle" onclick="event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span>`:'<span class="no-drag-spacer"></span>'}
+          ${canEditRep(currentTab)?`<span class="drag-handle" onclick="event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span>`:'<span class="no-drag-spacer"></span>'}
           <div class="song-info">
             <div class="song-title">${esc(s.title)}</div>
             <div class="song-artist">${esc(s.artist)}</div>
@@ -1021,8 +1106,8 @@ function renderSongList(){
             ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
           </div>
           <div class="song-actions" onclick="event.stopPropagation()">
-            ${isEditor?`<button class="rep-key-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>`:''}
-            ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmRemoveRep('${s.id}')" title="Убрать из репертуара"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
+            ${canEditRep(currentTab)?`<button class="rep-key-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>`:''}
+            ${canEditRep(currentTab)?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmRemoveRep('${s.id}')" title="Убрать из репертуара"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
           </div>
         </div>
       </div>`;
@@ -1183,7 +1268,7 @@ window.closeSongView=function(){
   if(isEditor)document.getElementById('fabBtn').style.display='';
   document.getElementById('repActiveLabel').style.display='';
   document.getElementById('repActiveToggle').style.display='';
-  if(isEditor)document.getElementById('repAddSongsBtn').style.display='';
+  if(canEditRep(currentTab))document.getElementById('repAddSongsBtn').style.display='';
   updateHeaders();
   renderSongList();
 };
@@ -1195,9 +1280,11 @@ function updateHeaders(){
   document.getElementById('repHeader').style.display=isRep?'flex':'none';
   if(isRep){
     const rep=repertoires.find(r=>r.id===currentTab);
-    document.getElementById('repHeaderTitle').textContent=rep?rep.name:'';
+    const authorStr=rep&&rep.authorName?' ('+rep.authorName+')':'';
+    document.getElementById('repHeaderTitle').textContent=rep?rep.name+authorStr:'';
+    const canEdit=canEditRep(currentTab);
     document.getElementById('repActiveWrap').style.display=isEditor?'flex':'none';
-    document.getElementById('repAddSongsBtn').style.display=isEditor?'':'none';
+    document.getElementById('repAddSongsBtn').style.display=canEdit?'':'none';
   }
   if(isRep&&searchVisible){
     searchVisible=false;
@@ -1334,7 +1421,7 @@ window.toggleSongInRep=async function(repId,songId,el){
   catch(e){showToast('Ошибка сохранения');}
 };
 window.removeSongFromRep=async function(songId){
-  if(!isEditor)return;
+  if(!canEditRep(currentTab))return;
   const rep=repertoires.find(r=>r.id===currentTab);if(!rep)return;
   rep.songs=rep.songs.filter(id=>id!==songId);
   try{await setDoc(doc(db,'repertoires',rep.id),{name:rep.name,songs:rep.songs,active:rep.active||false,songKeys:rep.songKeys||{}});}
@@ -1343,7 +1430,7 @@ window.removeSongFromRep=async function(songId){
 
 let removeRepSongTarget=null;
 window.openConfirmRemoveRep=function(songId){
-  if(!isEditor)return;
+  if(!canEditRep(currentTab))return;
   removeRepSongTarget=songId;
   const s=songs.find(x=>x.id===songId);
   document.getElementById('confirmRemoveRepName').textContent=s?`«${s.title}»`:'эту песню';
@@ -1364,7 +1451,7 @@ document.getElementById('confirmRemoveRepOverlay').addEventListener('click',e=>{
 });
 
 window.openPickSongsModal=function(){
-  if(!isEditor)return;
+  if(!isUser)return;
   pickedSongs=new Set();
   const rep=repertoires.find(r=>r.id===currentTab);
   if(rep)rep.songs.forEach(id=>pickedSongs.add(id));
@@ -1388,8 +1475,7 @@ window.togglePick=function(id,el){
   else{pickedSongs.add(id);el.classList.add('selected');el.querySelector('.pick-check').textContent='✓';}
 };
 window.applyPickedSongs=async function(){
-  if(!isEditor)return;
-  const rep=repertoires.find(r=>r.id===currentTab);if(!rep)return;
+  const rep=repertoires.find(r=>r.id===currentTab);if(!rep||!canEditRep(rep.id))return;
   rep.songs=[...pickedSongs];
   try{
     await setDoc(doc(db,'repertoires',rep.id),{name:rep.name,songs:rep.songs,active:rep.active||false});
@@ -1397,13 +1483,15 @@ window.applyPickedSongs=async function(){
   }catch(e){showToast('Ошибка сохранения');}
 };
 
-window.openAddRepertoireModal=function(){document.getElementById('repName').value='';openModal('addRepModal');};
+window.openAddRepertoireModal=function(){if(!isUser)return;document.getElementById('repName').value='';openModal('addRepModal');};
 window.saveRepertoire=async function(){
-  if(!isEditor)return;
+  if(!isUser)return;
   const name=(document.getElementById('repName').value||'').trim();if(!name)return;
   const id='r'+Date.now();
+  const authorId=currentUser?currentUser.uid:'';
+  const authorName=currentUser?(currentUser.displayName||currentUser.email.split('@')[0]):'';
   try{
-    await setDoc(doc(db,'repertoires',id),{name,songs:[],active:false});
+    await setDoc(doc(db,'repertoires',id),{name,songs:[],active:false,songKeys:{},authorId,authorName});
     closeModal('addRepModal');
     switchTab(id);
   }catch(e){showToast('Ошибка сохранения');}
@@ -1433,7 +1521,7 @@ document.getElementById('confirmOverlay').addEventListener('click',e=>{
 // ── REP KEY ────────────────────────────────────────────────────────────────
 let repKeySongId=null;
 window.openRepKeyModal=function(songId){
-  if(!isEditor)return;
+  if(!canEditRep(currentTab))return;
   repKeySongId=songId;
   const s=songs.find(x=>x.id===songId);
   const rep=repertoires.find(r=>r.id===currentTab);
@@ -1443,8 +1531,8 @@ window.openRepKeyModal=function(songId){
   openModal('repKeyModal');
 };
 window.saveRepKey=async function(){
-  if(!repKeySongId||!isEditor)return;
-  const rep=repertoires.find(r=>r.id===currentTab);if(!rep)return;
+  if(!repKeySongId)return;
+  const rep=repertoires.find(r=>r.id===currentTab);if(!rep||!canEditRep(rep.id))return;
   if(!rep.songKeys)rep.songKeys={};
   const val=document.getElementById('repKeySelect').value;
   if(val) rep.songKeys[repKeySongId]=val;
@@ -1518,7 +1606,7 @@ function renderRepPage(){
       <div class="rep-inline-header" onclick="goToRep('${rep.id}')">
         <div>
           <div class="rep-inline-name">${esc(rep.name)}${rep.active?' ⚡':''}</div>
-          <div class="rep-inline-meta">${repSongs.length} ${songWord(repSongs.length)}</div>
+          <div class="rep-inline-meta">${repSongs.length} ${songWord(repSongs.length)}${rep.authorName?' · '+esc(rep.authorName):''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
           ${isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')" title="Актуальный">
@@ -1618,12 +1706,18 @@ document.getElementById('repPageBtn').addEventListener('click',openRepPage);
 
 
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
-// ── DRAG AND DROP via SortableJS ───────────────────────────────────────────
+// ── REPERTOIRE PERMISSIONS ─────────────────────────────────────────────────
+function canEditRep(repId){
+  if(isEditor) return true; // admin can edit all
+  if(!isUser||!currentUser) return false;
+  const rep=repertoires.find(r=>r.id===repId);
+  return rep&&rep.authorId===currentUser.uid;
+}
 let sortableInstance=null;
 
 function initSortable(){
   if(sortableInstance){sortableInstance.destroy();sortableInstance=null;}
-  if(!isEditor||currentTab==='all')return;
+  if(!canEditRep(currentTab)||currentTab==='all')return;
   const list=document.getElementById('songList');
   if(!list||typeof Sortable==='undefined')return;
 
@@ -1639,7 +1733,7 @@ function initSortable(){
     },
     onEnd:async function(){
       const rep=repertoires.find(r=>r.id===currentTab);
-      if(!rep)return;
+      if(!rep||!canEditRep(rep.id))return;
       const cards=list.querySelectorAll('.song-card[data-id]');
       const newOrder=Array.from(cards).map(c=>c.dataset.id);
       rep.songs=newOrder;
