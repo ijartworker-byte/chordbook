@@ -1205,15 +1205,18 @@ window.saveSong=async function(){
   const artist=(document.getElementById('songArtist').value||'').trim();
   const key=document.getElementById('songKey').value;
   const lyrics=document.getElementById('songLyrics').value;
-  const tempo=document.getElementById('songTempo').value.trim();
-  const meter=document.getElementById('songMeter').value;
-  const pedal=document.getElementById('songPedal').value.trim();
+  const tempoEl=document.getElementById('songTempo');
+  const meterEl=document.getElementById('songMeter');
+  const pedalEl=document.getElementById('songPedal');
+  const tempo=tempoEl?(tempoEl.value||'').trim():'';
+  const meter=meterEl?meterEl.value:'';
+  const pedal=pedalEl?(pedalEl.value||'').trim():'';
   if(!title)return;
   const id=editingSongId||'s'+Date.now();
   try{
     await setDoc(doc(db,'songs',id),{title,artist,key,lyrics,tempo:tempo||'',meter:meter||'',pedal:pedal||''});
     closeModal('addSongModal');
-  }catch(e){showToast('Ошибка сохранения');}
+  }catch(e){showToast('Ошибка сохранения: '+e.message);}
 };
 
 window.openAddToRepModal=function(id){
