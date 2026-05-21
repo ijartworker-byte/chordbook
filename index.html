@@ -395,6 +395,104 @@ select.form-input option{background:var(--surface)}
 .profile-email{font-size:13px;color:var(--muted);text-align:center;margin-bottom:4px}
 .profile-role{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-head);background:var(--accent);color:#fff;margin:0 auto 16px;display:flex;justify-content:center}
 
+
+/* ── VK-STYLE HEADER & SIDEBAR ───────────────────────────────────────────── */
+.mobile-only{display:flex!important}
+.mobile-hide{display:none!important}
+
+/* Desktop search bar */
+.desktop-search{display:none}
+
+/* App header base */
+.app-header{display:flex;align-items:center;padding:0 16px;height:52px;gap:12px;background:var(--surface);border-bottom:1px solid var(--border)}
+.hdr-btns{display:flex;align-items:center;gap:8px;flex-shrink:0}
+
+/* Bottom nav - bigger safe area */
+.bottom-nav{padding-bottom:max(env(safe-area-inset-bottom),16px)!important;height:auto!important;min-height:56px}
+.bottom-nav-btn{padding:10px 0 6px!important}
+
+@media(min-width:768px){
+  .mobile-only{display:none!important}
+  .mobile-hide{display:flex!important}
+
+  /* Full-width sticky header like VK */
+  .site-header{
+    position:sticky;top:0;z-index:200;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    box-shadow:0 1px 4px rgba(0,0,0,.06);
+  }
+  .app-header{
+    max-width:none;
+    padding:0 24px;
+    height:56px;
+    gap:16px;
+  }
+
+  /* Desktop search - big centered */
+  .desktop-search{
+    display:flex;align-items:center;gap:10px;
+    flex:1;max-width:480px;
+    background:var(--bg);
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:0 14px;
+    height:38px;
+    transition:border-color .15s;
+  }
+  .desktop-search:focus-within{border-color:var(--accent)}
+  .desktop-search svg{color:var(--muted);flex-shrink:0}
+  .desktop-search-input{border:none;background:none;color:var(--text);font-family:var(--font-head);font-size:13px;outline:none;width:100%;padding:0}
+  .desktop-search-input::placeholder{color:var(--muted)}
+
+  /* Auth button right-aligned */
+  .hdr-btns{margin-left:auto}
+
+  /* Sidebar redesign - VK style */
+  .sidebar{
+    width:240px;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    position:sticky;top:56px;
+    height:calc(100vh - 56px);
+    overflow-y:auto;
+    padding:8px 0;
+    flex-shrink:0;
+  }
+  .sidebar-logo{display:none}
+  .sidebar-nav{padding:4px 8px;flex:1}
+  .sidebar-btn{
+    width:100%;display:flex;align-items:center;gap:12px;
+    padding:11px 14px;border:none;background:none;
+    border-radius:10px;cursor:pointer;
+    font-family:var(--font-head);font-size:14px;
+    color:var(--text);transition:all .15s;text-align:left;
+    font-weight:500;
+  }
+  .sidebar-btn svg{color:var(--muted);flex-shrink:0;transition:color .15s}
+  .sidebar-btn:hover{background:var(--bg)}
+  .sidebar-btn.active{background:rgba(0,111,185,.1);color:var(--accent)}
+  .sidebar-btn.active svg{color:var(--accent)}
+  .sidebar-btn span{line-height:1}
+  .sidebar-footer{padding:8px;border-top:1px solid var(--border);margin-top:auto}
+  .sidebar-user-btn{
+    width:100%;display:flex;align-items:center;gap:10px;
+    padding:10px 14px;border:none;background:none;
+    border-radius:10px;cursor:pointer;transition:background .15s;
+  }
+  .sidebar-user-btn:hover{background:var(--bg)}
+  .sidebar-user{text-align:left}
+  .sidebar-user-name{font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--text)}
+  .sidebar-user-role{font-size:11px;color:var(--muted);margin-top:1px}
+  .sidebar-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+
+  /* Content area - reasonable width for 13" MacBook */
+  .app-wrap{max-width:860px;margin:0 auto;box-shadow:none}
+  .tabs-nav{max-width:none}
+
+  /* Hide tabs on non-songs sections */
+}
+
 </style>
 </head>
 <body>
@@ -421,6 +519,7 @@ select.form-input option{background:var(--surface)}
   </nav>
   <div class="sidebar-footer">
     <button class="sidebar-user-btn" onclick="onAuthBtnClick()" id="sidebarUserBtn">
+      <div class="sidebar-avatar" id="sidebarAvatar">?</div>
       <div class="sidebar-user">
         <div class="sidebar-user-name" id="sidebarUserName">Войти</div>
         <div class="sidebar-user-role" id="sidebarUserRole"></div>
@@ -430,12 +529,17 @@ select.form-input option{background:var(--surface)}
 </aside>
 <div class="main-area">
 <div class="site-header">
-<!-- DEFAULT HEADER -->
+<!-- MAIN HEADER -->
 <header class="app-header" id="mainHeader">
-  <div class="app-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
+  <!-- Mobile logo -->
+  <div class="app-logo mobile-only"><img src="https://ijartworker-byte.github.io/chordbook/logo.png" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px" onerror="this.style.display='none'">Chord<span>Book</span></div>
+  <!-- Desktop search bar (center) -->
+  <div class="desktop-search mobile-hide">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="desktop-search-input" id="desktopSearchInput" placeholder="Поиск по названию или автору…" oninput="onDesktopSearch(this.value)">
+  </div>
   <div class="hdr-btns">
-    <button class="icon-btn" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-    <button class="icon-btn mobile-hide" id="repPageBtn" title="Репертуары"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
+    <button class="icon-btn mobile-only" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     <button class="login-btn mobile-hide" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
   </div>
 </header>
@@ -1437,11 +1541,33 @@ window.saveProfile=async function(){
   }catch(e){errEl.textContent='Ошибка сохранения';errEl.style.display='block';}
 };
 
+// Desktop search
+window.onDesktopSearch=function(val){
+  const si=document.getElementById('searchInput');
+  if(si){si.value=val;renderSongList();}
+};
+
 function updateSidebarUser(){
   const nameEl=document.getElementById('sidebarUserName');
   const roleEl=document.getElementById('sidebarUserRole');
-  if(nameEl) nameEl.textContent=currentUser?(currentUserName||currentUser.email.split('@')[0]):'Войти';
+  const avatarEl=document.getElementById('sidebarAvatar');
+  const authBtn=document.getElementById('authBtn');
+  const name=currentUser?(currentUserName||currentUser.email.split('@')[0]):'';
+  if(nameEl) nameEl.textContent=name||'Войти';
   if(roleEl) roleEl.textContent=currentUser?(isEditor?'Администратор':'Пользователь'):'';
+  if(avatarEl) avatarEl.textContent=name?name[0].toUpperCase():'?';
+  // Update auth button in header
+  if(authBtn&&currentUser){
+    authBtn.className='editor-badge';
+    authBtn.style.background=isEditor?'var(--accent)':'var(--surface2)';
+    authBtn.style.color=isEditor?'#fff':'var(--text)';
+    authBtn.style.border=isEditor?'none':'1px solid var(--border)';
+    authBtn.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ${name} · Выйти`;
+  } else if(authBtn){
+    authBtn.className='login-btn';
+    authBtn.style.background='';authBtn.style.color='';authBtn.style.border='';
+    authBtn.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Войти`;
+  }
 }
 
 // ── WAKE LOCK ─────────────────────────────────────────────────────────────
