@@ -76,8 +76,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .song-card:active{background:var(--surface2);transform:scale(.99)}
 .song-card.dragging{opacity:.4;border-color:var(--accent);background:var(--surface2)}
 .song-card.drag-over{border-color:var(--accent);border-style:dashed;transform:scale(1.01)}
-.drag-handle{color:var(--muted);cursor:grab;width:28px;flex-shrink:0;touch-action:none;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
-.drag-handle:active{cursor:grabbing}
+.drag-handle{color:var(--muted);cursor:grab;width:40px;height:48px;flex-shrink:0;touch-action:none;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;margin-left:-8px}
+.drag-handle:active{cursor:grabbing;color:var(--accent)}
 .no-drag-spacer{width:28px;flex-shrink:0}
 .sortable-ghost .song-card{opacity:.3;background:#e8f0fb!important;box-shadow:none!important}
 .sortable-chosen .song-card{box-shadow:0 4px 16px rgba(0,111,185,.2)!important;background:#fff}
@@ -1725,19 +1725,14 @@ function initSortable(){
   list.classList.add('sortable-list');
 
   sortableInstance=new Sortable(list,{
-    handle:'.rep-item-wrap',
+    handle:'.drag-handle',
     animation:150,
     ghostClass:'sortable-ghost',
     chosenClass:'sortable-chosen',
     dragClass:'sortable-drag',
-    delay:300,
-    delayOnTouchOnly:true,
-    touchStartThreshold:5,
     forceFallback:false,
     scroll:true,
     bubbleScroll:true,
-    filter:'.song-actions,.rep-key-btn,.song-action-btn,.drag-handle',
-    preventOnFilter:false,
     onChoose:function(){
       document.getSelection&&document.getSelection().removeAllRanges();
     },
