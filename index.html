@@ -338,7 +338,7 @@ select.form-input option{background:var(--surface)}
       <span class="toggle-label" id="repActiveLabel">Актуальный</span>
       <div class="toggle" id="repActiveToggle"></div>
     </div>
-    <button class="icon-btn" id="repDeleteBtn" onclick="openConfirmDeleteRep(currentTab)" title="Удалить репертуар" style="display:none;color:var(--accent2)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+    <button class="icon-btn" id="repDeleteBtn" onclick="window.openConfirmDeleteRep(window._currentTab())" title="Удалить репертуар" style="display:none;color:var(--accent2)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
     <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
 </header>
@@ -1420,6 +1420,7 @@ window.openAddSongModal=function openAddSongModal(){
   const pg=document.getElementById('previewGroup');if(pg)pg.style.display='none';
   openModal('addSongModal');
 }
+window._currentTab=function(){return currentTab;};
 window._editCurrentSong=function(){
   if(currentSongId) window.openEditSong(currentSongId);
 };
