@@ -878,10 +878,7 @@ onAuthStateChanged(auth,async(user)=>{
         if(!rep.authorId){
           rep.authorId=user.uid;
           rep.authorName=adminName;
-          setDoc(doc(db,'repertoires',rep.id),{
-            name:rep.name,songs:rep.songs,active:rep.active||false,
-            songKeys:rep.songKeys||{},authorId:rep.authorId,authorName:rep.authorName
-          }).catch(()=>{});
+          saveRep(rep).catch(()=>{});
         }
       }
     }
@@ -972,11 +969,7 @@ window.transposeToKey=function(selectedKey){
           } else {
             rep.songKeys[currentSongId]=selectedKey;
           }
-          setDoc(doc(db,'repertoires',rep.id),{
-            name:rep.name,songs:rep.songs,
-            active:rep.active||false,
-            songKeys:rep.songKeys
-          }).catch(e=>console.error(e));
+          saveRep(rep).catch(e=>console.error(e));
         }
       }
     }
@@ -1339,10 +1332,26 @@ window.switchTab=function(id){
   document.getElementById('repPage').style.display='none';
   document.getElementById('tabsNav').style.display='flex';
   if(isUser)document.getElementById('fabBtn').style.display='';
+  // Auto-fix: if user opens a rep without authorId and they created it - claim it
+  if(id!=='all'&&isUser&&currentUser){
+    const rep=repertoires.find(r=>r.id===id);
+    if(rep&&!rep.authorId){
+      rep.authorId=currentUser.uid;
+      rep.authorName=currentUserName||currentUser.email.split('@')[0];
+      saveRep(rep).catch(()=>{});
+    }
+  }
   updateHeaders();
   renderActiveRepBlock();
   updateRepHeaderToggle();
   renderSongList();
+  // Re-render after short delay to ensure Firestore data is loaded
+  setTimeout(()=>{
+    if(currentTab===id){
+      updateHeaders();
+      renderSongList();
+    }
+  },800);
 };
 function renderTabsNav(){
   const nav=document.getElementById('tabsNav');
@@ -1458,14 +1467,14 @@ window.toggleSongInRep=async function(repId,songId,el){
   const idx=rep.songs.indexOf(songId);
   if(idx>=0){rep.songs.splice(idx,1);el.classList.remove('selected');}
   else{rep.songs.push(songId);el.classList.add('selected');}
-  try{await setDoc(doc(db,'repertoires',repId),{name:rep.name,songs:rep.songs,active:rep.active||false});}
+  try{await saveRep(rep);}
   catch(e){showToast('Ошибка сохранения');}
 };
 window.removeSongFromRep=async function(songId){
   if(!canEditRep(currentTab))return;
   const rep=repertoires.find(r=>r.id===currentTab);if(!rep)return;
   rep.songs=rep.songs.filter(id=>id!==songId);
-  try{await setDoc(doc(db,'repertoires',rep.id),{name:rep.name,songs:rep.songs,active:rep.active||false,songKeys:rep.songKeys||{}});}
+  try{await saveRep(rep);}
   catch(e){showToast('Ошибка сохранения');}
 };
 
@@ -1519,7 +1528,7 @@ window.applyPickedSongs=async function(){
   const rep=repertoires.find(r=>r.id===currentTab);if(!rep||!canEditRep(rep.id))return;
   rep.songs=[...pickedSongs];
   try{
-    await setDoc(doc(db,'repertoires',rep.id),{name:rep.name,songs:rep.songs,active:rep.active||false});
+    await saveRep(rep);
     closeModal('pickSongsModal');
   }catch(e){showToast('Ошибка сохранения');}
 };
@@ -1592,7 +1601,7 @@ window.saveRepKey=async function(){
   if(val) rep.songKeys[repKeySongId]=val;
   else delete rep.songKeys[repKeySongId];
   try{
-    await setDoc(doc(db,'repertoires',rep.id),{name:rep.name,songs:rep.songs,active:rep.active||false,songKeys:rep.songKeys||{}});
+    await saveRep(rep);
     closeModal('repKeyModal');
     renderSongList();
   }catch(e){showToast('Ошибка сохранения');}
@@ -1616,7 +1625,7 @@ window.confirmDeleteSong=async function(){
     for(const r of repertoires){
       if(r.songs.includes(songDeleteTarget)){
         r.songs=r.songs.filter(id=>id!==songDeleteTarget);
-        await setDoc(doc(db,'repertoires',r.id),{name:r.name,songs:r.songs,active:r.active||false});
+        await saveRep(r);
       }
     }
     closeConfirmSong();
@@ -1703,7 +1712,7 @@ window.setActiveRep=async function(id){
       const newActive=r.id===id?!wasActive:false;
       if(r.active!==newActive){
         r.active=newActive;
-        await setDoc(doc(db,'repertoires',r.id),{name:r.name,songs:r.songs,active:r.active});
+        await saveRep(r);
       }
     }
     renderActiveRepBlock();renderRepPage();updateRepHeaderToggle();
@@ -1762,15 +1771,24 @@ document.getElementById('repPageBtn').addEventListener('click',openRepPage);
 
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
 let currentUserName=''; // cached full name from Firestore
+
+// Always preserves authorId/authorName when saving repertoire
+async function saveRep(rep){
+  return setDoc(doc(db,'repertoires',rep.id),{
+    name:rep.name||'',
+    songs:rep.songs||[],
+    active:rep.active||false,
+    songKeys:rep.songKeys||{},
+    authorId:rep.authorId||'',
+    authorName:rep.authorName||''
+  });
+}
+
 function canEditRep(repId){
-  // Find rep with authorId if available (may have multiple snapshots)
-  const reps=repertoires.filter(r=>r.id===repId);
-  const rep=reps.find(r=>r.authorId)||reps[0];
-  console.log('canEditRep', repId, 'isEditor:', isEditor, 'isUser:', isUser, 'uid:', currentUser?.uid, 'rep.authorId:', rep?.authorId);
   if(isEditor) return true;
   if(!isUser||!currentUser) return false;
-  if(!rep) return false;
-  if(!rep.authorId) return false; // authorId not yet loaded
+  const rep=repertoires.find(r=>r.id===repId&&r.authorId)||repertoires.find(r=>r.id===repId);
+  if(!rep||!rep.authorId) return false;
   return rep.authorId===currentUser.uid;
 }
 let sortableInstance=null;
@@ -1804,11 +1822,7 @@ function initSortable(){
       const newOrder=Array.from(cards).map(c=>c.dataset.id);
       rep.songs=newOrder;
       try{
-        await setDoc(doc(db,'repertoires',rep.id),{
-          name:rep.name,songs:rep.songs,
-          active:rep.active||false,
-          songKeys:rep.songKeys||{}
-        });
+        await saveRep(rep);
       }catch(e){showToast('Ошибка сохранения порядка');}
     }
   });
