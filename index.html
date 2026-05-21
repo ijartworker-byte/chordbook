@@ -1387,11 +1387,10 @@ function renderTabsNav(){
   const nav=document.getElementById('tabsNav');
   nav.querySelectorAll('[data-tab]:not([data-tab=all])').forEach(b=>b.remove());
   const addBtn=document.getElementById('addTabBtn');
-  for(const r of repertoires){
+  for(const r of getSortedReps()){
     const btn=document.createElement('button');
     btn.className='tab-btn'+(currentTab===r.id?' active':'');
     btn.dataset.tab=r.id;
-    // Show name + author hint
     btn.innerHTML=`<span>${esc(r.name)}</span>${r.authorName?`<span class="tab-author">${esc(r.authorName)}</span>`:''}`;
     btn.onclick=()=>switchTab(r.id);
     nav.insertBefore(btn,addBtn);
@@ -2724,7 +2723,10 @@ onSnapshot(collection(db,'repertoires'),snap=>{
 });
 
 // ── INIT ───────────────────────────────────────────────────────────────────
-loadRepOrder().then(()=>{renderTabsNav();renderRepPage();});
+loadRepOrder().then(()=>{
+  renderTabsNav();
+  renderRepPage();
+});
 seedIfEmpty();
 </script>
 </div><!-- /app-wrap -->
