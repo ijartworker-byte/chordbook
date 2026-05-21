@@ -50,7 +50,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .login-btn:active{background:var(--surface2)}
 
 .rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
-.rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s}
+.rep-header-title:hover{background:var(--surface2)}
+.rep-header-title.readonly{cursor:default}
+.rep-header-title.readonly:hover{background:none}
 
 .tabs-nav{display:flex;padding:12px 16px;overflow-x:auto;scrollbar-width:none;gap:6px;background:transparent;border-bottom:none;position:static}
 .tabs-nav::-webkit-scrollbar{display:none}
@@ -329,12 +332,13 @@ select.form-input option{background:var(--surface)}
 <!-- REPERTOIRE HEADER -->
 <header class="rep-header" id="repHeader" style="display:none">
   <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
-  <div class="rep-header-title" id="repHeaderTitle"></div>
+  <div class="rep-header-title" id="repHeaderTitle" onclick="openEditRepName()" title="Нажмите чтобы переименовать"></div>
   <div class="hdr-btns">
     <div class="toggle-wrap" id="repActiveWrap" onclick="toggleActiveRep()" title="Актуальный репертуар">
       <span class="toggle-label" id="repActiveLabel">Актуальный</span>
       <div class="toggle" id="repActiveToggle"></div>
     </div>
+    <button class="icon-btn" id="repDeleteBtn" onclick="openConfirmDeleteRep(currentTab)" title="Удалить репертуар" style="display:none;color:var(--accent2)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
     <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
 </header>
@@ -633,6 +637,22 @@ select.form-input option{background:var(--surface)}
     <div class="pick-modal-btns">
       <button class="btn btn-secondary" onclick="closeModal('pickSongsModal')">Отмена</button>
       <button class="btn btn-primary" onclick="applyPickedSongs()">Применить</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: RENAME REPERTOIRE -->
+<div class="modal-overlay" id="renameRepModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Переименовать репертуар</div>
+    <div class="form-group">
+      <label class="form-label">Название</label>
+      <input class="form-input" id="renameRepInput" placeholder="Название репертуара">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="closeModal('renameRepModal')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveRepName()">Сохранить</button>
     </div>
   </div>
 </div>
@@ -1317,6 +1337,13 @@ function updateHeaders(){
     const canEdit=canEditRep(currentTab);
     document.getElementById('repActiveWrap').style.display=isEditor?'flex':'none';
     document.getElementById('repAddSongsBtn').style.display=canEdit?'':'none';
+    const delBtn=document.getElementById('repDeleteBtn');
+    if(delBtn)delBtn.style.display=canEdit?'flex':'none';
+    const titleEl=document.getElementById('repHeaderTitle');
+    if(titleEl){
+      if(canEdit)titleEl.classList.remove('readonly');
+      else titleEl.classList.add('readonly');
+    }
   }
   if(isRep&&searchVisible){
     searchVisible=false;
@@ -1500,8 +1527,28 @@ document.getElementById('confirmRemoveRepOverlay').addEventListener('click',e=>{
   if(e.target===document.getElementById('confirmRemoveRepOverlay'))closeConfirmRemoveRep();
 });
 
+// ── RENAME REPERTOIRE ─────────────────────────────────────────────────────
+window.openEditRepName=function(){
+  if(!canEditRep(currentTab))return;
+  const rep=repertoires.find(r=>r.id===currentTab);if(!rep)return;
+  document.getElementById('renameRepInput').value=rep.name;
+  openModal('renameRepModal');
+  setTimeout(()=>document.getElementById('renameRepInput').focus(),300);
+};
+window.saveRepName=async function(){
+  const rep=repertoires.find(r=>r.id===currentTab);if(!rep||!canEditRep(currentTab))return;
+  const name=(document.getElementById('renameRepInput').value||'').trim();if(!name)return;
+  rep.name=name;
+  try{
+    await saveRep(rep);
+    closeModal('renameRepModal');
+    updateHeaders();
+    renderTabsNav();
+    renderRepPage();
+  }catch(e){showToast('Ошибка сохранения');}
+};
+document.getElementById('renameRepInput').addEventListener('keydown',e=>{if(e.key==='Enter')window.saveRepName();});
 window.openPickSongsModal=function(){
-  if(!isUser)return;
   pickedSongs=new Set();
   const rep=repertoires.find(r=>r.id===currentTab);
   if(rep)rep.songs.forEach(id=>pickedSongs.add(id));
@@ -1562,7 +1609,7 @@ window.saveRepertoire=async function(){
 
 // ── CONFIRM DELETE ─────────────────────────────────────────────────────────
 window.openConfirmDeleteRep=function(id){
-  if(!isEditor)return;
+  if(!canEditRep(id))return;
   repDeleteTarget=id;
   const rep=repertoires.find(r=>r.id===id);
   document.getElementById('confirmRepName').textContent=rep?`«${rep.name}»`:'';
@@ -1570,10 +1617,10 @@ window.openConfirmDeleteRep=function(id){
 };
 window.closeConfirm=function(){document.getElementById('confirmOverlay').classList.remove('open');repDeleteTarget=null;};
 window.confirmDeleteRep=async function(){
-  if(!repDeleteTarget||!isEditor)return;
+  if(!repDeleteTarget||!canEditRep(repDeleteTarget))return;
   try{
     await deleteDoc(doc(db,'repertoires',repDeleteTarget));
-    if(currentTab===repDeleteTarget)currentTab='all';
+    if(currentTab===repDeleteTarget)switchTab('all');
     closeConfirm();
   }catch(e){showToast('Ошибка удаления');}
 };
@@ -1672,11 +1719,14 @@ function renderRepPage(){
           <div class="rep-inline-meta">${repSongs.length} ${songWord(repSongs.length)}${rep.authorName?' · '+esc(rep.authorName):''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
-          ${isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')" title="Актуальный">
+          ${canEditRep(rep.id)?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')" title="Актуальный">
             <span class="toggle-label">Актуальный</span>
             <div class="toggle${rep.active?' on':''}"></div>
-          </div>
-          <button class="rep-del-btn" onclick="openConfirmDeleteRep('${rep.id}')" title="Удалить">${trashIcon}</button>`:''}
+          </div>`:isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')" title="Актуальный">
+            <span class="toggle-label">Актуальный</span>
+            <div class="toggle${rep.active?' on':''}"></div>
+          </div>`:''}
+          ${canEditRep(rep.id)?`<button class="rep-del-btn" onclick="openConfirmDeleteRep('${rep.id}')" title="Удалить">${trashIcon}</button>`:''}
           <span class="rep-inline-arrow">›</span>
         </div>
       </div>
@@ -2617,7 +2667,6 @@ onSnapshot(collection(db,'repertoires'),snap=>{
   renderActiveRepBlock();
   updateRepHeaderToggle();
   renderRepPage();
-  // Re-apply headers so canEditRep works after repos are loaded
   if(currentTab!=='all') updateHeaders();
 });
 
