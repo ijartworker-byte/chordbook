@@ -57,6 +57,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .tab-btn{flex-shrink:0;padding:6px 14px;font-family:var(--font-head);font-size:12px;color:var(--muted);border:none;background:#f5f6f7;cursor:pointer;position:relative;transition:all .15s;white-space:nowrap;border-radius:8px}
 .tab-btn:active{opacity:.8}
 .tab-btn.active{color:var(--accent);background:#fff;font-weight:600}
+.tab-author{display:block;font-size:9px;color:var(--muted);font-weight:400;margin-top:1px;line-height:1}
+.tab-btn.active .tab-author{color:var(--accent);opacity:.7}
 .add-tab-btn{flex-shrink:0;padding:6px 10px;color:var(--muted);border:none;background:#f5f6f7;cursor:pointer;border-radius:8px;display:flex;align-items:center}
 
 .search-wrap{padding:12px 16px}
@@ -852,6 +854,19 @@ onAuthStateChanged(auth,async(user)=>{
     userRole=await loadUserRole(user.uid);
     isEditor=userRole==='admin';
     isUser=true;
+    // Migrate old repos without authorId — assign to current user if admin
+    if(isEditor){
+      for(const rep of repertoires){
+        if(!rep.authorId){
+          rep.authorId=user.uid;
+          rep.authorName=user.displayName||user.email.split('@')[0];
+          setDoc(doc(db,'repertoires',rep.id),{
+            name:rep.name,songs:rep.songs,active:rep.active||false,
+            songKeys:rep.songKeys||{},authorId:rep.authorId,authorName:rep.authorName
+          }).catch(()=>{});
+        }
+      }
+    }
   }else{
     userRole=null;isEditor=false;isUser=false;
   }
@@ -1158,6 +1173,7 @@ window.openSongView=function(id){
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsNav').style.display='none';
+  document.getElementById('repAddSongsBtn').style.display='none';
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
   window.scrollTo(0,0);
   if(currentTab!=='all'){
@@ -1267,7 +1283,7 @@ window.closeSongView=function(){
   document.getElementById('songNavBar').style.display='none';
   document.getElementById('tabsNav').style.display='flex';
   document.getElementById('mainContent').style.display='';
-  if(isEditor)document.getElementById('fabBtn').style.display='';
+  if(isUser)document.getElementById('fabBtn').style.display='';
   document.getElementById('repActiveLabel').style.display='';
   document.getElementById('repActiveToggle').style.display='';
   if(canEditRep(currentTab))document.getElementById('repAddSongsBtn').style.display='';
@@ -1282,7 +1298,7 @@ function updateHeaders(){
   document.getElementById('repHeader').style.display=isRep?'flex':'none';
   if(isRep){
     const rep=repertoires.find(r=>r.id===currentTab);
-    const authorStr=rep&&rep.authorName?' ('+rep.authorName+')':'';
+    const authorStr=rep&&rep.authorName?' · '+rep.authorName:'';
     document.getElementById('repHeaderTitle').textContent=rep?rep.name+authorStr:'';
     const canEdit=canEditRep(currentTab);
     document.getElementById('repActiveWrap').style.display=isEditor?'flex':'none';
@@ -1301,7 +1317,7 @@ window.switchTab=function(id){
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='none';
   document.getElementById('tabsNav').style.display='flex';
-  if(isEditor)document.getElementById('fabBtn').style.display='';
+  if(isUser)document.getElementById('fabBtn').style.display='';
   updateHeaders();
   renderActiveRepBlock();
   updateRepHeaderToggle();
@@ -1314,7 +1330,9 @@ function renderTabsNav(){
   for(const r of repertoires){
     const btn=document.createElement('button');
     btn.className='tab-btn'+(currentTab===r.id?' active':'');
-    btn.dataset.tab=r.id;btn.textContent=r.name;
+    btn.dataset.tab=r.id;
+    // Show name + author hint
+    btn.innerHTML=`<span>${esc(r.name)}</span>${r.authorName?`<span class="tab-author">${esc(r.authorName)}</span>`:''}`;
     btn.onclick=()=>switchTab(r.id);
     nav.insertBefore(btn,addBtn);
   }
@@ -1588,7 +1606,7 @@ window.openRepPage=function(){
 window.closeRepPage=function(){
   document.getElementById('repPage').style.display='none';
   document.getElementById('tabsNav').style.display='flex';
-  if(isEditor)document.getElementById('fabBtn').style.display='';
+  if(isUser)document.getElementById('fabBtn').style.display='';
   switchTab(currentTab);
 };
 function renderRepPage(){
@@ -1673,6 +1691,7 @@ window.openSongFromRep=function(songId,repId){
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsNav').style.display='none';
+  document.getElementById('repAddSongsBtn').style.display='none';
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
   document.getElementById('repActiveLabel').style.display='none';
   document.getElementById('repActiveToggle').style.display='none';
@@ -1710,10 +1729,11 @@ document.getElementById('repPageBtn').addEventListener('click',openRepPage);
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
 // ── REPERTOIRE PERMISSIONS ─────────────────────────────────────────────────
 function canEditRep(repId){
-  if(isEditor) return true; // admin can edit all
+  if(isEditor) return true;
   if(!isUser||!currentUser) return false;
   const rep=repertoires.find(r=>r.id===repId);
-  return rep&&rep.authorId===currentUser.uid;
+  if(!rep) return false;
+  return rep.authorId===currentUser.uid;
 }
 let sortableInstance=null;
 
