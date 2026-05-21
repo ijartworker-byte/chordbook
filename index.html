@@ -23,8 +23,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .layout{overflow-x:hidden;width:100%}
 .main-area{overflow-x:hidden;width:100%;min-width:0}
 .site-header{background:var(--surface);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
-.site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static;max-width:1200px;margin:0 auto}
-  .site-header .app-logo{display:none}
+.site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static}
 .app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
 @media(max-width:767px){.app-wrap{max-width:100%;width:100%;overflow-x:hidden}}
 @media(min-width:1200px){
@@ -74,7 +73,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .search-input::placeholder{color:var(--muted)}
 .search-input:focus{border-color:var(--accent)}
 
-.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:0;z-index:90;background:var(--bg);border-bottom:none}
+.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:52px;z-index:90;background:var(--bg);border-bottom:none}
 .alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:transparent;border:none;color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
 .alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
 .alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -415,9 +414,11 @@ select.form-input option{background:var(--surface)}
     background:var(--surface);
     border-bottom:1px solid var(--border);
     box-shadow:0 1px 4px rgba(0,0,0,.06);
+    width:100%;
   }
   .app-header{
-    max-width:none;
+    max-width:1100px;
+    margin:0 auto;
     padding:0 24px;
     height:56px;
     gap:16px;
@@ -466,7 +467,7 @@ select.form-input option{background:var(--surface)}
   .sidebar-btn svg{color:var(--muted);flex-shrink:0;transition:color .15s}
   .sidebar-btn:hover{background:var(--bg)}
   .sidebar-btn.active{background:rgba(0,111,185,.1);color:var(--accent)}
-  .sidebar-btn.active svg{color:var(--accent)}
+  .sidebar-btn.active svg{color:var(--muted)}
   .sidebar-btn span{line-height:1}
   .sidebar-footer{display:none}
   .sidebar-user-btn{
@@ -522,8 +523,8 @@ select.form-input option{background:var(--surface)}
 <div class="site-header">
 <!-- MAIN HEADER -->
 <header class="app-header" id="mainHeader">
-  <!-- Mobile logo -->
-  <div class="app-logo mobile-only"><img src="https://ijartworker-byte.github.io/chordbook/logo.png" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px" onerror="this.style.display='none'">Chord<span>Book</span></div>
+  <!-- Logo (always visible) -->
+  <div class="app-logo"><img src="https://ijartworker-byte.github.io/chordbook/logo.png" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px" onerror="this.style.display='none'">Chord<span>Book</span></div>
   <!-- Desktop search bar (center) -->
   <div class="desktop-search mobile-hide">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
