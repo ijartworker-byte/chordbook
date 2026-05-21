@@ -48,10 +48,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .icon-btn:active{background:var(--surface2);transform:scale(.95)}
 
 /* editor badge */
-.editor-badge{font-family:var(--font-head);font-size:11px;color:#fff;background:var(--accent);padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
+.editor-badge{font-family:var(--font-head);font-size:12px;color:#fff;background:var(--accent);padding:0 14px;border-radius:20px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
 .editor-badge:active{opacity:.8}
-.login-btn{font-family:var(--font-head);font-size:11px;color:var(--muted);border:1px solid var(--border);background:none;padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
-.login-btn:active{background:var(--surface2)}
+.login-btn{font-family:var(--font-head);font-size:12px;color:var(--accent);border:1.5px solid var(--accent);background:none;padding:0 14px;border-radius:20px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
+.login-btn:active{background:rgba(0,111,185,.05)}
 
 .rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s}
@@ -427,21 +427,23 @@ select.form-input option{background:var(--surface)}
   /* Desktop search - big centered */
   .desktop-search{
     display:flex;align-items:center;gap:10px;
-    flex:1;max-width:480px;
-    background:var(--bg);
-    border:1.5px solid var(--border);
-    border-radius:12px;
-    padding:0 14px;
-    height:38px;
-    transition:border-color .15s;
+    flex:1;max-width:560px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:0 16px;
+    height:40px;
+    transition:box-shadow .15s;
+    box-shadow:0 1px 4px rgba(0,0,0,.06);
   }
-  .desktop-search:focus-within{border-color:var(--accent)}
+  .desktop-search:focus-within{box-shadow:0 0 0 2px rgba(0,111,185,.2);border-color:var(--accent)}
   .desktop-search svg{color:var(--muted);flex-shrink:0}
   .desktop-search-input{border:none;background:none;color:var(--text);font-family:var(--font-head);font-size:13px;outline:none;width:100%;padding:0}
   .desktop-search-input::placeholder{color:var(--muted)}
 
   /* Auth button right-aligned */
-  .hdr-btns{margin-left:auto}
+  .hdr-btns{margin-left:auto;gap:6px}
+  .hdr-btns .icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 
   /* Sidebar redesign - VK style */
   .sidebar{
@@ -891,6 +893,7 @@ select.form-input option{background:var(--surface)}
     <div class="modal-handle"></div>
     <div class="modal-title">Добавить песни в репертуар</div>
     <input class="pick-search" id="pickSearch" placeholder="Поиск…" oninput="renderPickList()">
+    <div class="alpha-nav" id="pickAlphaNav" style="padding:4px 0;border-bottom:1px solid var(--border);margin:0 -20px;padding-left:16px"></div>
     <div id="pickSongList" class="pick-song-list-scroll"></div>
     <div class="pick-modal-btns">
       <button class="btn btn-secondary" onclick="closeModal('pickSongsModal')">Отмена</button>
@@ -1582,20 +1585,20 @@ document.addEventListener('visibilitychange',()=>{
 });
 let alphaObserver=null;
 function initAlphaObserver(){
-  // Set sticky top dynamically
   const alphaNav=document.getElementById('alphaNav');
   if(alphaNav){
+    // Calculate total sticky height: site-header + tabs-nav
     const siteHeader=document.querySelector('.site-header');
-    const headerH=siteHeader?siteHeader.offsetHeight:0;
-    alphaNav.style.top=headerH+'px';
+    const tabsNav=document.getElementById('tabsNav');
+    const headerH=siteHeader?siteHeader.getBoundingClientRect().height:0;
+    const tabsH=(tabsNav&&tabsNav.style.display!=='none')?tabsNav.getBoundingClientRect().height:0;
+    alphaNav.style.top=(headerH+tabsH)+'px';
   }
   if(alphaObserver) alphaObserver.disconnect();
   const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
   if(!sections.length) return;
   alphaObserver=new IntersectionObserver((entries)=>{
-    // find topmost visible section
-    let topmost=null;
-    let topmostY=Infinity;
+    let topmost=null;let topmostY=Infinity;
     entries.forEach(e=>{
       if(e.isIntersecting){
         const y=e.boundingClientRect.top;
@@ -2056,14 +2059,49 @@ window.openPickSongsModal=function(){
 window.renderPickList=function(){
   const q=(document.getElementById('pickSearch').value||'').toLowerCase();
   let arr=[...songs].sort((a,b)=>a.title.localeCompare(b.title,'ru'));
-  if(q)arr=arr.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q));
-  document.getElementById('pickSongList').innerHTML=arr.map(s=>{
-    const sel=pickedSongs.has(s.id);
-    return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
-      <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
-      <div class="pick-check">${sel?'✓':''}</div>
-    </div>`;
-  }).join('');
+  if(q) arr=arr.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q));
+
+  const pickAlphaNav=document.getElementById('pickAlphaNav');
+  if(q||!pickAlphaNav){
+    // No grouping when searching
+    if(pickAlphaNav) pickAlphaNav.style.display='none';
+    document.getElementById('pickSongList').innerHTML=arr.map(s=>{
+      const sel=pickedSongs.has(s.id);
+      return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
+        <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
+        <div class="pick-check">${sel?'✓':''}</div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  // Group by letter with alpha nav
+  const groups={};
+  for(const s of arr){const l=s.title[0].toUpperCase();(groups[l]=groups[l]||[]).push(s);}
+  const letters=Object.keys(groups).sort();
+
+  // Render alpha nav
+  pickAlphaNav.style.display='flex';
+  pickAlphaNav.innerHTML=letters.map(l=>`<button class="alpha-btn" onclick="scrollPickToLetter('${l}')">${l}</button>`).join('');
+
+  // Render grouped list
+  document.getElementById('pickSongList').innerHTML=letters.map(l=>`
+    <div class="alpha-section pick-alpha-section" id="pick-alpha-${l}">
+      <div class="alpha-label">${l}</div>
+      ${groups[l].map(s=>{
+        const sel=pickedSongs.has(s.id);
+        return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
+          <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
+          <div class="pick-check">${sel?'✓':''}</div>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+};
+
+window.scrollPickToLetter=function(l){
+  const el=document.getElementById('pick-alpha-'+l);
+  const list=document.getElementById('pickSongList');
+  if(el&&list) list.scrollTo({top:el.offsetTop-4,behavior:'smooth'});
 };
 window.togglePick=function(id,el){
   if(pickedSongs.has(id)){pickedSongs.delete(id);el.classList.remove('selected');el.querySelector('.pick-check').textContent='';}
