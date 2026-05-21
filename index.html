@@ -1763,11 +1763,14 @@ document.getElementById('repPageBtn').addEventListener('click',openRepPage);
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
 let currentUserName=''; // cached full name from Firestore
 function canEditRep(repId){
-  const rep=repertoires.find(r=>r.id===repId);
-  console.log('canEditRep', repId, 'isEditor:', isEditor, 'isUser:', isUser, 'uid:', currentUser?.uid, 'rep.authorId:', rep?.authorId, 'rep.authorName:', rep?.authorName);
+  // Find rep with authorId if available (may have multiple snapshots)
+  const reps=repertoires.filter(r=>r.id===repId);
+  const rep=reps.find(r=>r.authorId)||reps[0];
+  console.log('canEditRep', repId, 'isEditor:', isEditor, 'isUser:', isUser, 'uid:', currentUser?.uid, 'rep.authorId:', rep?.authorId);
   if(isEditor) return true;
   if(!isUser||!currentUser) return false;
   if(!rep) return false;
+  if(!rep.authorId) return false; // authorId not yet loaded
   return rep.authorId===currentUser.uid;
 }
 let sortableInstance=null;
@@ -2591,7 +2594,10 @@ onSnapshot(collection(db,'songs'),snap=>{
   renderActiveRepBlock();
 });
 onSnapshot(collection(db,'repertoires'),snap=>{
-  repertoires=snap.docs.map(d=>({id:d.id,...d.data(),songs:d.data().songs||[],active:d.data().active===true,songKeys:d.data().songKeys||{}}));
+  // Deduplicate by id - take last version
+  const map=new Map();
+  snap.docs.forEach(d=>map.set(d.id,{id:d.id,...d.data(),songs:d.data().songs||[],active:d.data().active===true,songKeys:d.data().songKeys||{}}));
+  repertoires=[...map.values()];
   renderTabsNav();
   renderSongList();
   renderActiveRepBlock();
