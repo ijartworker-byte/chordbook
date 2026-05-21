@@ -750,7 +750,7 @@ function applyEditorUI(){
   const repActiveWrap=document.getElementById('repActiveWrap');
 
   if(currentUser){
-    const name=currentUser.displayName||currentUser.email.split('@')[0];
+    const name=currentUserName||currentUser.email.split('@')[0];
     btn.className='editor-badge';
     if(isEditor){
       btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.border='none';
@@ -854,12 +854,30 @@ onAuthStateChanged(auth,async(user)=>{
     userRole=await loadUserRole(user.uid);
     isEditor=userRole==='admin';
     isUser=true;
-    // Migrate old repos without authorId — assign to current user if admin
+    // Load full name from Firestore
+    try{
+      const uSnap=await getDoc(doc(db,'users',user.uid));
+      if(uSnap.exists()){
+        const ud=uSnap.data();
+        currentUserName=ud.firstName&&ud.lastName?ud.firstName+' '+ud.lastName
+          :ud.firstName||ud.lastName||user.displayName||user.email.split('@')[0];
+      } else { currentUserName=user.displayName||user.email.split('@')[0]; }
+    }catch(e){ currentUserName=user.displayName||user.email.split('@')[0]; }
+    // Migrate old repos without authorId — assign to admin
     if(isEditor){
+      let adminName='';
+      try{
+        const uSnap=await getDoc(doc(db,'users',user.uid));
+        if(uSnap.exists()){
+          const ud=uSnap.data();
+          adminName=ud.firstName&&ud.lastName?ud.firstName+' '+ud.lastName
+            :ud.firstName||ud.lastName||user.displayName||user.email.split('@')[0];
+        } else { adminName=user.displayName||user.email.split('@')[0]; }
+      }catch(e){ adminName=user.displayName||user.email.split('@')[0]; }
       for(const rep of repertoires){
         if(!rep.authorId){
           rep.authorId=user.uid;
-          rep.authorName=user.displayName||user.email.split('@')[0];
+          rep.authorName=adminName;
           setDoc(doc(db,'repertoires',rep.id),{
             name:rep.name,songs:rep.songs,active:rep.active||false,
             songKeys:rep.songKeys||{},authorId:rep.authorId,authorName:rep.authorName
@@ -869,8 +887,11 @@ onAuthStateChanged(auth,async(user)=>{
     }
   }else{
     userRole=null;isEditor=false;isUser=false;
+    currentUserName='';
   }
   applyEditorUI();
+  // Force re-render with correct permissions
+  if(currentTab!=='all') updateHeaders();
 });
 
 document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPassword').focus();});
@@ -1509,7 +1530,20 @@ window.saveRepertoire=async function(){
   const name=(document.getElementById('repName').value||'').trim();if(!name)return;
   const id='r'+Date.now();
   const authorId=currentUser?currentUser.uid:'';
-  const authorName=currentUser?(currentUser.displayName||currentUser.email.split('@')[0]):'';
+  // Get full name from Firestore
+  let authorName='';
+  try{
+    const userSnap=await getDoc(doc(db,'users',authorId));
+    if(userSnap.exists()){
+      const ud=userSnap.data();
+      authorName=ud.firstName&&ud.lastName?ud.firstName+' '+ud.lastName
+        :ud.firstName||ud.lastName||currentUser.displayName||currentUser.email.split('@')[0];
+    } else {
+      authorName=currentUser.displayName||currentUser.email.split('@')[0];
+    }
+  }catch(e){
+    authorName=currentUser.displayName||currentUser.email.split('@')[0];
+  }
   try{
     await setDoc(doc(db,'repertoires',id),{name,songs:[],active:false,songKeys:{},authorId,authorName});
     closeModal('addRepModal');
@@ -1727,7 +1761,7 @@ document.getElementById('repPageBtn').addEventListener('click',openRepPage);
 
 
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
-// ── REPERTOIRE PERMISSIONS ─────────────────────────────────────────────────
+let currentUserName=''; // cached full name from Firestore
 function canEditRep(repId){
   if(isEditor) return true;
   if(!isUser||!currentUser) return false;
@@ -2562,6 +2596,8 @@ onSnapshot(collection(db,'repertoires'),snap=>{
   renderActiveRepBlock();
   updateRepHeaderToggle();
   renderRepPage();
+  // Re-apply headers so canEditRep works after repos are loaded
+  if(currentTab!=='all') updateHeaders();
 });
 
 // ── INIT ───────────────────────────────────────────────────────────────────
