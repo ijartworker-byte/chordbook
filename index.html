@@ -20,9 +20,13 @@
   --font-head:'Inter',sans-serif;--font-mono:'Roboto Condensed',sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
+.layout{overflow-x:hidden;width:100%}
+.main-area{overflow-x:hidden;width:100%;min-width:0}
 .site-header{background:var(--surface);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
 .site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static;max-width:1200px;margin:0 auto}
+  .site-header .app-logo{display:none}
 .app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
+@media(max-width:767px){.app-wrap{max-width:100%;width:100%;overflow-x:hidden}}
 @media(min-width:1200px){
   body{background:#edeef0}
   .fab{right:calc(50% - 600px + 20px)}
@@ -37,6 +41,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .app-logo{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;display:flex;align-items:center}
+@media(max-width:767px){.mobile-hide{display:none!important}}
 .app-logo span{color:var(--text)}
 .hdr-btns{display:flex;gap:8px;align-items:center}
 .icon-btn{background:none;border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
@@ -209,6 +214,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
   .lyrics-preview-side .lyric-row{font-size:13px}
 }
 @media (max-width: 767px){
+  .modal-overlay#addSongModal .modal.song-modal-desktop{width:100%;max-width:100%;border-radius:20px 20px 0 0}
   .song-modal-body{display:block}
   .song-col-preview{display:none!important}
   .song-textarea{min-height:160px}
@@ -246,7 +252,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .confirm-text{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:22px}
 .confirm-name{color:var(--accent2)}
 
-.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
+.fab{position:fixed;bottom:72px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
 .fab svg{display:block}
 .fab:active{transform:scale(.93)}
 
@@ -324,7 +330,7 @@ select.form-input option{background:var(--surface)}
 .main-area{flex:1;min-width:0;display:flex;flex-direction:column}
 
 /* Bottom nav (mobile) */
-.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:100}
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
 .bottom-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--muted);cursor:pointer;font-family:var(--font-head);font-size:9px;padding:6px 0;transition:color .15s}
 .bottom-nav-btn.active{color:var(--accent)}
 .bottom-nav-btn svg{flex-shrink:0}
@@ -363,7 +369,7 @@ select.form-input option{background:var(--surface)}
 }
 
 /* Content padding for bottom nav on mobile */
-.app-wrap{padding-bottom:56px}
+.app-wrap{padding-bottom:calc(56px + env(safe-area-inset-bottom,12px))}
 @media(min-width:768px){.app-wrap{padding-bottom:0}}
 
 /* Section pages */
@@ -429,8 +435,8 @@ select.form-input option{background:var(--surface)}
   <div class="app-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
   <div class="hdr-btns">
     <button class="icon-btn" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-    <button class="icon-btn" id="repPageBtn" title="Репертуары"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
-    <button class="login-btn" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
+    <button class="icon-btn mobile-hide" id="repPageBtn" title="Репертуары"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
+    <button class="login-btn mobile-hide" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
   </div>
 </header>
 
