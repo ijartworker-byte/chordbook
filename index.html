@@ -317,9 +317,112 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .toast.show{opacity:1}
 
 select.form-input option{background:var(--surface)}
+
+/* ── LAYOUT ─────────────────────────────────────────────────────────────── */
+.layout{display:flex;min-height:100vh}
+.sidebar{display:none}
+.main-area{flex:1;min-width:0;display:flex;flex-direction:column}
+
+/* Bottom nav (mobile) */
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:100}
+.bottom-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--muted);cursor:pointer;font-family:var(--font-head);font-size:9px;padding:6px 0;transition:color .15s}
+.bottom-nav-btn.active{color:var(--accent)}
+.bottom-nav-btn svg{flex-shrink:0}
+.bottom-nav-btn span{line-height:1}
+
+/* Desktop sidebar */
+@media(min-width:768px){
+  .bottom-nav{display:none}
+  .layout{padding-top:0}
+  .sidebar{
+    display:flex;flex-direction:column;
+    width:220px;flex-shrink:0;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    position:sticky;top:0;height:100vh;
+    overflow-y:auto;
+    z-index:99;
+  }
+  .sidebar-logo{padding:20px 16px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+  .sidebar-logo img{width:32px;height:32px;border-radius:8px}
+  .sidebar-logo-text{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text)}
+  .sidebar-nav{padding:12px 8px;flex:1}
+  .sidebar-btn{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border:none;background:none;border-radius:10px;cursor:pointer;font-family:var(--font-head);font-size:13px;color:var(--muted);transition:all .15s;text-align:left}
+  .sidebar-btn:hover{background:var(--surface2);color:var(--text)}
+  .sidebar-btn.active{background:var(--accent);color:#fff}
+  .sidebar-btn.active svg{stroke:#fff}
+  .sidebar-footer{padding:12px 8px;border-top:1px solid var(--border)}
+  .sidebar-user{padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .15s}
+  .sidebar-user:hover{background:var(--surface2)}
+  .sidebar-user-name{font-family:var(--font-head);font-size:12px;font-weight:600;color:var(--text)}
+  .sidebar-user-role{font-size:11px;color:var(--muted);margin-top:2px}
+  .sidebar-user-btn{width:100%;display:flex;align-items:center;justify-content:space-between;border:none;background:none;cursor:pointer;padding:0}
+  .app-wrap{max-width:none;margin:0;box-shadow:none}
+  .site-header{max-width:none;position:sticky;top:0;z-index:98}
+  .site-header .app-header,.site-header .rep-header{max-width:none}
+}
+
+/* Content padding for bottom nav on mobile */
+.app-wrap{padding-bottom:56px}
+@media(min-width:768px){.app-wrap{padding-bottom:0}}
+
+/* Section pages */
+.section-page{display:none;padding:16px}
+.section-page.active{display:block}
+.section-title{font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:4px}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+
+/* Rep filter tabs */
+.rep-filter{display:flex;gap:8px;margin-bottom:16px}
+.rep-filter-btn{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:var(--font-head);font-size:12px;cursor:pointer;transition:all .15s}
+.rep-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* Favorites */
+.fav-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;color:var(--muted);transition:color .15s}
+.fav-btn.active{color:#e53935}
+.fav-btn:active{transform:scale(.9)}
+
+/* Profile page */
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.profile-avatar{width:64px;height:64px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:24px;font-weight:700;color:#fff;margin:0 auto 12px}
+.profile-name{font-family:var(--font-head);font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
+.profile-email{font-size:13px;color:var(--muted);text-align:center;margin-bottom:4px}
+.profile-role{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-head);background:var(--accent);color:#fff;margin:0 auto 16px;display:flex;justify-content:center}
+
 </style>
 </head>
 <body>
+<div class="layout">
+<!-- SIDEBAR (desktop) -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="logo.png" onerror="this.style.display='none'">
+    <span class="sidebar-logo-text">ChordBook</span>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-btn active" id="sidebarSongs" onclick="navTo('songs')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>Все песни</span>
+    </button>
+    <button class="sidebar-btn" id="sidebarFav" onclick="navTo('favorites')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Избранное</span>
+    </button>
+    <button class="sidebar-btn" id="sidebarReps" onclick="navTo('repertoires')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Репертуары</span>
+    </button>
+    <button class="sidebar-btn" id="sidebarProfile" onclick="navTo('profile')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span>
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="sidebar-user-btn" onclick="onAuthBtnClick()" id="sidebarUserBtn">
+      <div class="sidebar-user">
+        <div class="sidebar-user-name" id="sidebarUserName">Войти</div>
+        <div class="sidebar-user-role" id="sidebarUserRole"></div>
+      </div>
+    </button>
+  </div>
+</aside>
+<div class="main-area">
 <div class="site-header">
 <!-- DEFAULT HEADER -->
 <header class="app-header" id="mainHeader">
@@ -420,6 +523,57 @@ select.form-input option{background:var(--surface)}
   <button class="nav-arrow" id="btnPrev" onclick="navSong(-1)">← Предыдущая</button>
   <span class="nav-counter" id="navCounter"></span>
   <button class="nav-arrow" id="btnNext" onclick="navSong(1)">Следующая →</button>
+</div>
+
+<!-- FAVORITES PAGE -->
+<div class="section-page" id="favoritesPage">
+  <div class="song-list" id="favSongList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
+</div>
+
+<!-- REPERTOIRES SECTION PAGE -->
+<div class="section-page" id="repertoiresPage">
+  <div class="rep-filter" style="padding:0 16px">
+    <button class="rep-filter-btn active" id="repFilterAll" onclick="setRepFilter('all')">Все</button>
+    <button class="rep-filter-btn" id="repFilterMine" onclick="setRepFilter('mine')">Мои</button>
+  </div>
+  <div id="repSectionList" style="padding:0 16px 100px"></div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="section-page" id="profilePage">
+  <div style="padding:16px;max-width:480px;margin:0 auto">
+    <div class="profile-card" id="profileCard">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-name" id="profileName">Войдите в аккаунт</div>
+      <div class="profile-email" id="profileEmail"></div>
+      <div style="text-align:center;margin-bottom:16px"><span class="profile-role" id="profileRole" style="display:none"></span></div>
+    </div>
+    <div id="profileEditForm" style="display:none">
+      <div class="profile-card">
+        <div class="modal-title" style="margin-bottom:16px">Редактировать профиль</div>
+        <div style="display:flex;gap:12px">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Имя</label>
+            <input class="form-input" id="editFirstName" placeholder="Имя">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Фамилия</label>
+            <input class="form-input" id="editLastName" placeholder="Фамилия">
+          </div>
+        </div>
+        <div id="profileSaveError" style="font-size:12px;color:var(--accent2);display:none;margin-bottom:8px"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="toggleProfileEdit(false)">Отмена</button>
+          <button class="btn btn-primary" onclick="saveProfile()">Сохранить</button>
+        </div>
+      </div>
+    </div>
+    <div id="profileActions">
+      <button class="btn btn-secondary" style="margin-bottom:10px;width:100%" onclick="toggleProfileEdit(true)" id="editProfileBtn" style="display:none">Редактировать профиль</button>
+      <button class="btn btn-danger" style="width:100%" onclick="onAuthBtnClick()" id="profileLogoutBtn" style="display:none">Выйти</button>
+      <button class="btn btn-primary" style="width:100%" onclick="onAuthBtnClick()" id="profileLoginBtn">Войти / Зарегистрироваться</button>
+    </div>
+  </div>
 </div>
 
 <!-- FAB (editor only) -->
@@ -877,6 +1031,7 @@ onAuthStateChanged(auth,async(user)=>{
     userRole=await loadUserRole(user.uid);
     isEditor=userRole==='admin';
     isUser=true;
+    loadFavorites();
     // Load full name from Firestore
     try{
       const uSnap=await getDoc(doc(db,'users',user.uid));
@@ -910,6 +1065,8 @@ onAuthStateChanged(auth,async(user)=>{
     currentUserName='';
   }
   applyEditorUI();
+  updateSidebarUser();
+  if(currentSection==='profile') renderProfilePage();
   // Force re-render with correct permissions
   if(currentTab!=='all') updateHeaders();
 });
@@ -1069,6 +1226,218 @@ function renderAlphaNav(songArr){
 }
 window.scrollToLetter=function(l){const el=document.getElementById('alpha-'+l);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
 
+// ── SECTION NAVIGATION ────────────────────────────────────────────────────
+let currentSection='songs';
+let favorites=new Set();
+let repFilter='all';
+const NAV_SECTIONS=['songs','favorites','repertoires','profile'];
+const NAV_NAMES=['Songs','Fav','Reps','Profile'];
+
+window.navTo=function(section){
+  currentSection=section;
+  NAV_SECTIONS.forEach((s,i)=>{
+    const el=document.getElementById(s+'Page');
+    if(el) el.classList.toggle('active',s===section);
+    const sb=document.getElementById('sidebar'+NAV_NAMES[i]);
+    const bn=document.getElementById('bn'+NAV_NAMES[i]);
+    if(sb) sb.classList.toggle('active',s===section);
+    if(bn) bn.classList.toggle('active',s===section);
+  });
+  document.getElementById('mainContent').style.display=section==='songs'?'':'none';
+  document.getElementById('songView').style.display='none';
+  document.getElementById('repPage').style.display='none';
+  const tabsNav=document.getElementById('tabsNav');
+  tabsNav.style.display=section==='songs'?'flex':'none';
+  const fab=document.getElementById('fabBtn');
+  fab.style.display=(section==='songs'||section==='repertoires')&&isUser?'':'none';
+  const alphaNav=document.getElementById('alphaNav');
+  if(alphaNav) alphaNav.style.display=section==='songs'&&currentTab==='all'?'':'none';
+  if(section==='songs'){currentTab='all';renderSongList();renderTabsNav();renderActiveRepBlock();}
+  else if(section==='favorites') renderFavorites();
+  else if(section==='repertoires') renderRepSection();
+  else if(section==='profile') renderProfilePage();
+  updateSidebarUser();
+};
+
+// ── FAVORITES ─────────────────────────────────────────────────────────────
+async function loadFavorites(){
+  if(!currentUser){favorites=new Set();return;}
+  try{
+    const snap=await getDocs(collection(db,'likes',currentUser.uid,'songs'));
+    favorites=new Set(snap.docs.map(d=>d.id));
+  }catch(e){favorites=new Set();}
+}
+
+window.toggleFavorite=async function(songId,e){
+  if(e) e.stopPropagation();
+  if(!currentUser){openModal('loginModal');return;}
+  const ref=doc(db,'likes',currentUser.uid,'songs',songId);
+  if(favorites.has(songId)){
+    favorites.delete(songId);
+    await deleteDoc(ref).catch(()=>{});
+  } else {
+    favorites.add(songId);
+    await setDoc(ref,{ts:Date.now()}).catch(()=>{});
+  }
+  document.querySelectorAll(`.fav-btn[data-id="${songId}"]`).forEach(btn=>{
+    const active=favorites.has(songId);
+    btn.classList.toggle('active',active);
+    btn.querySelector('svg').setAttribute('fill',active?'#e53935':'none');
+    btn.querySelector('svg').setAttribute('stroke',active?'#e53935':'currentColor');
+  });
+  if(currentSection==='favorites') renderFavorites();
+};
+
+function favBtnHtml(songId){
+  const active=favorites.has(songId);
+  return `<button class="fav-btn${active?' active':''}" data-id="${songId}" onclick="toggleFavorite('${songId}',event)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="${active?'#e53935':'none'}" stroke="${active?'#e53935':'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>`;
+}
+
+function renderFavorites(){
+  const list=document.getElementById('favSongList');if(!list)return;
+  if(!currentUser){list.innerHTML='<div class="empty"><div class="empty-icon">❤️</div><div class="empty-text">Войдите чтобы видеть избранное</div></div>';return;}
+  const favSongs=songs.filter(s=>favorites.has(s.id)).sort((a,b)=>a.title.localeCompare(b.title,'ru'));
+  if(!favSongs.length){list.innerHTML='<div class="empty"><div class="empty-icon">❤️</div><div class="empty-text">Нажмите ♡ у любой песни<br>чтобы добавить в избранное</div></div>';return;}
+  list.innerHTML=`<div style="padding:8px 16px 100px">`+favSongs.map(s=>`
+    <div class="song-card" onclick="openSongViewFromSection('${s.id}')">
+      <div class="song-info"><div class="song-title">${esc(s.title)}</div><div class="song-artist">${esc(s.artist)}</div>
+      <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(s.key)}</div></div>
+      <div class="song-actions" onclick="event.stopPropagation()">${favBtnHtml(s.id)}${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}</div>
+    </div>`).join('')+'</div>';
+}
+
+window.openSongViewFromSection=function(songId){
+  currentSongId=songId;currentTranspose=0;navSongList=[];navIndex=-1;currentTab='all';
+  renderSongView(songId);
+  document.getElementById('mainContent').style.display='none';
+  NAV_SECTIONS.forEach(s=>{const el=document.getElementById(s+'Page');if(el)el.classList.remove('active');});
+  document.getElementById('songView').style.display='block';
+  document.getElementById('tabsNav').style.display='none';
+  document.getElementById('fabBtn').style.display='none';
+  document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
+  document.getElementById('mainHeader').style.display='none';
+  window.scrollTo(0,0);
+};
+
+// ── REPERTOIRES SECTION ────────────────────────────────────────────────────
+window.setRepFilter=function(filter){
+  repFilter=filter;
+  document.getElementById('repFilterAll').classList.toggle('active',filter==='all');
+  document.getElementById('repFilterMine').classList.toggle('active',filter==='mine');
+  renderRepSection();
+};
+
+function renderRepSection(){
+  const list=document.getElementById('repSectionList');if(!list)return;
+  let reps=getSortedReps();
+  if(repFilter==='mine'){
+    if(!currentUser){list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Войдите чтобы видеть свои репертуары</div></div>';return;}
+    reps=reps.filter(r=>r.authorId===currentUser.uid);
+  }
+  if(!reps.length){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${repFilter==='mine'?'У вас нет репертуаров.<br>Нажмите + чтобы создать':'Нет репертуаров.'}</div></div>`;return;}
+  const trashIcon=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
+  let html='';
+  for(const rep of reps){
+    const repSongs=rep.songs.map(id=>songs.find(s=>s.id===id)).filter(Boolean);
+    const preview=repSongs.slice(0,4);const hasMore=repSongs.length>4;const repKeys=rep.songKeys||{};
+    const dragHandle=isEditor?`<span class="rep-drag-handle" onclick="event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span>`:'';
+    html+=`<div class="rep-inline-card" data-id="${rep.id}">
+      <div class="rep-inline-header" onclick="goToRepFromSection('${rep.id}')">
+        ${dragHandle}<div style="flex:1;min-width:0">
+          <div class="rep-inline-name">${esc(rep.name)}${rep.active?' ⚡':''}</div>
+          <div class="rep-inline-meta">${repSongs.length} ${songWord(repSongs.length)}${rep.authorName?' · '+esc(rep.authorName):''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
+          ${isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')"><span class="toggle-label">Актуальный</span><div class="toggle${rep.active?' on':''}"></div></div>`:''}
+          ${canEditRep(rep.id)?`<button class="rep-del-btn" onclick="openConfirmDeleteRep('${rep.id}')">${trashIcon}</button>`:''}
+          <span class="rep-inline-arrow">›</span>
+        </div>
+      </div>
+      ${repSongs.length?`<div class="rep-inline-songs">
+        ${preview.map((s,idx)=>`<div class="rep-inline-song" onclick="goToRepFromSection('${rep.id}','${s.id}')"><span class="rep-inline-num">${idx+1}</span><span class="rep-inline-title">${esc(s.title)}</span><span class="rep-inline-key">${esc(repKeys[s.id]||s.key)}</span></div>`).join('')}
+        ${hasMore?`<div class="rep-inline-more" onclick="goToRepFromSection('${rep.id}')">Ещё ${repSongs.length-4} ${songWord(repSongs.length-4)} →</div>`:''}
+      </div>`:''}
+    </div>`;
+  }
+  list.innerHTML=html;
+  if(isEditor){
+    if(window._repSecSortable) window._repSecSortable.destroy();
+    window._repSecSortable=new Sortable(list,{handle:'.rep-drag-handle',animation:150,ghostClass:'sortable-ghost',chosenClass:'sortable-chosen',
+      onEnd:async function(){repOrder=Array.from(list.querySelectorAll('[data-id]')).map(c=>c.dataset.id);renderTabsNav();await saveRepOrder();}
+    });
+  }
+}
+
+window.goToRepFromSection=function(repId,songId){
+  window.navTo('songs');
+  switchTab(repId);
+  if(songId) setTimeout(()=>window.openSongView(songId),200);
+};
+
+// ── PROFILE ────────────────────────────────────────────────────────────────
+function renderProfilePage(){
+  const logoutBtn=document.getElementById('profileLogoutBtn');
+  const loginBtn=document.getElementById('profileLoginBtn');
+  const editBtn=document.getElementById('editProfileBtn');
+  const roleEl=document.getElementById('profileRole');
+  if(currentUser){
+    const name=currentUserName||currentUser.email.split('@')[0];
+    document.getElementById('profileName').textContent=name;
+    document.getElementById('profileEmail').textContent=currentUser.email;
+    document.getElementById('profileAvatar').textContent=name[0].toUpperCase();
+    roleEl.textContent=isEditor?'Администратор':'Пользователь';
+    roleEl.style.display='inline-flex';
+    roleEl.style.background=isEditor?'var(--accent)':'var(--muted)';
+    if(logoutBtn)logoutBtn.style.display='block';
+    if(loginBtn)loginBtn.style.display='none';
+    if(editBtn)editBtn.style.display='block';
+  } else {
+    document.getElementById('profileName').textContent='Войдите в аккаунт';
+    document.getElementById('profileEmail').textContent='';
+    document.getElementById('profileAvatar').textContent='?';
+    roleEl.style.display='none';
+    if(logoutBtn)logoutBtn.style.display='none';
+    if(loginBtn)loginBtn.style.display='block';
+    if(editBtn)editBtn.style.display='none';
+    toggleProfileEdit(false);
+  }
+}
+
+window.toggleProfileEdit=function(show){
+  const form=document.getElementById('profileEditForm');
+  const actions=document.getElementById('profileActions');
+  if(form) form.style.display=show?'block':'none';
+  if(actions) actions.style.display=show?'none':'block';
+  if(show&&currentUser){
+    const parts=(currentUserName||'').split(' ');
+    document.getElementById('editFirstName').value=parts[0]||'';
+    document.getElementById('editLastName').value=parts.slice(1).join(' ')||'';
+  }
+};
+
+window.saveProfile=async function(){
+  const firstName=(document.getElementById('editFirstName').value||'').trim();
+  const lastName=(document.getElementById('editLastName').value||'').trim();
+  const errEl=document.getElementById('profileSaveError');
+  errEl.style.display='none';
+  if(!firstName||!lastName){errEl.textContent='Введите имя и фамилию';errEl.style.display='block';return;}
+  try{
+    await setDoc(doc(db,'users',currentUser.uid),{role:userRole||'user',firstName,lastName,email:currentUser.email});
+    currentUserName=firstName+' '+lastName;
+    toggleProfileEdit(false);
+    renderProfilePage();
+    updateSidebarUser();
+    showToast('Профиль сохранён');
+  }catch(e){errEl.textContent='Ошибка сохранения';errEl.style.display='block';}
+};
+
+function updateSidebarUser(){
+  const nameEl=document.getElementById('sidebarUserName');
+  const roleEl=document.getElementById('sidebarUserRole');
+  if(nameEl) nameEl.textContent=currentUser?(currentUserName||currentUser.email.split('@')[0]):'Войти';
+  if(roleEl) roleEl.textContent=currentUser?(isEditor?'Администратор':'Пользователь'):'';
+}
+
 // ── WAKE LOCK ─────────────────────────────────────────────────────────────
 let wakeLock=null;
 async function requestWakeLock(){
@@ -1183,6 +1552,7 @@ function renderSongList(){
           ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
         </div>
         <div class="song-actions" onclick="event.stopPropagation()">
+          ${favBtnHtml(s.id)}
           ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" onclick="openAddToRepModal('${s.id}')" title="В репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmDeleteSong('${s.id}')" title="Удалить песню"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
@@ -1399,7 +1769,7 @@ function renderTabsNav(){
 
 // ── FAB ────────────────────────────────────────────────────────────────────
 window.onFabClick=function(){
-  if(currentTab==='all') openModal('fabSheet');
+  if(currentSection==='repertoires'||currentTab==='all') openModal('fabSheet');
   else openPickSongsModal();
 };
 
@@ -2730,5 +3100,22 @@ loadRepOrder().then(()=>{
 seedIfEmpty();
 </script>
 </div><!-- /app-wrap -->
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-btn active" id="bnSongs" onclick="navTo('songs')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>Песни</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnFav" onclick="navTo('favorites')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Избранное</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnReps" onclick="navTo('repertoires')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Репертуары</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnProfile" onclick="navTo('profile')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span>
+  </button>
+</nav>
+</div><!-- /main-area -->
+</div><!-- /layout -->
 </body>
 </html>
