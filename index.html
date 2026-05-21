@@ -1763,9 +1763,10 @@ document.getElementById('repPageBtn').addEventListener('click',openRepPage);
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
 let currentUserName=''; // cached full name from Firestore
 function canEditRep(repId){
+  const rep=repertoires.find(r=>r.id===repId);
+  console.log('canEditRep', repId, 'isEditor:', isEditor, 'isUser:', isUser, 'uid:', currentUser?.uid, 'rep.authorId:', rep?.authorId, 'rep.authorName:', rep?.authorName);
   if(isEditor) return true;
   if(!isUser||!currentUser) return false;
-  const rep=repertoires.find(r=>r.id===repId);
   if(!rep) return false;
   return rep.authorId===currentUser.uid;
 }
