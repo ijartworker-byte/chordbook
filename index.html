@@ -444,9 +444,9 @@ select.form-input option{background:var(--surface)}
 
   /* Sidebar redesign - VK style */
   .sidebar{
-    width:240px;
-    background:var(--surface);
-    border-right:1px solid var(--border);
+    width:220px;
+    background:transparent;
+    border-right:none;
     position:sticky;top:56px;
     height:calc(100vh - 56px);
     overflow-y:auto;
@@ -468,7 +468,7 @@ select.form-input option{background:var(--surface)}
   .sidebar-btn.active{background:rgba(0,111,185,.1);color:var(--accent)}
   .sidebar-btn.active svg{color:var(--accent)}
   .sidebar-btn span{line-height:1}
-  .sidebar-footer{padding:8px;border-top:1px solid var(--border);margin-top:auto}
+  .sidebar-footer{display:none}
   .sidebar-user-btn{
     width:100%;display:flex;align-items:center;gap:10px;
     padding:10px 14px;border:none;background:none;
@@ -481,8 +481,10 @@ select.form-input option{background:var(--surface)}
   .sidebar-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
 
   /* Content area - reasonable width for 13" MacBook */
-  .app-wrap{max-width:860px;margin:0 auto;box-shadow:none}
+  .app-wrap{max-width:none;margin:0;box-shadow:none}
   .tabs-nav{max-width:none}
+  .layout{max-width:1100px;margin:0 auto}
+  .main-area{min-width:0}
 
   /* Hide tabs on non-songs sections */
 }
@@ -511,15 +513,10 @@ select.form-input option{background:var(--surface)}
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span>
     </button>
   </nav>
-  <div class="sidebar-footer">
-    <button class="sidebar-user-btn" onclick="onAuthBtnClick()" id="sidebarUserBtn">
-      <div class="sidebar-avatar" id="sidebarAvatar">?</div>
-      <div class="sidebar-user">
-        <div class="sidebar-user-name" id="sidebarUserName">Войти</div>
-        <div class="sidebar-user-role" id="sidebarUserRole"></div>
-      </div>
-    </button>
-  </div>
+  <!-- sidebar user info hidden - auth is in header -->
+  <div id="sidebarUserName" style="display:none"></div>
+  <div id="sidebarUserRole" style="display:none"></div>
+  <div id="sidebarAvatar" style="display:none"></div>
 </aside>
 <div class="main-area">
 <div class="site-header">
@@ -996,6 +993,7 @@ const auth=getAuth(app);
 let songs=[];
 let repertoires=[];
 let repOrder=[]; // ordered list of rep ids
+let currentUserName=''; // cached full name from Firestore
 let currentTab='all';
 let currentSongId=null;
 let currentTranspose=0;
@@ -2322,12 +2320,10 @@ document.getElementById('searchToggleBtn').addEventListener('click',()=>{
   if(searchVisible)document.getElementById('searchInput').focus();
   else{document.getElementById('searchInput').value='';renderSongList();}
 });
-document.getElementById('repPageBtn').addEventListener('click',openRepPage);
+const _repPageBtn=document.getElementById('repPageBtn');if(_repPageBtn)_repPageBtn.addEventListener('click',openRepPage);
 
 
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
-let currentUserName=''; // cached full name from Firestore
-
 // ── REP PAGE SORTABLE ─────────────────────────────────────────────────────
 let repSortableInstance=null;
 function initRepSortable(){
