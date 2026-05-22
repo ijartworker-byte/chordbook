@@ -64,18 +64,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .tab-btn.active .tab-author{color:var(--accent);opacity:.7}
 .add-tab-btn{flex-shrink:0;padding:6px 10px;color:var(--muted);border:none;background:#f5f6f7;cursor:pointer;border-radius:8px;display:flex;align-items:center}
 
-.search-wrap{display:none;padding:12px 16px}
+.search-wrap{display:none;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--border)}
 .search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:15px;padding:10px 14px;border-radius:10px;outline:none}
 .search-input::placeholder{color:var(--muted)}
 .search-input:focus{border-color:var(--accent)}
 
-.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:0;z-index:90;background:var(--bg);border-bottom:none}
+.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:52px;z-index:90;background:var(--bg);border-bottom:none}
 .alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:transparent;border:none;color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
 .alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
 .alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
 
 .song-list{padding:8px 16px 100px}.song-list .rep-item-wrap{user-select:none;-webkit-user-select:none}
-.alpha-section{margin-bottom:16px;scroll-margin-top:160px}
+.alpha-section{margin-bottom:16px;scroll-margin-top:100px}
 .alpha-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-left:2px;letter-spacing:1px;text-align:center}
 .song-card{background:#fff;border:none;border-radius:12px;padding:14px 16px;margin-bottom:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
 .song-card:active{background:var(--surface2);transform:scale(.99)}
@@ -557,6 +557,11 @@ select.form-input option{background:var(--surface)}
   </div>
 </header>
 
+<!-- MOBILE SEARCH (shown below header when toggled) -->
+<div class="search-wrap" id="searchWrap">
+  <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
+</div>
+
 <!-- REPERTOIRE HEADER -->
 <header class="rep-header" id="repHeader">
   <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
@@ -586,9 +591,6 @@ select.form-input option{background:var(--surface)}
     <div class="active-rep-label">⚡ АКТУАЛЬНЫЙ РЕПЕРТУАР</div>
     <div class="active-rep-name" id="activeRepName" onclick="goToActiveRep()"></div>
     <div class="active-rep-count" id="activeRepCount"></div>
-  </div>
-  <div class="search-wrap" id="searchWrap">
-    <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
   </div>
   <div class="alpha-nav" id="alphaNav"></div>
   <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
@@ -1605,8 +1607,10 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 function getHeaderHeight(){
+  // Header is position:fixed, so use its actual rendered height
   const sh=document.querySelector('.site-header');
-  return sh?sh.getBoundingClientRect().height:52;
+  if(!sh) return 52;
+  return sh.getBoundingClientRect().height;
 }
 
 let alphaObserver=null;
@@ -1614,31 +1618,43 @@ function initAlphaObserver(){
   const alphaNav=document.getElementById('alphaNav');
   if(!alphaNav) return;
 
-  // Set sticky top = full header height
-  const hh=getHeaderHeight();
+  // Stick alpha-nav right below fixed header
+  // Get total fixed header height (site-header + searchWrap if visible)
+  const sh=document.querySelector('.site-header');
+  const sw=document.getElementById('searchWrap');
+  const hh=(sh?sh.getBoundingClientRect().height:52) +
+           (sw&&sw.style.display!==''&&sw.style.display!=='none' ? sw.getBoundingClientRect().height : 0);
   alphaNav.style.top=hh+'px';
+  // Also update scroll-margin-top on sections
+  const alphaH=alphaNav.offsetHeight||36;
+  document.querySelectorAll('.alpha-section').forEach(s=>{
+    s.style.scrollMarginTop=(hh+alphaH+4)+'px';
+  });
 
   if(alphaObserver) alphaObserver.disconnect();
   const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
   if(!sections.length) return;
 
-  // Use rootMargin to account for header + alpha-nav height
-  const alphaH=alphaNav.getBoundingClientRect().height||36;
-  const rootTop=-(hh+alphaH+4);
-
   alphaObserver=new IntersectionObserver((entries)=>{
-    // Find the section closest to top of visible area
     let best=null;let bestY=Infinity;
     entries.forEach(e=>{
       const y=e.boundingClientRect.top;
-      if(y<=hh+alphaH+10&&Math.abs(y)<bestY){bestY=Math.abs(y);best=e.target;}
+      if(y>=0&&y<bestY){bestY=y;best=e.target;}
     });
-    if(!best) return;
-    const letter=best.id.replace('alpha-','');
-    document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
-      b.classList.toggle('current',b.textContent.trim()===letter);
-    });
-  },{threshold:[0,0.1,0.5,1],rootMargin:`${rootTop}px 0px -40% 0px`});
+    // If nothing visible from top, find closest to top
+    if(!best){
+      entries.forEach(e=>{
+        const y=Math.abs(e.boundingClientRect.top);
+        if(y<bestY){bestY=y;best=e.target;}
+      });
+    }
+    if(best){
+      const letter=best.id.replace('alpha-','');
+      document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
+        b.classList.toggle('current',b.textContent.trim()===letter);
+      });
+    }
+  },{threshold:0,rootMargin:`-${hh+alphaH+2}px 0px -50% 0px`});
 
   sections.forEach(s=>alphaObserver.observe(s));
 }
@@ -2413,9 +2429,15 @@ document.getElementById('searchToggleBtn').addEventListener('click',()=>{
   if(currentTab!=='all')return;
   searchVisible=!searchVisible;
   const w=document.getElementById('searchWrap');
-  w.style.display=searchVisible?'':'none';
-  if(searchVisible)document.getElementById('searchInput').focus();
-  else{document.getElementById('searchInput').value='';renderSongList();}
+  w.style.display=searchVisible?'block':'none';
+  if(searchVisible){
+    document.getElementById('searchInput').focus();
+  } else {
+    document.getElementById('searchInput').value='';
+    renderSongList();
+  }
+  // Re-init alpha observer with new header height
+  requestAnimationFrame(()=>initAlphaObserver());
 });
 const _repPageBtn=document.getElementById('repPageBtn');if(_repPageBtn)_repPageBtn.addEventListener('click',openRepPage);
 
