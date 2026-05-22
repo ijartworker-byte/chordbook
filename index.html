@@ -991,6 +991,7 @@ const auth=getAuth(app);
 let songs=[];
 let repertoires=[];
 let repOrder=[]; // ordered list of rep ids
+let currentUserName=''; // cached full name from Firestore
 let currentTab='all';
 let currentSongId=null;
 let currentTranspose=0;
@@ -2079,12 +2080,10 @@ document.getElementById('searchToggleBtn').addEventListener('click',()=>{
   if(searchVisible)document.getElementById('searchInput').focus();
   else{document.getElementById('searchInput').value='';renderSongList();}
 });
-document.getElementById('repPageBtn').addEventListener('click',openRepPage);
+const _rpb=document.getElementById('repPageBtn');if(_rpb)_rpb.addEventListener('click',openRepPage);
 
 
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
-let currentUserName=''; // cached full name from Firestore
-
 // ── REP PAGE SORTABLE ─────────────────────────────────────────────────────
 let repSortableInstance=null;
 function initRepSortable(){
