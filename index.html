@@ -48,10 +48,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .icon-btn:active{background:var(--surface2);transform:scale(.95)}
 
 /* editor badge */
-.editor-badge{font-family:var(--font-head);font-size:12px;color:#fff;background:var(--accent);padding:0 14px;border-radius:20px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
+.editor-badge{font-family:var(--font-head);font-size:12px;color:#fff;background:var(--accent);padding:0 14px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
 .editor-badge:active{opacity:.8}
-.login-btn{font-family:var(--font-head);font-size:12px;color:var(--accent);border:1.5px solid var(--accent);background:none;padding:0 14px;border-radius:20px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
-.login-btn:active{background:rgba(0,111,185,.05)}
+.login-btn{font-family:var(--font-head);font-size:12px;color:#fff;background:var(--accent);border:none;padding:0 14px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
+.login-btn:active{opacity:.85}
 
 .rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s}
@@ -418,33 +418,47 @@ select.form-input option{background:var(--surface)}
   }
   .app-header{
     width:100%;
-    padding:0 24px;
+    padding:0;
     height:52px;
-    gap:16px;
+    gap:0;
     display:flex;
     align-items:center;
+    max-width:none;
+    margin:0;
   }
+  /* Inner header content aligned to content area */
+  .app-header-inner{
+    display:flex;
+    align-items:center;
+    width:100%;
+    max-width:1020px; /* sidebar 200px + content 820px */
+    margin:0 auto;
+    padding:0 24px;
+    gap:12px;
+  }
+  .app-header-inner .app-logo{flex-shrink:0}
+  .app-header-inner .desktop-search{flex:1}
+  .app-header-inner .hdr-btns{flex-shrink:0;margin-left:0}
 
   /* Desktop search - big centered */
   .desktop-search{
     display:flex;align-items:center;gap:10px;
-    flex:1;max-width:600px;margin:0 auto;
-    background:#fff;
-    border:1px solid #e0e0e0;
-    border-radius:20px;
-    padding:0 16px;
-    height:38px;
-    transition:box-shadow .15s;
-    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    flex:1;
+    background:#edeef0;
+    border:none;
+    border-radius:8px;
+    padding:0 14px;
+    height:36px;
+    transition:background .15s;
   }
-  .desktop-search:focus-within{box-shadow:0 0 0 2px rgba(0,111,185,.2);border-color:var(--accent)}
+  .desktop-search:focus-within{background:#e4e5e8}
   .desktop-search svg{color:var(--muted);flex-shrink:0}
   .desktop-search-input{border:none;background:none;color:var(--text);font-family:var(--font-head);font-size:13px;outline:none;width:100%;padding:0}
   .desktop-search-input::placeholder{color:var(--muted)}
 
   /* Auth button right-aligned */
   .hdr-btns{margin-left:auto;gap:6px}
-  .hdr-btns .icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+
 
   /* Sidebar redesign - VK style */
   .sidebar{
@@ -525,16 +539,18 @@ select.form-input option{background:var(--surface)}
 <div class="site-header">
 <!-- MAIN HEADER -->
 <header class="app-header" id="mainHeader">
-  <!-- Logo (always visible) -->
-  <div class="app-logo"><img src="https://ijartworker-byte.github.io/chordbook/logo.png" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px" onerror="this.style.display='none'">Chord<span>Book</span></div>
-  <!-- Desktop search bar (center) -->
-  <div class="desktop-search mobile-hide">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input class="desktop-search-input" id="desktopSearchInput" placeholder="Поиск по названию или автору…" oninput="onDesktopSearch(this.value)">
-  </div>
-  <div class="hdr-btns">
-    <button class="icon-btn mobile-only" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-    <button class="login-btn mobile-hide" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
+  <div class="app-header-inner">
+    <!-- Logo -->
+    <div class="app-logo"><img src="https://ijartworker-byte.github.io/chordbook/logo.png" alt="logo" style="width:28px;height:28px;margin-right:6px;vertical-align:middle;border-radius:6px" onerror="this.style.display='none'">Chord<span>Book</span></div>
+    <!-- Desktop search bar (center) -->
+    <div class="desktop-search mobile-hide">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="desktop-search-input" id="desktopSearchInput" placeholder="Поиск по названию или автору…" oninput="onDesktopSearch(this.value)">
+    </div>
+    <div class="hdr-btns">
+      <button class="icon-btn mobile-only" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+      <button class="login-btn mobile-hide" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
+    </div>
   </div>
 </header>
 
@@ -893,7 +909,7 @@ select.form-input option{background:var(--surface)}
     <div class="modal-handle"></div>
     <div class="modal-title">Добавить песни в репертуар</div>
     <input class="pick-search" id="pickSearch" placeholder="Поиск…" oninput="renderPickList()">
-    <div class="alpha-nav" id="pickAlphaNav" style="padding:4px 0;border-bottom:1px solid var(--border);margin:0 -20px;padding-left:16px"></div>
+    <div class="alpha-nav" id="pickAlphaNav" style="position:sticky;top:0;z-index:10;background:var(--surface);margin:0 -20px;padding:4px 16px;border-bottom:1px solid var(--border)"></div>
     <div id="pickSongList" class="pick-song-list-scroll"></div>
     <div class="pick-modal-btns">
       <button class="btn btn-secondary" onclick="closeModal('pickSongsModal')">Отмена</button>
@@ -1583,36 +1599,72 @@ document.addEventListener('visibilitychange',()=>{
     requestWakeLock();
   }
 });
+function getHeaderHeight(){
+  const sh=document.querySelector('.site-header');
+  return sh?sh.getBoundingClientRect().height:52;
+}
+
 let alphaObserver=null;
 function initAlphaObserver(){
   const alphaNav=document.getElementById('alphaNav');
-  if(alphaNav){
-    // Calculate total sticky height: site-header + tabs-nav
-    const siteHeader=document.querySelector('.site-header');
-    const tabsNav=document.getElementById('tabsNav');
-    const headerH=siteHeader?siteHeader.getBoundingClientRect().height:0;
-    const tabsH=(tabsNav&&tabsNav.style.display!=='none')?tabsNav.getBoundingClientRect().height:0;
-    alphaNav.style.top=(headerH+tabsH)+'px';
-  }
+  if(!alphaNav) return;
+
+  // Set sticky top = full header height
+  const hh=getHeaderHeight();
+  alphaNav.style.top=hh+'px';
+
   if(alphaObserver) alphaObserver.disconnect();
   const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
   if(!sections.length) return;
+
+  // Use rootMargin to account for header + alpha-nav height
+  const alphaH=alphaNav.getBoundingClientRect().height||36;
+  const rootTop=-(hh+alphaH+4);
+
   alphaObserver=new IntersectionObserver((entries)=>{
-    let topmost=null;let topmostY=Infinity;
+    // Find the section closest to top of visible area
+    let best=null;let bestY=Infinity;
     entries.forEach(e=>{
-      if(e.isIntersecting){
-        const y=e.boundingClientRect.top;
-        if(y<topmostY){topmostY=y;topmost=e.target;}
-      }
+      const y=e.boundingClientRect.top;
+      if(y<=hh+alphaH+10&&Math.abs(y)<bestY){bestY=Math.abs(y);best=e.target;}
     });
-    if(topmost){
-      const letter=topmost.id.replace('alpha-','');
-      document.querySelectorAll('.alpha-btn').forEach(b=>{
-        b.classList.toggle('current',b.textContent===letter);
-      });
-    }
-  },{threshold:0,rootMargin:'-60px 0px -60% 0px'});
+    if(!best) return;
+    const letter=best.id.replace('alpha-','');
+    document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
+      b.classList.toggle('current',b.textContent.trim()===letter);
+    });
+  },{threshold:[0,0.1,0.5,1],rootMargin:`${rootTop}px 0px -40% 0px`});
+
   sections.forEach(s=>alphaObserver.observe(s));
+}
+
+// ── PICK LIST ALPHA OBSERVER ───────────────────────────────────────────────
+let pickAlphaObserver=null;
+function initPickAlphaObserver(){
+  const nav=document.getElementById('pickAlphaNav');
+  const list=document.getElementById('pickSongList');
+  if(!nav||!list) return;
+
+  if(pickAlphaObserver) pickAlphaObserver.disconnect();
+  const sections=list.querySelectorAll('.pick-alpha-section[id^="pick-alpha-"]');
+  if(!sections.length) return;
+
+  pickAlphaObserver=new IntersectionObserver((entries)=>{
+    let best=null;let bestY=Infinity;
+    entries.forEach(e=>{
+      const y=e.boundingClientRect.top;
+      if(y>=0&&y<bestY){bestY=y;best=e.target;}
+    });
+    if(!best&&entries.length) best=entries.reduce((a,b)=>
+      Math.abs(a.boundingClientRect.top)<Math.abs(b.boundingClientRect.top)?a:b).target;
+    if(!best) return;
+    const letter=best.id.replace('pick-alpha-','');
+    nav.querySelectorAll('.alpha-btn').forEach(b=>{
+      b.classList.toggle('current',b.textContent.trim()===letter);
+    });
+  },{root:list,threshold:0,rootMargin:'0px 0px -70% 0px'});
+
+  sections.forEach(s=>pickAlphaObserver.observe(s));
 }
 
 // ── SONG LIST ──────────────────────────────────────────────────────────────
@@ -2096,6 +2148,7 @@ window.renderPickList=function(){
         </div>`;
       }).join('')}
     </div>`).join('');
+  requestAnimationFrame(()=>initPickAlphaObserver());
 };
 
 window.scrollPickToLetter=function(l){
