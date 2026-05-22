@@ -554,7 +554,6 @@ select.form-input option{background:var(--surface)}
   <div class="search-wrap" id="searchWrap" style="display:none">
     <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
   </div>
-  <!-- REPERTOIRE HEADER -->
 <header class="rep-header" id="repHeader" style="display:none">
   <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
   <div class="rep-header-title" id="repHeaderTitle" onclick="openEditRepName()" title="Нажмите чтобы переименовать"></div>
@@ -599,22 +598,17 @@ select.form-input option{background:var(--surface)}
     <!-- ТАБЫ -->
     <div class="tabs-wrap" id="tabsWrap">
       <div class="tabs-nav" id="tabsNav">
-  <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">Все песни</button>
-  <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-</div>
+        <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">Все песни</button>
+        <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      </div>
     </div>
-    <div id="mainContent">
-  <div id="activeRepBlock" style="display:none" class="active-rep-block">
-    <div class="active-rep-label">⚡ АКТУАЛЬНЫЙ РЕПЕРТУАР</div>
-    <div class="active-rep-name" id="activeRepName" onclick="goToActiveRep()"></div>
-    <div class="active-rep-count" id="activeRepCount"></div>
-  </div>
-  <div class="search-wrap" id="searchWrap" style="display:none">
-    <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
-  </div>
-  <div class="alpha-nav" id="alphaNav"></div>
-  <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
-</div>
+    <div id="activeRepBlock" style="display:none" class="active-rep-block">
+      <div class="active-rep-label">⚡ АКТУАЛЬНЫЙ РЕПЕРТУАР</div>
+      <div class="active-rep-name" id="activeRepName" onclick="goToActiveRep()"></div>
+      <div class="active-rep-count" id="activeRepCount"></div>
+    </div>
+    <div class="alpha-nav" id="alphaNav"></div>
+    <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
   </main>
 
 </div><!-- /layout -->
@@ -1463,7 +1457,7 @@ window.openSongView=function(id){
   document.getElementById('songView').style.display='block';
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
-  document.getElementById('tabsNav').style.display='none';
+  document.getElementById('tabsWrap').style.display='none';
   document.getElementById('repAddSongsBtn').style.display='none';
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
   window.scrollTo(0,0);
@@ -1572,7 +1566,7 @@ window.closeSongView=function(){
   currentSongId=null;
   document.getElementById('songView').style.display='none';
   document.getElementById('songNavBar').style.display='none';
-  document.getElementById('tabsNav').style.display='flex';
+  document.getElementById('tabsWrap').style.display='';
   document.getElementById('mainContent').style.display='';
   if(isUser)document.getElementById('fabBtn').style.display='';
   document.getElementById('repActiveLabel').style.display='';
@@ -1614,7 +1608,7 @@ window.switchTab=function(id){
   document.getElementById('mainContent').style.display='';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='none';
-  document.getElementById('tabsNav').style.display='flex';
+  document.getElementById('tabsWrap').style.display='';
   if(isUser)document.getElementById('fabBtn').style.display='';
   // Auto-fix: if user opens a rep without authorId and they created it - claim it
   if(id!=='all'&&isUser&&currentUser){
@@ -1947,7 +1941,7 @@ window.openRepPage=function(){
   document.getElementById('mainContent').style.display='none';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='block';
-  document.getElementById('tabsNav').style.display='none';
+  document.getElementById('tabsWrap').style.display='none';
   document.getElementById('mainHeader').style.display='none';
   document.getElementById('repHeader').style.display='none';
   document.getElementById('fabBtn').style.display='none';
@@ -1956,7 +1950,7 @@ window.openRepPage=function(){
 };
 window.closeRepPage=function(){
   document.getElementById('repPage').style.display='none';
-  document.getElementById('tabsNav').style.display='flex';
+  document.getElementById('tabsWrap').style.display='';
   if(isUser)document.getElementById('fabBtn').style.display='';
   switchTab(currentTab);
 };
@@ -2047,7 +2041,7 @@ window.openSongFromRep=function(songId,repId){
   document.getElementById('songView').style.display='block';
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
-  document.getElementById('tabsNav').style.display='none';
+  document.getElementById('tabsWrap').style.display='none';
   document.getElementById('repAddSongsBtn').style.display='none';
   document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
   document.getElementById('repActiveLabel').style.display='none';
