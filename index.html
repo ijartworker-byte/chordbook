@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
   .site-header{box-shadow:0 1px 8px rgba(0,0,0,.08)}
 }
 
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
+
 .app-logo{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;display:flex;align-items:center}
 
 .app-logo span{color:var(--text)}
@@ -398,8 +398,9 @@ select.form-input option{background:var(--surface)}
 @media(max-width:767px){.mobile-hide{display:none!important}}
 
 /* App header base */
-.app-header{display:flex;align-items:center;padding:0 16px;height:52px;gap:12px;background:var(--surface);border-bottom:1px solid var(--border)}
-.hdr-btns{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.app-header{display:flex;align-items:center;padding:0;height:52px;background:var(--surface);border-bottom:1px solid var(--border)}
+.app-header-inner{display:flex;align-items:center;width:100%;padding:0 12px;gap:10px;flex-wrap:nowrap}
+.hdr-btns{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:auto}
 
 /* Bottom nav - bigger safe area */
 .bottom-nav{padding-bottom:max(env(safe-area-inset-bottom),16px)!important;height:auto!important;min-height:56px}
