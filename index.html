@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>ChordBook</title>
@@ -12,7 +12,225 @@
 <meta name="theme-color" content="#006fb9">
 <link rel="apple-touch-icon" sizes="512x512" href="https://ijartworker-byte.github.io/chordbook/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+
+
 <style>
+
+/* ── ПЕРЕМЕННЫЕ ─────────────────────────────────────────────── */
+:root{
+  --accent:#006fb9;
+  --bg:#edeef0;
+  --surface:#fff;
+  --border:#e0e1e3;
+  --text:#1a1a1a;
+  --muted:#8a8f98;
+  --font-head:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-head);
+  min-height:100vh;
+}
+
+/* ── ШАПКА — 100% ширины, sticky ────────────────────────────── */
+.site-header{
+  position:sticky;
+  top:0;
+  left:0;
+  width:100%;
+  height:52px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  z-index:200;
+  display:flex;
+  align-items:center;
+}
+/* Внутри шапки — контейнер той же ширины что и layout */
+.header-inner{
+  width:100%;
+  max-width:1020px;
+  margin:0 auto;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo{
+  font-weight:700;
+  font-size:16px;
+  color:var(--accent);
+  flex-shrink:0;
+  /* На десктопе ширина = сайдбар минус gap */
+  width:148px;
+}
+.header-search{
+  flex:1;
+  background:var(--bg);
+  border:none;
+  border-radius:8px;
+  padding:8px 12px;
+  font-family:var(--font-head);
+  font-size:13px;
+  color:var(--text);
+  outline:none;
+}
+.header-btn{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:8px 16px;
+  font-family:var(--font-head);
+  font-size:13px;
+  cursor:pointer;
+  flex-shrink:0;
+  margin-left:12px;
+}
+
+/* ── LAYOUT — центрированный блок: сайдбар + контент ────────── */
+.layout{
+  max-width:1020px;
+  margin:0 auto;
+  display:flex;
+  min-height:calc(100vh - 52px);
+}
+
+/* ── САЙДБАР — только десктоп ───────────────────────────────── */
+.sidebar{
+  display:none; /* скрыт на мобильном */
+}
+
+/* ── ОСНОВНОЙ КОНТЕНТ ───────────────────────────────────────── */
+.main-content{
+  flex:1;
+  min-width:0;
+  /* Без padding — иначе sticky табы не прилипают к краю */
+  padding-bottom:calc(56px + env(safe-area-inset-bottom, 16px) + 16px);
+}
+/* Внутренний padding для карточек */
+.content-inner{
+  padding:12px 16px;
+}
+
+/* ── НИЖНЕЕ МЕНЮ — только мобильный, 100% ширины ───────────── */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:200;
+  padding-bottom:env(safe-area-inset-bottom, 16px);
+}
+.bottom-nav-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  border:none;
+  background:none;
+  color:var(--muted);
+  font-family:var(--font-head);
+  font-size:10px;
+  cursor:pointer;
+  padding:10px 0 8px;
+}
+.bottom-nav-btn.active{color:var(--accent)}
+
+/* ── ТАБЫ — sticky внутри main-content ──────────────────────── */
+.tabs-wrap{
+  position:sticky;
+  top:52px;
+  z-index:100;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+.tabs-nav{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px 8px 16px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tabs-nav::-webkit-scrollbar{display:none}
+.tab-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:6px 14px;
+  min-height:44px;
+  border:none;
+  background:var(--surface);
+  border-radius:8px;
+  cursor:pointer;
+  font-family:var(--font-head);
+  font-size:13px;
+  font-weight:500;
+  color:var(--muted);
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.tab-btn.active{color:var(--accent);font-weight:700;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-author{font-size:10px;color:var(--muted);font-weight:400;margin-top:1px}
+.tab-btn.active .tab-author{color:var(--accent);opacity:.7}
+.add-tab-btn{font-size:18px;padding:4px 12px;color:var(--muted)}
+@media(min-width:768px){
+  /* Шапка та же — sticky, 100% */
+  .header-search-wrap{display:flex} /* показываем поиск */
+
+  /* Сайдбар появляется */
+  .sidebar{
+    display:flex;
+    flex-direction:column;
+    width:160px;
+    flex-shrink:0;
+    padding:8px;
+    /* Прилипает ниже шапки */
+    position:sticky;
+    top:52px;
+    height:calc(100vh - 52px);
+    overflow-y:auto;
+  }
+  .sidebar-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 12px;
+    min-height:44px;
+    border:none;
+    background:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:var(--font-head);
+    font-size:14px;
+    color:var(--muted);
+    width:100%;
+    text-align:left;
+  }
+  .sidebar-btn:hover{background:rgba(0,0,0,.04)}
+  .sidebar-btn.active{color:var(--accent);font-weight:600}
+
+  /* Нижнее меню скрыто */
+  .bottom-nav{display:none}
+
+  /* Контент без отступа снизу */
+  .main-content{padding-bottom:0}
+  .content-inner{padding:12px 16px}
+
+  /* Поиск в шапке виден */
+  .mobile-search-btn{display:none}
+}
+
+/* ── CHORDBOOK COMPONENTS ── */
+
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#edeef0;--surface:#ffffff;--surface2:#eef1f5;--border:#d8dde6;
@@ -20,7 +238,7 @@
   --font-head:'Inter',sans-serif;--font-mono:'Roboto Condensed',sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
-.site-header{background:var(--surface);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+
 .site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static;max-width:1200px;margin:0 auto}
 .app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
 @media(min-width:1200px){
@@ -31,13 +249,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
   .modal-overlay .modal:not(.song-modal-desktop){max-width:480px;border-radius:20px 20px 0 0}
   .modal-overlay{align-items:flex-end}
   .confirm-overlay .confirm-box{max-width:400px}
-  .alpha-nav{background:#edeef0;border-bottom:none}
-  .site-header{box-shadow:0 1px 8px rgba(0,0,0,.08)}
+  
+  
 }
 
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
-.app-logo{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;display:flex;align-items:center}
-.app-logo span{color:var(--text)}
+
+
+
 .hdr-btns{display:flex;gap:8px;align-items:center}
 .icon-btn{background:none;border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .icon-btn svg{display:block;flex-shrink:0}
@@ -317,21 +535,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .toast.show{opacity:1}
 
 select.form-input option{background:var(--surface)}
+
 </style>
 </head>
 <body>
-<div class="site-header">
-<!-- DEFAULT HEADER -->
-<header class="app-header" id="mainHeader">
-  <div class="app-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
-  <div class="hdr-btns">
-    <button class="icon-btn" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-    <button class="icon-btn" id="repPageBtn" title="Репертуары"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
-    <button class="login-btn" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
-  </div>
-</header>
 
-<!-- REPERTOIRE HEADER -->
+<!-- ═══ ШАПКА ═══ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
+    <input class="header-search" placeholder="Поиск по названию или автору…" id="desktopSearchInput" oninput="onDesktopSearch(this.value)" style="display:none">
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+      <button class="icon-btn" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+      <button class="login-btn" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
+    </div>
+  </div>
+  <!-- Mobile search -->
+  <div class="search-wrap" id="searchWrap" style="display:none">
+    <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
+  </div>
+  <!-- REPERTOIRE HEADER -->
 <header class="rep-header" id="repHeader" style="display:none">
   <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
   <div class="rep-header-title" id="repHeaderTitle" onclick="openEditRepName()" title="Нажмите чтобы переименовать"></div>
@@ -344,18 +567,43 @@ select.form-input option{background:var(--surface)}
     <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
   </div>
 </header>
+</header>
 
-</div><!-- /site-header -->
+<!-- ═══ LAYOUT ═══ -->
+<div class="layout" id="mainLayout">
 
-<div class="app-wrap">
-<!-- TABS -->
-<div class="tabs-nav" id="tabsNav">
+  <!-- САЙДБАР -->
+  <aside class="sidebar" id="sidebar">
+    <nav style="padding:8px">
+      <button class="sidebar-btn active" id="sideNavSongs" onclick="navTo('songs')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Все песни
+      </button>
+      <button class="sidebar-btn" id="sideNavFav" onclick="navTo('favorites')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Избранное
+      </button>
+      <button class="sidebar-btn" id="sideNavReps" onclick="navTo('repertoires')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Репертуары
+      </button>
+      <button class="sidebar-btn" id="sideNavProfile" onclick="navTo('profile')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Профиль
+      </button>
+    </nav>
+  </aside>
+
+  <!-- ОСНОВНОЙ КОНТЕНТ -->
+  <main class="main-content" id="mainContent">
+    <!-- ТАБЫ -->
+    <div class="tabs-wrap" id="tabsWrap">
+      <div class="tabs-nav" id="tabsNav">
   <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">Все песни</button>
   <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 </div>
-
-<!-- MAIN CONTENT -->
-<div id="mainContent">
+    </div>
+    <div id="mainContent">
   <div id="activeRepBlock" style="display:none" class="active-rep-block">
     <div class="active-rep-label">⚡ АКТУАЛЬНЫЙ РЕПЕРТУАР</div>
     <div class="active-rep-name" id="activeRepName" onclick="goToActiveRep()"></div>
@@ -367,6 +615,9 @@ select.form-input option{background:var(--surface)}
   <div class="alpha-nav" id="alphaNav"></div>
   <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
 </div>
+  </main>
+
+</div><!-- /layout -->
 
 <!-- SONG VIEW -->
 <div class="song-view" id="songView">
@@ -407,6 +658,7 @@ select.form-input option{background:var(--surface)}
   <div class="lyrics-block" id="viewLyrics"></div>
 </div>
 
+
 <!-- REPERTOIRES PAGE -->
 <div class="rep-page" id="repPage">
   <button class="back-btn" onclick="closeRepPage()">← Назад</button>
@@ -414,6 +666,7 @@ select.form-input option{background:var(--surface)}
   <div class="rep-page-sub">Все созданные сборники</div>
   <div id="repPageList"></div>
 </div>
+
 
 <!-- NAV BAR -->
 <div class="song-nav-bar" id="songNavBar" style="display:none">
@@ -2729,6 +2982,27 @@ loadRepOrder().then(()=>{
 });
 seedIfEmpty();
 </script>
-</div><!-- /app-wrap -->
+
+
+<!-- ═══ НИЖНЕЕ МЕНЮ ═══ -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-btn active" id="bnSongs" onclick="navTo('songs')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <span>Песни</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnFav" onclick="navTo('favorites')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <span>Избранное</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnReps" onclick="navTo('repertoires')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+    <span>Репертуары</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnProfile" onclick="navTo('profile')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Профиль</span>
+  </button>
+</nav>
+
 </body>
 </html>
