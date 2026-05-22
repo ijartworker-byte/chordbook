@@ -20,34 +20,34 @@
   --font-head:'Inter',sans-serif;--font-mono:'Roboto Condensed',sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
-.main-area{min-width:0;flex:1;overflow-x:hidden}
-
-.app-wrap{position:relative;min-height:100vh;overflow-x:hidden}
-@media(max-width:767px){}
+.site-header{background:var(--surface);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+.site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static;max-width:1200px;margin:0 auto}
+.app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
 @media(min-width:1200px){
   body{background:#edeef0}
-  
-
+  .fab{right:calc(50% - 600px + 20px)}
+  .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px);background:#fff}
   .toast{bottom:90px}
   .modal-overlay .modal:not(.song-modal-desktop){max-width:480px;border-radius:20px 20px 0 0}
+  .modal-overlay{align-items:flex-end}
   .confirm-overlay .confirm-box{max-width:400px}
-
-  
+  .alpha-nav{background:#edeef0;border-bottom:none}
+  .site-header{box-shadow:0 1px 8px rgba(0,0,0,.08)}
 }
 
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .app-logo{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;display:flex;align-items:center}
-
 .app-logo span{color:var(--text)}
-
+.hdr-btns{display:flex;gap:8px;align-items:center}
 .icon-btn{background:none;border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .icon-btn svg{display:block;flex-shrink:0}
 .icon-btn:active{background:var(--surface2);transform:scale(.95)}
 
-
-.editor-badge{font-family:var(--font-head);font-size:12px;color:#fff;background:var(--accent);padding:0 14px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
+/* editor badge */
+.editor-badge{font-family:var(--font-head);font-size:11px;color:#fff;background:var(--accent);padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px;border:none}
 .editor-badge:active{opacity:.8}
-.login-btn{font-family:var(--font-head);font-size:12px;color:#fff;background:var(--accent);border:none;padding:0 14px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
-.login-btn:active{opacity:.85}
+.login-btn{font-family:var(--font-head);font-size:11px;color:var(--muted);border:1px solid var(--border);background:none;padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
+.login-btn:active{background:var(--surface2)}
 
 .rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
 .rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s}
@@ -64,18 +64,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .tab-btn.active .tab-author{color:var(--accent);opacity:.7}
 .add-tab-btn{flex-shrink:0;padding:6px 10px;color:var(--muted);border:none;background:#f5f6f7;cursor:pointer;border-radius:8px;display:flex;align-items:center}
 
-.search-wrap{display:none;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--border)}
+.search-wrap{padding:12px 16px}
 .search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:15px;padding:10px 14px;border-radius:10px;outline:none}
 .search-input::placeholder{color:var(--muted)}
 .search-input:focus{border-color:var(--accent)}
 
-.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:52px;z-index:90;background:var(--bg);border-bottom:none}
+.alpha-nav{padding:6px 16px;display:flex;flex-wrap:wrap;gap:4px;position:sticky;top:0;z-index:90;background:var(--bg);border-bottom:none}
 .alpha-btn{padding:4px 9px;font-family:var(--font-head);font-size:11px;background:transparent;border:none;color:var(--muted);border-radius:5px;cursor:pointer;transition:all .15s}
 .alpha-btn:active{background:var(--accent);border-color:var(--accent);color:#fff}
 .alpha-btn.current{background:var(--accent);border-color:var(--accent);color:#fff}
 
 .song-list{padding:8px 16px 100px}.song-list .rep-item-wrap{user-select:none;-webkit-user-select:none}
-.alpha-section{margin-bottom:16px;scroll-margin-top:100px}
+.alpha-section{margin-bottom:16px;scroll-margin-top:160px}
 .alpha-label{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-left:2px;letter-spacing:1px;text-align:center}
 .song-card{background:#fff;border:none;border-radius:12px;padding:14px 16px;margin-bottom:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between}
 .song-card:active{background:var(--surface2);transform:scale(.99)}
@@ -155,7 +155,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .lyrics-preview .section-label{display:block;font-family:var(--font-head);font-size:10px;color:var(--accent);letter-spacing:2px;margin:10px 0 4px;font-weight:700}
 .lyrics-preview .lyrics-gap{height:6px;display:block}
 
-
+/* Desktop song modal: 3-column layout */
 @media (min-width: 768px){
   .modal-overlay#addSongModal{align-items:center}
   .modal-overlay#addSongModal .modal.song-modal-desktop{
@@ -201,6 +201,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
     min-height:200px;
   }
   .song-modal-btns{display:flex;gap:10px;padding:16px 0 20px;flex-shrink:0;border-top:1px solid var(--border);margin-top:12px}
+  .song-modal-btns .btn{flex:1}
   #previewGroup{display:none!important}
   .song-col-preview{display:flex!important;flex-direction:column}
   .lyrics-preview-side{flex:1;overflow-y:auto;font-family:var(--font-mono);font-size:13px}
@@ -208,12 +209,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
   .lyrics-preview-side .lyric-row{font-size:13px}
 }
 @media (max-width: 767px){
-  .modal-overlay#addSongModal .modal.song-modal-desktop{width:100%;max-width:100%;border-radius:20px 20px 0 0}
   .song-modal-body{display:block}
   .song-col-preview{display:none!important}
   .song-textarea{min-height:160px}
-  
-  
+  .song-col-title{font-family:var(--font-head);font-size:13px;font-weight:700;margin-bottom:12px}
+  .song-modal-btns{display:flex;gap:10px;margin-top:20px;padding-bottom:20px}
+  .song-modal-btns .btn{flex:1}
 }
 .btn-row{display:flex;gap:10px;margin-top:20px}
 .btn{flex:1;padding:12px;border-radius:10px;font-family:var(--font-head);font-size:13px;cursor:pointer;border:none;transition:all .15s}
@@ -245,7 +246,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .confirm-text{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:22px}
 .confirm-name{color:var(--accent2)}
 
-.fab{position:fixed;bottom:72px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
+.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
 .fab svg{display:block}
 .fab:active{transform:scale(.93)}
 
@@ -255,7 +256,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .fab-action-icon{width:44px;height:44px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
 .fab-action-title{font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
 .fab-action-sub{font-size:12px;color:var(--muted)}
-
+.fab:active{transform:scale(.93)}
 
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-icon{font-size:48px;margin-bottom:16px;opacity:.3}
@@ -287,7 +288,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .active-rep-name:active{color:var(--accent)}
 .active-rep-count{font-size:13px;color:var(--muted);margin-top:2px}
 
-
+/* Inline repertoire cards on main page */
 .rep-inline-section{padding:12px 16px 0}
 .rep-inline-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
 .rep-inline-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border)}
@@ -306,264 +307,32 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .rep-inline-more{padding:8px 16px 12px;font-family:var(--font-head);font-size:11px;color:var(--accent);cursor:pointer;text-align:center;border-top:1px solid var(--border)}
 .rep-inline-more:active{background:var(--surface2)}
 
-
+/* loading */
 .loading{display:flex;align-items:center;justify-content:center;padding:60px 20px;gap:12px;color:var(--muted);font-size:12px}
 .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-
-
+/* error toast */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--accent2);color:#fff;font-family:var(--font-head);font-size:11px;padding:10px 18px;border-radius:10px;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
 
 select.form-input option{background:var(--surface)}
-
-
-.layout{display:flex;min-height:100vh;overflow-x:hidden;padding-top:52px}
-.sidebar{display:none}
-
-
-.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
-.bottom-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--muted);cursor:pointer;font-family:var(--font-head);font-size:9px;padding:6px 0;transition:color .15s}
-.bottom-nav-btn.active{color:var(--accent)}
-.bottom-nav-btn svg{flex-shrink:0}
-.bottom-nav-btn span{line-height:1}
-
-
-@media(min-width:768px){
-  .bottom-nav{display:none}
-
-  .sidebar{
-    display:flex;flex-direction:column;
-    width:220px;flex-shrink:0;
-    background:var(--surface);
-    border-right:1px solid var(--border);
-    position:sticky;top:0;height:100vh;
-    overflow-y:auto;
-    z-index:99;
-  }
-  
-  .sidebar-logo img{width:32px;height:32px;border-radius:8px}
-  .sidebar-logo-text{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--text)}
-  
-  .sidebar-btn{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border:none;background:none;border-radius:10px;cursor:pointer;font-family:var(--font-head);font-size:13px;color:var(--muted);transition:all .15s;text-align:left}
-
-  .sidebar-btn.active{background:var(--accent);color:#fff}
-
-  
-  
-  .sidebar-user:hover{background:var(--surface2)}
-  
-  .sidebar-user-role{font-size:11px;color:var(--muted);margin-top:2px}
-  
-  
-  .site-header .app-header,.site-header .rep-header{max-width:none}
-}
-
-
-.app-wrap{padding-bottom:calc(56px + env(safe-area-inset-bottom,12px))}
-@media(min-width:768px){}
-
-
-.section-page{display:none;padding:16px}
-.section-page.active{display:block}
-.section-title{font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:4px}
-.section-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
-
-
-.rep-filter{display:flex;gap:8px;margin-bottom:16px}
-.rep-filter-btn{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:var(--font-head);font-size:12px;cursor:pointer;transition:all .15s}
-.rep-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-
-
-.fav-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;color:var(--muted);transition:color .15s}
-.fav-btn.active{color:#e53935}
-.fav-btn:active{transform:scale(.9)}
-
-
-.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.profile-avatar{width:64px;height:64px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:24px;font-weight:700;color:#fff;margin:0 auto 12px}
-.profile-name{font-family:var(--font-head);font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
-.profile-email{font-size:13px;color:var(--muted);text-align:center;margin-bottom:4px}
-.profile-role{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-family:var(--font-head);background:var(--accent);color:#fff;margin:0 auto 16px;display:flex;justify-content:center}
-
-
-@media(max-width:767px){.mobile-hide{display:none!important}}
-
-
-
-
-.bottom-nav{padding-bottom:max(env(safe-area-inset-bottom),16px)!important;height:auto!important;min-height:56px}
-
-@media(min-width:768px){
-
-  
-
-  
-  .sidebar{
-    width:200px;
-    background:transparent;
-    border-right:none;
-    position:sticky;top:52px;
-    height:calc(100vh - 56px);
-    overflow-y:auto;
-    padding:8px 0;
-    flex-shrink:0;
-  }
-  .sidebar-logo{display:none}
-  .sidebar-nav{padding:4px 8px;flex:1}
-  .sidebar-btn{
-    width:100%;display:flex;align-items:center;gap:12px;
-    padding:10px 12px;border:none;background:none;
-    border-radius:10px;cursor:pointer;
-    font-family:var(--font-head);font-size:14px;
-    color:var(--muted);transition:all .15s;text-align:left;
-    font-weight:500;
-  }
-  .sidebar-btn svg{color:var(--muted);flex-shrink:0}
-  .sidebar-btn:hover{color:var(--text);background:rgba(0,0,0,.04)}
-  .sidebar-btn.active{color:var(--accent);background:none;font-weight:600}
-  .sidebar-btn.active svg{color:var(--accent)}
-  .sidebar-btn span{line-height:1}
-  .sidebar-footer{display:none}
-  .sidebar-user-btn{
-    width:100%;display:flex;align-items:center;gap:10px;
-    padding:10px 14px;border:none;background:none;
-    border-radius:10px;cursor:pointer;transition:background .15s;
-  }
-  .sidebar-user-btn:hover{background:var(--bg)}
-  .sidebar-user{text-align:left}
-  .sidebar-user-name{font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--text)}
-  
-  .sidebar-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
-
-  
-  .layout{max-width:1020px;margin:0 auto}
-
-  
-  #searchWrap{display:none!important}
-  
-}
-
-/* ═══════════════════════════════════════════════════════════
-   CLEAN HEADER CSS - single source of truth
-   ═══════════════════════════════════════════════════════════ */
-
-
-.site-header{
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  position:fixed;top:0;left:0;right:0;
-  z-index:200;
-}
-.app-header{
-  display:flex;
-  align-items:center;
-  height:52px;
-  padding:0;
-}
-.app-header-inner{
-  display:flex;
-  align-items:center;
-  width:100%;
-  padding:0 12px;
-  gap:8px;
-  height:100%;
-}
-.hdr-btns{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  flex-shrink:0;
-  margin-left:auto;
-}
-
-
-@media(min-width:768px){
-  .site-header{position:fixed;top:0;left:0;right:0}
-  .app-header{height:52px}
-  .app-header-inner{
-    max-width:1020px;
-    margin:0 auto;
-    padding:0 20px;
-    gap:16px;
-  }
-  .hdr-btns{margin-left:0;flex-shrink:0}
-  .desktop-search{
-    flex:1;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:#edeef0;
-    border:none;
-    border-radius:8px;
-    padding:0 14px;
-    height:36px;
-  }
-  .desktop-search:focus-within{background:#e4e5e8}
-  .desktop-search svg{color:var(--muted);flex-shrink:0}
-  .desktop-search-input{
-    border:none;background:none;color:var(--text);
-    font-family:var(--font-head);font-size:13px;
-    outline:none;width:100%;padding:0;
-  }
-  .desktop-search-input::placeholder{color:var(--muted)}
-}
-
 </style>
 </head>
 <body>
-<div class="layout">
-<!-- SIDEBAR (desktop) -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <img src="logo.png" onerror="this.style.display='none'">
-    <span class="sidebar-logo-text">ChordBook</span>
-  </div>
-  <nav class="sidebar-nav">
-    <button class="sidebar-btn active" id="sidebarSongs" onclick="navTo('songs')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>Все песни</span>
-    </button>
-    <button class="sidebar-btn" id="sidebarFav" onclick="navTo('favorites')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Избранное</span>
-    </button>
-    <button class="sidebar-btn" id="sidebarReps" onclick="navTo('repertoires')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Репертуары</span>
-    </button>
-    <button class="sidebar-btn" id="sidebarProfile" onclick="navTo('profile')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span>
-    </button>
-  </nav>
-  <!-- sidebar user info hidden - auth is in header -->
-  <div id="sidebarUserName"></div>
-  <div id="sidebarUserRole"></div>
-  <div id="sidebarAvatar"></div>
-</aside>
-<div class="main-area">
 <div class="site-header">
-<!-- MAIN HEADER -->
+<!-- DEFAULT HEADER -->
 <header class="app-header" id="mainHeader">
-  <div class="app-header-inner">
-    <!-- Logo -->
-    <div class="app-logo"><img src="https://ijartworker-byte.github.io/chordbook/logo.png" alt="logo" style="width:28px;height:28px;margin-right:6px;vertical-align:middle;border-radius:6px" onerror="this.style.display='none'">Chord<span>Book</span></div>
-    <!-- Desktop search bar (center) -->
-    <div class="desktop-search mobile-hide">
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="desktop-search-input" id="desktopSearchInput" placeholder="Поиск по названию или автору…" oninput="onDesktopSearch(this.value)">
-    </div>
-    <div class="hdr-btns">
-      <button class="icon-btn mobile-only" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-      <button class="login-btn mobile-hide" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
-    </div>
+  <div class="app-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
+  <div class="hdr-btns">
+    <button class="icon-btn" id="searchToggleBtn" title="Поиск"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    <button class="icon-btn" id="repPageBtn" title="Репертуары"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
+    <button class="login-btn" id="authBtn" onclick="onAuthBtnClick()">Войти</button>
   </div>
 </header>
 
-<!-- MOBILE SEARCH (shown below header when toggled) -->
-<div class="search-wrap" id="searchWrap">
-  <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
-</div>
-
 <!-- REPERTOIRE HEADER -->
-<header class="rep-header" id="repHeader">
+<header class="rep-header" id="repHeader" style="display:none">
   <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
   <div class="rep-header-title" id="repHeaderTitle" onclick="openEditRepName()" title="Нажмите чтобы переименовать"></div>
   <div class="hdr-btns">
@@ -582,7 +351,7 @@ select.form-input option{background:var(--surface)}
 <!-- TABS -->
 <div class="tabs-nav" id="tabsNav">
   <button class="tab-btn active" data-tab="all" onclick="switchTab('all')">Все песни</button>
-  <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+  <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -591,6 +360,9 @@ select.form-input option{background:var(--surface)}
     <div class="active-rep-label">⚡ АКТУАЛЬНЫЙ РЕПЕРТУАР</div>
     <div class="active-rep-name" id="activeRepName" onclick="goToActiveRep()"></div>
     <div class="active-rep-count" id="activeRepCount"></div>
+  </div>
+  <div class="search-wrap" id="searchWrap" style="display:none">
+    <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
   </div>
   <div class="alpha-nav" id="alphaNav"></div>
   <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
@@ -617,21 +389,21 @@ select.form-input option{background:var(--surface)}
       <option>B</option><option>Bm</option>
       <option>H</option><option>Hm</option>
     </select>
-    <span class="pedal-badge" id="viewPedalBadge"></span>
+    <span class="pedal-badge" id="viewPedalBadge" style="display:none"></span>
     <div class="key-divider"></div>
     <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
     <span class="size-display" id="sizeDisplay">22px</span>
     <button class="key-btn" onclick="changeFontSize(2)">А+</button>
-    <div class="key-divider" id="metaDivider"></div>
-    <div class="key-meta-col" id="keyMetaCol">
+    <div class="key-divider" id="metaDivider" style="display:none"></div>
+    <div class="key-meta-col" id="keyMetaCol" style="display:none">
       <span class="key-meta" id="viewTempo"></span>
       <span class="key-meta" id="viewMeter"></span>
       <span class="key-meta" id="viewPedal"></span>
     </div>
     <div style="flex:1"></div>
-    <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+    <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
   </div>
-  <div class="song-meta" id="viewMeta"></div>
+  <div class="song-meta" id="viewMeta" style="display:none"></div>
   <div class="lyrics-block" id="viewLyrics"></div>
 </div>
 
@@ -644,65 +416,14 @@ select.form-input option{background:var(--surface)}
 </div>
 
 <!-- NAV BAR -->
-<div class="song-nav-bar" id="songNavBar">
+<div class="song-nav-bar" id="songNavBar" style="display:none">
   <button class="nav-arrow" id="btnPrev" onclick="navSong(-1)">← Предыдущая</button>
   <span class="nav-counter" id="navCounter"></span>
   <button class="nav-arrow" id="btnNext" onclick="navSong(1)">Следующая →</button>
 </div>
 
-<!-- FAVORITES PAGE -->
-<div class="section-page" id="favoritesPage">
-  <div class="song-list" id="favSongList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
-</div>
-
-<!-- REPERTOIRES SECTION PAGE -->
-<div class="section-page" id="repertoiresPage">
-  <div class="rep-filter" style="padding:0 16px">
-    <button class="rep-filter-btn active" id="repFilterAll" onclick="setRepFilter('all')">Все</button>
-    <button class="rep-filter-btn" id="repFilterMine" onclick="setRepFilter('mine')">Мои</button>
-  </div>
-  <div id="repSectionList" style="padding:0 16px 100px"></div>
-</div>
-
-<!-- PROFILE PAGE -->
-<div class="section-page" id="profilePage">
-  <div style="padding:16px;max-width:480px;margin:0 auto">
-    <div class="profile-card" id="profileCard">
-      <div class="profile-avatar" id="profileAvatar">?</div>
-      <div class="profile-name" id="profileName">Войдите в аккаунт</div>
-      <div class="profile-email" id="profileEmail"></div>
-      <div style="text-align:center;margin-bottom:16px"><span class="profile-role" id="profileRole"></span></div>
-    </div>
-    <div id="profileEditForm">
-      <div class="profile-card">
-        <div class="modal-title" style="margin-bottom:16px">Редактировать профиль</div>
-        <div style="display:flex;gap:12px">
-          <div class="form-group" style="flex:1">
-            <label class="form-label">Имя</label>
-            <input class="form-input" id="editFirstName" placeholder="Имя">
-          </div>
-          <div class="form-group" style="flex:1">
-            <label class="form-label">Фамилия</label>
-            <input class="form-input" id="editLastName" placeholder="Фамилия">
-          </div>
-        </div>
-        <div id="profileSaveError" style="font-size:12px;color:var(--accent2);display:none;margin-bottom:8px"></div>
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="toggleProfileEdit(false)">Отмена</button>
-          <button class="btn btn-primary" onclick="saveProfile()">Сохранить</button>
-        </div>
-      </div>
-    </div>
-    <div id="profileActions">
-      <button class="btn btn-secondary" style="margin-bottom:10px;width:100%" onclick="toggleProfileEdit(true)" id="editProfileBtn">Редактировать профиль</button>
-      <button class="btn btn-danger" style="width:100%" onclick="onAuthBtnClick()" id="profileLogoutBtn">Выйти</button>
-      <button class="btn btn-primary" style="width:100%" onclick="onAuthBtnClick()" id="profileLoginBtn">Войти / Зарегистрироваться</button>
-    </div>
-  </div>
-</div>
-
 <!-- FAB (editor only) -->
-<button class="fab" id="fabBtn" onclick="onFabClick()"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+<button class="fab" id="fabBtn" onclick="onFabClick()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 
 <!-- FAB ACTION SHEET -->
 <div class="modal-overlay" id="fabSheet">
@@ -757,7 +478,7 @@ select.form-input option{background:var(--surface)}
     </div>
 
     <!-- REGISTER FORM -->
-    <div id="authFormRegister">
+    <div id="authFormRegister" style="display:none">
       <div style="display:flex;gap:12px">
         <div class="form-group" style="flex:1">
           <label class="form-label">Имя</label>
@@ -914,7 +635,6 @@ select.form-input option{background:var(--surface)}
     <div class="modal-handle"></div>
     <div class="modal-title">Добавить песни в репертуар</div>
     <input class="pick-search" id="pickSearch" placeholder="Поиск…" oninput="renderPickList()">
-    <div class="alpha-nav" id="pickAlphaNav" style="position:sticky;top:0;z-index:10;background:var(--surface);margin:0 -20px;padding:4px 16px;border-bottom:1px solid var(--border)"></div>
     <div id="pickSongList" class="pick-song-list-scroll"></div>
     <div class="pick-modal-btns">
       <button class="btn btn-secondary" onclick="closeModal('pickSongsModal')">Отмена</button>
@@ -1018,7 +738,6 @@ const auth=getAuth(app);
 let songs=[];
 let repertoires=[];
 let repOrder=[]; // ordered list of rep ids
-let currentUserName=''; // cached full name from Firestore
 let currentTab='all';
 let currentSongId=null;
 let currentTranspose=0;
@@ -1158,7 +877,6 @@ onAuthStateChanged(auth,async(user)=>{
     userRole=await loadUserRole(user.uid);
     isEditor=userRole==='admin';
     isUser=true;
-    loadFavorites();
     // Load full name from Firestore
     try{
       const uSnap=await getDoc(doc(db,'users',user.uid));
@@ -1192,8 +910,6 @@ onAuthStateChanged(auth,async(user)=>{
     currentUserName='';
   }
   applyEditorUI();
-  updateSidebarUser();
-  if(currentSection==='profile') renderProfilePage();
   // Force re-render with correct permissions
   if(currentTab!=='all') updateHeaders();
 });
@@ -1276,8 +992,7 @@ window.transposeToKey=function(selectedKey){
           } else {
             rep.songKeys[currentSongId]=selectedKey;
           }
-          saveRep(rep).catch(e=>
-);
+          saveRep(rep).catch(e=>console.error(e));
         }
       }
     }
@@ -1354,248 +1069,13 @@ function renderAlphaNav(songArr){
 }
 window.scrollToLetter=function(l){const el=document.getElementById('alpha-'+l);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
 
-// ── SECTION NAVIGATION ────────────────────────────────────────────────────
-let currentSection='songs';
-let favorites=new Set();
-let repFilter='all';
-const NAV_SECTIONS=['songs','favorites','repertoires','profile'];
-const NAV_NAMES=['Songs','Fav','Reps','Profile'];
-
-window.navTo=function(section){
-  currentSection=section;
-  NAV_SECTIONS.forEach((s,i)=>{
-    const el=document.getElementById(s+'Page');
-    if(el) el.classList.toggle('active',s===section);
-    const sb=document.getElementById('sidebar'+NAV_NAMES[i]);
-    const bn=document.getElementById('bn'+NAV_NAMES[i]);
-    if(sb) sb.classList.toggle('active',s===section);
-    if(bn) bn.classList.toggle('active',s===section);
-  });
-  document.getElementById('mainContent').style.display=section==='songs'?'':'none';
-  document.getElementById('songView').style.display='none';
-  document.getElementById('repPage').style.display='none';
-  const tabsNav=document.getElementById('tabsNav');
-  tabsNav.style.display=section==='songs'?'flex':'none';
-  const fab=document.getElementById('fabBtn');
-  fab.style.display=(section==='songs'||section==='repertoires')&&isUser?'':'none';
-  const alphaNav=document.getElementById('alphaNav');
-  if(alphaNav) alphaNav.style.display=section==='songs'&&currentTab==='all'?'':'none';
-  if(section==='songs'){currentTab='all';renderSongList();renderTabsNav();renderActiveRepBlock();}
-  else if(section==='favorites') renderFavorites();
-  else if(section==='repertoires') renderRepSection();
-  else if(section==='profile') renderProfilePage();
-  updateSidebarUser();
-};
-
-// ── FAVORITES ─────────────────────────────────────────────────────────────
-async function loadFavorites(){
-  if(!currentUser){favorites=new Set();return;}
-  try{
-    const snap=await getDocs(collection(db,'likes',currentUser.uid,'songs'));
-    favorites=new Set(snap.docs.map(d=>d.id));
-  }catch(e){favorites=new Set();}
-}
-
-window.toggleFavorite=async function(songId,e){
-  if(e) e.stopPropagation();
-  if(!currentUser){openModal('loginModal');return;}
-  const ref=doc(db,'likes',currentUser.uid,'songs',songId);
-  if(favorites.has(songId)){
-    favorites.delete(songId);
-    await deleteDoc(ref).catch(()=>{});
-  } else {
-    favorites.add(songId);
-    await setDoc(ref,{ts:Date.now()}).catch(()=>{});
-  }
-  document.querySelectorAll(`.fav-btn[data-id="${songId}"]`).forEach(btn=>{
-    const active=favorites.has(songId);
-    btn.classList.toggle('active',active);
-    btn.querySelector('svg').setAttribute('fill',active?'#e53935':'none');
-    btn.querySelector('svg').setAttribute('stroke',active?'#e53935':'currentColor');
-  });
-  if(currentSection==='favorites') renderFavorites();
-};
-
-function favBtnHtml(songId){
-  const active=favorites.has(songId);
-  return `<button class="fav-btn${active?' active':''}" data-id="${songId}" onclick="toggleFavorite('${songId}',event)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="${active?'#e53935':'none'}" stroke="${active?'#e53935':'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>`;
-}
-
-function renderFavorites(){
-  const list=document.getElementById('favSongList');if(!list)return;
-  if(!currentUser){list.innerHTML='<div class="empty"><div class="empty-icon">❤️</div><div class="empty-text">Войдите чтобы видеть избранное</div></div>';return;}
-  const favSongs=songs.filter(s=>favorites.has(s.id)).sort((a,b)=>a.title.localeCompare(b.title,'ru'));
-  if(!favSongs.length){list.innerHTML='<div class="empty"><div class="empty-icon">❤️</div><div class="empty-text">Нажмите ♡ у любой песни<br>чтобы добавить в избранное</div></div>';return;}
-  list.innerHTML=`<div style="padding:8px 16px 100px">`+favSongs.map(s=>`
-    <div class="song-card" onclick="openSongViewFromSection('${s.id}')">
-      <div class="song-info"><div class="song-title">${esc(s.title)}</div><div class="song-artist">${esc(s.artist)}</div>
-      <div class="song-key"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(s.key)}</div></div>
-      <div class="song-actions" onclick="event.stopPropagation()">${favBtnHtml(s.id)}${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}</div>
-    </div>`).join('')+'</div>';
-}
-
-window.openSongViewFromSection=function(songId){
-  currentSongId=songId;currentTranspose=0;navSongList=[];navIndex=-1;currentTab='all';
-  renderSongView(songId);
-  document.getElementById('mainContent').style.display='none';
-  NAV_SECTIONS.forEach(s=>{const el=document.getElementById(s+'Page');if(el)el.classList.remove('active');});
-  document.getElementById('songView').style.display='block';
-  document.getElementById('tabsNav').style.display='none';
-  document.getElementById('fabBtn').style.display='none';
-  document.getElementById('editSongBtn').style.display=isEditor?'flex':'none';
-  document.getElementById('mainHeader').style.display='none';
-  window.scrollTo(0,0);
-};
-
-// ── REPERTOIRES SECTION ────────────────────────────────────────────────────
-window.setRepFilter=function(filter){
-  repFilter=filter;
-  document.getElementById('repFilterAll').classList.toggle('active',filter==='all');
-  document.getElementById('repFilterMine').classList.toggle('active',filter==='mine');
-  renderRepSection();
-};
-
-function renderRepSection(){
-  const list=document.getElementById('repSectionList');if(!list)return;
-  let reps=getSortedReps();
-  if(repFilter==='mine'){
-    if(!currentUser){list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Войдите чтобы видеть свои репертуары</div></div>';return;}
-    reps=reps.filter(r=>r.authorId===currentUser.uid);
-  }
-  if(!reps.length){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${repFilter==='mine'?'У вас нет репертуаров.<br>Нажмите + чтобы создать':'Нет репертуаров.'}</div></div>`;return;}
-  const trashIcon=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
-  let html='';
-  for(const rep of reps){
-    const repSongs=rep.songs.map(id=>songs.find(s=>s.id===id)).filter(Boolean);
-    const preview=repSongs.slice(0,4);const hasMore=repSongs.length>4;const repKeys=rep.songKeys||{};
-    const dragHandle=isEditor?`<span class="rep-drag-handle" onclick="event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span>`:'';
-    html+=`<div class="rep-inline-card" data-id="${rep.id}">
-      <div class="rep-inline-header" onclick="goToRepFromSection('${rep.id}')">
-        ${dragHandle}<div style="flex:1;min-width:0">
-          <div class="rep-inline-name">${esc(rep.name)}${rep.active?' ⚡':''}</div>
-          <div class="rep-inline-meta">${repSongs.length} ${songWord(repSongs.length)}${rep.authorName?' · '+esc(rep.authorName):''}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
-          ${isEditor?`<div class="toggle-wrap" onclick="setActiveRep('${rep.id}')"><span class="toggle-label">Актуальный</span><div class="toggle${rep.active?' on':''}"></div></div>`:''}
-          ${canEditRep(rep.id)?`<button class="rep-del-btn" onclick="openConfirmDeleteRep('${rep.id}')">${trashIcon}</button>`:''}
-          <span class="rep-inline-arrow">›</span>
-        </div>
-      </div>
-      ${repSongs.length?`<div class="rep-inline-songs">
-        ${preview.map((s,idx)=>`<div class="rep-inline-song" onclick="goToRepFromSection('${rep.id}','${s.id}')"><span class="rep-inline-num">${idx+1}</span><span class="rep-inline-title">${esc(s.title)}</span><span class="rep-inline-key">${esc(repKeys[s.id]||s.key)}</span></div>`).join('')}
-        ${hasMore?`<div class="rep-inline-more" onclick="goToRepFromSection('${rep.id}')">Ещё ${repSongs.length-4} ${songWord(repSongs.length-4)} →</div>`:''}
-      </div>`:''}
-    </div>`;
-  }
-  list.innerHTML=html;
-  if(isEditor){
-    if(window._repSecSortable) window._repSecSortable.destroy();
-    window._repSecSortable=new Sortable(list,{handle:'.rep-drag-handle',animation:150,ghostClass:'sortable-ghost',chosenClass:'sortable-chosen',
-      onEnd:async function(){repOrder=Array.from(list.querySelectorAll('[data-id]')).map(c=>c.dataset.id);renderTabsNav();await saveRepOrder();}
-    });
-  }
-}
-
-window.goToRepFromSection=function(repId,songId){
-  window.navTo('songs');
-  switchTab(repId);
-  if(songId) setTimeout(()=>window.openSongView(songId),200);
-};
-
-// ── PROFILE ────────────────────────────────────────────────────────────────
-function renderProfilePage(){
-  const logoutBtn=document.getElementById('profileLogoutBtn');
-  const loginBtn=document.getElementById('profileLoginBtn');
-  const editBtn=document.getElementById('editProfileBtn');
-  const roleEl=document.getElementById('profileRole');
-  if(currentUser){
-    const name=currentUserName||currentUser.email.split('@')[0];
-    document.getElementById('profileName').textContent=name;
-    document.getElementById('profileEmail').textContent=currentUser.email;
-    document.getElementById('profileAvatar').textContent=name[0].toUpperCase();
-    roleEl.textContent=isEditor?'Администратор':'Пользователь';
-    roleEl.style.display='inline-flex';
-    roleEl.style.background=isEditor?'var(--accent)':'var(--muted)';
-    if(logoutBtn)logoutBtn.style.display='block';
-    if(loginBtn)loginBtn.style.display='none';
-    if(editBtn)editBtn.style.display='block';
-  } else {
-    document.getElementById('profileName').textContent='Войдите в аккаунт';
-    document.getElementById('profileEmail').textContent='';
-    document.getElementById('profileAvatar').textContent='?';
-    roleEl.style.display='none';
-    if(logoutBtn)logoutBtn.style.display='none';
-    if(loginBtn)loginBtn.style.display='block';
-    if(editBtn)editBtn.style.display='none';
-    toggleProfileEdit(false);
-  }
-}
-
-window.toggleProfileEdit=function(show){
-  const form=document.getElementById('profileEditForm');
-  const actions=document.getElementById('profileActions');
-  if(form) form.style.display=show?'block':'none';
-  if(actions) actions.style.display=show?'none':'block';
-  if(show&&currentUser){
-    const parts=(currentUserName||'').split(' ');
-    document.getElementById('editFirstName').value=parts[0]||'';
-    document.getElementById('editLastName').value=parts.slice(1).join(' ')||'';
-  }
-};
-
-window.saveProfile=async function(){
-  const firstName=(document.getElementById('editFirstName').value||'').trim();
-  const lastName=(document.getElementById('editLastName').value||'').trim();
-  const errEl=document.getElementById('profileSaveError');
-  errEl.style.display='none';
-  if(!firstName||!lastName){errEl.textContent='Введите имя и фамилию';errEl.style.display='block';return;}
-  try{
-    await setDoc(doc(db,'users',currentUser.uid),{role:userRole||'user',firstName,lastName,email:currentUser.email});
-    currentUserName=firstName+' '+lastName;
-    toggleProfileEdit(false);
-    renderProfilePage();
-    updateSidebarUser();
-    showToast('Профиль сохранён');
-  }catch(e){errEl.textContent='Ошибка сохранения';errEl.style.display='block';}
-};
-
-// Desktop search
-window.onDesktopSearch=function(val){
-  const si=document.getElementById('searchInput');
-  if(si){si.value=val;renderSongList();}
-};
-
-function updateSidebarUser(){
-  const nameEl=document.getElementById('sidebarUserName');
-  const roleEl=document.getElementById('sidebarUserRole');
-  const avatarEl=document.getElementById('sidebarAvatar');
-  const authBtn=document.getElementById('authBtn');
-  const name=currentUser?(currentUserName||currentUser.email.split('@')[0]):'';
-  if(nameEl) nameEl.textContent=name||'Войти';
-  if(roleEl) roleEl.textContent=currentUser?(isEditor?'Администратор':'Пользователь'):'';
-  if(avatarEl) avatarEl.textContent=name?name[0].toUpperCase():'?';
-  // Update auth button in header
-  if(authBtn&&currentUser){
-    authBtn.className='editor-badge';
-    authBtn.style.background=isEditor?'var(--accent)':'var(--surface2)';
-    authBtn.style.color=isEditor?'#fff':'var(--text)';
-    authBtn.style.border=isEditor?'none':'1px solid var(--border)';
-    authBtn.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ${name} · Выйти`;
-  } else if(authBtn){
-    authBtn.className='login-btn';
-    authBtn.style.background='';authBtn.style.color='';authBtn.style.border='';
-    authBtn.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Войти`;
-  }
-}
-
 // ── WAKE LOCK ─────────────────────────────────────────────────────────────
 let wakeLock=null;
 async function requestWakeLock(){
   if(!('wakeLock' in navigator))return;
   try{
     wakeLock=await navigator.wakeLock.request('screen');
-  }catch(e){
-}
+  }catch(e){console.log('Wake lock failed:',e);}
 }
 function releaseWakeLock(){
   if(wakeLock){wakeLock.release();wakeLock=null;}
@@ -1606,86 +1086,36 @@ document.addEventListener('visibilitychange',()=>{
     requestWakeLock();
   }
 });
-function getHeaderHeight(){
-  // Header is position:fixed, so use its actual rendered height
-  const sh=document.querySelector('.site-header');
-  if(!sh) return 52;
-  return sh.getBoundingClientRect().height;
-}
-
 let alphaObserver=null;
 function initAlphaObserver(){
+  // Set sticky top dynamically
   const alphaNav=document.getElementById('alphaNav');
-  if(!alphaNav) return;
-
-  // Stick alpha-nav right below fixed header
-  // Get total fixed header height (site-header + searchWrap if visible)
-  const sh=document.querySelector('.site-header');
-  const sw=document.getElementById('searchWrap');
-  const hh=(sh?sh.getBoundingClientRect().height:52) +
-           (sw&&sw.style.display!==''&&sw.style.display!=='none' ? sw.getBoundingClientRect().height : 0);
-  alphaNav.style.top=hh+'px';
-  // Also update scroll-margin-top on sections
-  const alphaH=alphaNav.offsetHeight||36;
-  document.querySelectorAll('.alpha-section').forEach(s=>{
-    s.style.scrollMarginTop=(hh+alphaH+4)+'px';
-  });
-
+  if(alphaNav){
+    const siteHeader=document.querySelector('.site-header');
+    const headerH=siteHeader?siteHeader.offsetHeight:0;
+    alphaNav.style.top=headerH+'px';
+  }
   if(alphaObserver) alphaObserver.disconnect();
   const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
   if(!sections.length) return;
-
   alphaObserver=new IntersectionObserver((entries)=>{
-    let best=null;let bestY=Infinity;
+    // find topmost visible section
+    let topmost=null;
+    let topmostY=Infinity;
     entries.forEach(e=>{
-      const y=e.boundingClientRect.top;
-      if(y>=0&&y<bestY){bestY=y;best=e.target;}
+      if(e.isIntersecting){
+        const y=e.boundingClientRect.top;
+        if(y<topmostY){topmostY=y;topmost=e.target;}
+      }
     });
-    // If nothing visible from top, find closest to top
-    if(!best){
-      entries.forEach(e=>{
-        const y=Math.abs(e.boundingClientRect.top);
-        if(y<bestY){bestY=y;best=e.target;}
+    if(topmost){
+      const letter=topmost.id.replace('alpha-','');
+      document.querySelectorAll('.alpha-btn').forEach(b=>{
+        b.classList.toggle('current',b.textContent===letter);
       });
     }
-    if(best){
-      const letter=best.id.replace('alpha-','');
-      document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
-        b.classList.toggle('current',b.textContent.trim()===letter);
-      });
-    }
-  },{threshold:0,rootMargin:`-${hh+alphaH+2}px 0px -50% 0px`});
-
+  },{threshold:0,rootMargin:'-60px 0px -60% 0px'});
   sections.forEach(s=>alphaObserver.observe(s));
-}
-
-// ── PICK LIST ALPHA OBSERVER ───────────────────────────────────────────────
-let pickAlphaObserver=null;
-function initPickAlphaObserver(){
-  const nav=document.getElementById('pickAlphaNav');
-  const list=document.getElementById('pickSongList');
-  if(!nav||!list) return;
-
-  if(pickAlphaObserver) pickAlphaObserver.disconnect();
-  const sections=list.querySelectorAll('.pick-alpha-section[id^="pick-alpha-"]');
-  if(!sections.length) return;
-
-  pickAlphaObserver=new IntersectionObserver((entries)=>{
-    let best=null;let bestY=Infinity;
-    entries.forEach(e=>{
-      const y=e.boundingClientRect.top;
-      if(y>=0&&y<bestY){bestY=y;best=e.target;}
-    });
-    if(!best&&entries.length) best=entries.reduce((a,b)=>
-      Math.abs(a.boundingClientRect.top)<Math.abs(b.boundingClientRect.top)?a:b).target;
-    if(!best) return;
-    const letter=best.id.replace('pick-alpha-','');
-    nav.querySelectorAll('.alpha-btn').forEach(b=>{
-      b.classList.toggle('current',b.textContent.trim()===letter);
-    });
-  },{root:list,threshold:0,rootMargin:'0px 0px -70% 0px'});
-
-  sections.forEach(s=>pickAlphaObserver.observe(s));
 }
 
 // ── SONG LIST ──────────────────────────────────────────────────────────────
@@ -1753,7 +1183,6 @@ function renderSongList(){
           ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
         </div>
         <div class="song-actions" onclick="event.stopPropagation()">
-          ${favBtnHtml(s.id)}
           ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" onclick="openAddToRepModal('${s.id}')" title="В репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmDeleteSong('${s.id}')" title="Удалить песню"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
@@ -1970,7 +1399,7 @@ function renderTabsNav(){
 
 // ── FAB ────────────────────────────────────────────────────────────────────
 window.onFabClick=function(){
-  if(currentSection==='repertoires'||currentTab==='all') openModal('fabSheet');
+  if(currentTab==='all') openModal('fabSheet');
   else openPickSongsModal();
 };
 
@@ -2132,50 +1561,14 @@ window.openPickSongsModal=function(){
 window.renderPickList=function(){
   const q=(document.getElementById('pickSearch').value||'').toLowerCase();
   let arr=[...songs].sort((a,b)=>a.title.localeCompare(b.title,'ru'));
-  if(q) arr=arr.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q));
-
-  const pickAlphaNav=document.getElementById('pickAlphaNav');
-  if(q||!pickAlphaNav){
-    // No grouping when searching
-    if(pickAlphaNav) pickAlphaNav.style.display='none';
-    document.getElementById('pickSongList').innerHTML=arr.map(s=>{
-      const sel=pickedSongs.has(s.id);
-      return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
-        <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
-        <div class="pick-check">${sel?'✓':''}</div>
-      </div>`;
-    }).join('');
-    return;
-  }
-
-  // Group by letter with alpha nav
-  const groups={};
-  for(const s of arr){const l=s.title[0].toUpperCase();(groups[l]=groups[l]||[]).push(s);}
-  const letters=Object.keys(groups).sort();
-
-  // Render alpha nav
-  pickAlphaNav.style.display='flex';
-  pickAlphaNav.innerHTML=letters.map(l=>`<button class="alpha-btn" onclick="scrollPickToLetter('${l}')">${l}</button>`).join('');
-
-  // Render grouped list
-  document.getElementById('pickSongList').innerHTML=letters.map(l=>`
-    <div class="alpha-section pick-alpha-section" id="pick-alpha-${l}">
-      <div class="alpha-label">${l}</div>
-      ${groups[l].map(s=>{
-        const sel=pickedSongs.has(s.id);
-        return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
-          <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
-          <div class="pick-check">${sel?'✓':''}</div>
-        </div>`;
-      }).join('')}
-    </div>`).join('');
-  requestAnimationFrame(()=>initPickAlphaObserver());
-};
-
-window.scrollPickToLetter=function(l){
-  const el=document.getElementById('pick-alpha-'+l);
-  const list=document.getElementById('pickSongList');
-  if(el&&list) list.scrollTo({top:el.offsetTop-4,behavior:'smooth'});
+  if(q)arr=arr.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q));
+  document.getElementById('pickSongList').innerHTML=arr.map(s=>{
+    const sel=pickedSongs.has(s.id);
+    return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
+      <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
+      <div class="pick-check">${sel?'✓':''}</div>
+    </div>`;
+  }).join('');
 };
 window.togglePick=function(id,el){
   if(pickedSongs.has(id)){pickedSongs.delete(id);el.classList.remove('selected');el.querySelector('.pick-check').textContent='';}
@@ -2429,19 +1822,16 @@ document.getElementById('searchToggleBtn').addEventListener('click',()=>{
   if(currentTab!=='all')return;
   searchVisible=!searchVisible;
   const w=document.getElementById('searchWrap');
-  w.style.display=searchVisible?'block':'none';
-  if(searchVisible){
-    document.getElementById('searchInput').focus();
-  } else {
-    document.getElementById('searchInput').value='';
-    renderSongList();
-  }
-  // Re-init alpha observer with new header height
-  requestAnimationFrame(()=>initAlphaObserver());
+  w.style.display=searchVisible?'':'none';
+  if(searchVisible)document.getElementById('searchInput').focus();
+  else{document.getElementById('searchInput').value='';renderSongList();}
 });
-const _repPageBtn=document.getElementById('repPageBtn');if(_repPageBtn)_repPageBtn.addEventListener('click',openRepPage);
+document.getElementById('repPageBtn').addEventListener('click',openRepPage);
+
 
 // ── DRAG AND DROP (repertoire reorder) ────────────────────────────────────
+let currentUserName=''; // cached full name from Firestore
+
 // ── REP PAGE SORTABLE ─────────────────────────────────────────────────────
 let repSortableInstance=null;
 function initRepSortable(){
@@ -2548,10 +1938,759 @@ window.onDragEnd=function(){};
 window.onTouchStart=function(){};
 window.onTouchMove=function(){};
 window.onTouchEnd=function(){};
-const SEED_SONGS=[]; // DB already seeded
+const SEED_SONGS = [
+  {
+    "id": "s1",
+    "title": "Есть хвала, её не удержать",
+    "artist": "",
+    "key": "B",
+    "lyrics": "Есть хвала, её не удержать!\n[H]Сила в ней, чтоб цепи все порвать!\n[C#m]Не могу [A]молчать [E]я!\n[E]Вера есть, как пламя горит она!\n[H]Радость есть, её так боится тьма!\n[C#m]Не могу [A]молчать [E]я!\n[Пред припев]\n[G#m]Если буря [A]сильна - громче [H]песня [C#m]моя!\n[Припев]\n[A]Возвышу громко я свой [E]голос,\n[H]Простираясь до [C#m]небес!\n[A]Возвышу громко я свой [E]голос,\n[H]Простираясь до [C#m]небес!\n[Бридж]\n[A]Я петь буду [C#m]вечно"
+  },
+  {
+    "id": "s2",
+    "title": "В тайном месте, в тихом месте жду",
+    "artist": "",
+    "key": "F",
+    "lyrics": "В тайном месте, в тихом\nместе жду\n[Am]В тишине и [G]покое [F]Ты\n[C]В тайном месте, в тихий час\n[F]Тебя я жду, только [Am]Тебя\n[G]Хочу я знать Тебя, [F]Господь\n[Припев]\n[C]Хочу я [G]знать [Am]Тебя,\n[F]Хочу я слышать голос [C]Твой\n[G]Хочу я знать Тебя, [F]Господь\n[C]Хочу [G]коснуться\n[F]Хочу я видеть Твоё [C]лицо\n[G]Хочу я знать Тебя, [F]Господь\n[Куплет]\n[C]Достигаю [C/H]лучшего в [F]Тебе\n[Am]И награду [G]получить [F]стремлюсь\n[C]Оставляю всё, что мешает мне на [F]пути\n[Am]Потому что [G]знать Тебя [F]хочу\n[Вступление: F C G Am]\n[F]Куплет [G]1:"
+  },
+  {
+    "id": "s3",
+    "title": "Дух Святой к нам приди",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Дух Святой к нам приди\n[G]В сильном ветре, в [Am]пламени\n[F]Просим мы, [C]через нас [G]дыши\n[F]Раскаявшись признав [C]грехи\n[G]Из пепла оживаем [Am]мы\n[F]Ветром, Бог, [C]пламя в нас [G]зажги\n[Припев 1]\n[F]Сойди свежим ветром, дыханием [Am]неба\n[C]Дух Свой изливай, Дух Свой [G]изливай\n[Куплет 2]\n[F]Трепещет дух перед [C]Тобой\n[G]Проведи нас сквозь [Am]огонь\n[F]Очисти сердце, [C]укрепи [G]его\n[F]Мы – церковь Божья, свет во [C]тьме\n[G]Яркий город на [Am]холме\n[F]Царство Божье [C]пусть придет [G]скорей\n[Припев 2]\n[F]Сойди свежим ветром, дыханием [Am]неба\n[C]Дух Свой изливай, Дух Свой [G]изливай\n[C/E]Святым [F]помазанием, в силе и [Am]славе\n[C]Дух Свой изливай, Дух Свой [G]изливай\n[Проигрыш]\n[C/E]Дух Свой [F]изливай, Дух Свой [G]изливай\n[G/H]Дух [C]Свой изливай, Дух Свой [G]изливай\n[Бридж]\n[F]Каждый, кто спасен, пророчествуй и [Am]пой\n[C]Ощути Его ветер, ветер, [G]ветер\n[F]Дух Святой, сойди посреди [Am]хвалы\n[C]Дай нам ощутить Твой ветер, ветер, [G]ветер\n[Припев 2]\n[F]Сойди свежим ветром, дыханием [Am]неба\n[C]Дух Свой изливай, Дух Свой [G]изливай\n[C/E]Святым [F]помазанием, в силе и [Am]славе\n[C]Дух Свой изливай, Дух Свой [G]изливай"
+  },
+  {
+    "id": "s4",
+    "title": "Отпускаю все мечты мои",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Отпускаю все мечты мои,[Em]\nЯ полагаю их у ног Твоих\n[Am]И если в жизни ошибаюсь я\n[C]Твоя любовь не изменяется\nХотел сразиться я за жизнь мою,[Em]\nОслабли руки, устал я в бою\n[Am]Ты сильный Воин, Ты Царь всех побед\n[C]Я побеждаю, когда я в Тебе\n[Припев]\n[G]И даже если горы не двигаясь [D]стоят\n[Em]И если воды моря не [C]разделяются\n[G]И если на молитвы, не вижу я [D]ответ\n[Em]Доверять, [C]доверять буду я [G]Тебе!\n[Куплет: G Em Am C]\nЧто завтра мне принесет опять?\nТы знаешь, все известно для Тебя!\nЖиви во мне, будь дыханием моим,\nДай каждый день ходить путем Твоим!\n[Мост]\n[C]Ты мой покой и сила, опора Ты [D]моя!\n[Em]Моё Ты основание, Ты крепкая скала!\n[C]Твои пути прекрасны, они превыше [D]всех!\n[Em]Ты держишь эту Землю и всё в Твоей [D/F#]руке!\n[Куплет 1]"
+  },
+  {
+    "id": "s5",
+    "title": "Стою я здесь, вся жизнь моя в Тебе",
+    "artist": "",
+    "key": "A",
+    "lyrics": "Стою я здесь, вся жизнь моя в Тебе\n[A]Я знаю рядом Ты. Ты так нужен [E]мне\n[E]Вся жизнь [F#m]моя - желание одно [E/G#]-\n[A]Гореть лишь для Тебя\n[Припев]\n[E]Хочу я быть на шаг ближе,\n[H]На шаг ближе [F#m]к [A]Тебе\n[Куплет 2]\n[E]Лишь один, только Ты [H]один,\n[C#m]Все чем [E/H]я живу, все чем я [A]дышу.\n[E]Ещё один день, он только для [H]Тебя,\n[C#m]В [E/H]присутствии Твоем хочу я быть [A]всегда\n[Бридж]\n[E]Иисус, [H/D#]Иисус, Ты [C#m]первая [E/H]любовь\n[Вступление]"
+  },
+  {
+    "id": "s6",
+    "title": "В Твоем сердце вижу место",
+    "artist": "",
+    "key": "F#m",
+    "lyrics": "В Твоем сердце вижу место\n[F#m]Для разбитых и оставленных людей\n[D]Ведь близок Ты к сокрушенном сердцем\n[F#m]Излей на раны Свой [E]елей\n[Предприпев]\n[D]Ты Бог для вдов и [E]сирот,\n[F#m]Ты Бог для раненных сердец\n[D]Явил не гнев, а [E]милость\n[F#m]Понес болезни и мучения за [E]всех\n[Припев]\n[A]Дай видеть что Ты видишь\n[F#m]Дай слышать, что слышишь Ты\n[D]Молитвы сотен, что идут к Тебе\n[F#m]Пускай найдут ответ в делах [E]моих\n[A]Спаситель, всего мира\n[F#m]Рожден в хлеву чтобы благую весть нести\n[D]Пришел с небес чтоб мир освободить\n[F#m]Дай мне как Ты добро [E]творить\n[Проигрыш]\n[D]Бридж:\n[A]Творю добро не ради одобренья\n[F#m]И не ищу в том выгоды своей\n[D]Я буду делать это тайно\n[F#m]Славу Бога увидят пусть жизни [E]моей\n[Предприпев]\n[D]Ты Бог для вдов и [E]сирот,\n[F#m]Ты Бог для раненных сердец\n[D]Явил не гнев, а [E]милость\n[F#m]Понес болезни и мучения за [E]всех\n[Припев]\n[A]Дай видеть что Ты видишь\n[F#m]Дай слышать, что слышишь Ты\n[D]Молитвы сотен, что идут к Тебе\n[F#m]Пускай найдут ответ в делах [E]моих\n[A]Спаситель, всего мира\n[F#m]Рожден в хлеву чтобы благую весть нести\n[D]Пришел с небес чтоб мир освободить\n[F#m]Дай мне как Ты [E]добро [A]творить"
+  },
+  {
+    "id": "s7",
+    "title": "Без конца буду петь",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Без конца буду петь\n[Am]Как спасена [F]душа\n[C]Протанцую сотни [G]миль\n[Am]Из-за Твоей [F]любви\nСердце моё горит\nСказать, что сделал ТЫ\nКак изменил Ты жизнь\nИ прошлое Ты смёл долой\nХочу я прокричать\nС высокой крыши буду петь\nЧто Бог теперь со мною, а не против\nПотому что Иисус - Он живой!\nПотому что Иисус - Он воскрес!\nПотому что Иисус воскрес на третий день\nБог за меня\nБог за меня\nБог за меня\nОн не против!"
+  },
+  {
+    "id": "s8",
+    "title": "Благодарю Тебя, Господь",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Благодарю Тебя, Господь,\n[Am]за всё, за [F]всё\n[C]Вечная слава, вечная [G]радость,\n[Am]вечная жизнь в [F]Тебе"
+  },
+  {
+    "id": "s9",
+    "title": "Благодарю Тебя, Иисус",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Благодарю Тебя, Иисус.\n[F]Благодарю [C]Тебя, [G]Иисус\n[C]Благодарю [G]Тебя, [Am]Иисус\n[F]Просто я [C]благодарю\n[F]Просто я [G]благодарю\n[Припев]\n[C]За [G]Голгофу, за [Am]кровь\n[F]Я [C]Тебя [G]благодарю\n[C]За Воскресенье [G]Твое,\n[F]За [G]победу [C]Твою\n[C]Слава, [G]слава [F]Тебе,\n[C]За Голгофу [F]и за [G]кровь.\n[C]Слава, [G]слава [F]Тебе,\n[C]За жизнь [G]Твою, Иисус [C]Христос!"
+  },
+  {
+    "id": "s10",
+    "title": "Будем петь, петь, петь",
+    "artist": "",
+    "key": "C#m",
+    "lyrics": "Будем петь, петь, петь\nс благодарными сердцами\n[C#m]Петь, петь, петь вместе с небесами\n[H]Воспевать хвалу и [A]славить [E]Иисуса!\n[E]Великий и Прекрасный, народы все и царства\n[C#m]Перед Тобой склонятся,\n[H]Божий Сын лишь для Тебя\n[A]Лишь для Тебя вся жизнь [E]моя\n[E]Ты нас освобождаешь с любовью направляешь\n[C#m]Огонь в нас зажигаешь, Божий Сын!\n[H]Лишь для Тебя,\n[A]Лишь для Тебя вся жизнь [E]моя\n[Куплет 1]"
+  },
+  {
+    "id": "s11",
+    "title": "Богу молюсь я в пустыне",
+    "artist": "",
+    "key": "Bm",
+    "lyrics": "Богу молюсь я в пустыне.\n[Hm]Когда все [A]иссохло [G]внутри.\n[Hm]Голод [A]и жажду мой [G]Бог [D]утолит.\n[Hm]Все нужды [A]восполнит [G]мои.\n[Куплет 2]\n[Hm]Богу [A]молюсь я в [G]проблемах.\n[Hm]Когда боль так [A]трудно [G]терпеть.\n[Hm]Ценнее, чем [A]золото - [G]вера, [D]когда,\n[Hm]Её закалит [A]Бог в [G]огне.\n[Припев]\n[D]Снова хвалу я [A]вознесу.\n[G]Против меня бессилен враг [D]любой.\n[A]Радостно я [Hm]провозглашу.\n[G]В Боге моя [D/A]победа [A]- [Hm]Он [A]со [G]мной.\n[Куплет 3]\nБогу молюсь я в сражении.\nЕще мой триумф не настал.\nНо буду я как сонаследник Христу.\nВ Его обещаньях стоять.\n[Мост]\n[Dsus4]В жизни [D]моей. В каждый [Dsus4]период\n[Hm]Ты - мой Господь. По этой причине [A]пою.\n[G]Бог, я Тебе [D]поклоняюсь.\n[Куплет 4]\nБогу молюсь я и в жатве,\nКогда есть избыток во всём\nВерю, что Бог наполняет, чтоб вновь\nМы сеяли семя своё"
+  },
+  {
+    "id": "s12",
+    "title": "Бог, Ты здесь, среди нас, Господь",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Бог, Ты  здесь, среди нас,  Господь!\n[G]Склоняюсь я, склоняюсь [Am]я\n[F]Бог, Ты здесь! Ходишь среди [C]нас!\n[G]Тебе хвала! Тебе [Am]хвала!\n[ПРИПЕВ]\n[F]Бог сильный! Бог Чудотворный!\n[C]Верный в Слове! Царь Всемогущий!\n[G]Наш Бог! Это Ты, наш [Am]Бог!\n[КУПЛЕТ]\n[F]Бог, Ты здесь! Касаешься [C]сердец!\n[G]Тебе хвала! Тебе [Am]хвала!\n[F]Бог, Ты здесь! Исцеляешь [C]нас!\n[G]Тебе хвала! Тебе [Am]хвала!\n[КУПЛЕТ]\n[F]Бог, Ты здесь! Ты меняешь [C]нас!\n[G]Тебе хвала! Тебе [Am]хвала!\n[F]Бог, Ты здесь! Чтоб судьбы [C]изменить!\n[G]Тебе хвала! Тебе [Am]хвала!\nЗАПЕВ:\n[F]Это Ты, наш Бог! Это Ты, наш [C/E]Бог!\n[G]Это Ты, наш Бог! Это Ты, наш [Am]Бог!\n[БРИДЖ]\n[F]Если трудно идти мне - Ты рядом!\n[C]Если трудно дышать мне - Ты рядом!\n[G]Ты каждый миг, каждый миг рядом!\n[Am]Ты каждый миг, каждый миг рядом!\n[Припев]"
+  },
+  {
+    "id": "s13",
+    "title": "Благо, благо, благодать",
+    "artist": "",
+    "key": "A",
+    "lyrics": "Благо, благо, благодать\n[A]О, мой Отец решил мне [E]дать\n[F#m]Это всё из-за [D]Иисуса\n[A]Я буду петь и [E]танцевать\n[Куплет 1]\n[A]Незаслуженно [D]прощён\n[A]Незаслуженно [E]спасён\n[F#m]Незаслуженно [D]любим\n[A]Потому что, [E]я Твой [A]сын\n[Куплет 1]\n[A]Невозможно [D]заслужить\n[A]Невозможно мне [E]купить\n[F#m]То спасенье во [D]Христе,\n[A]Что Бог решил мне [E]подарить\n[Припев]"
+  },
+  {
+    "id": "s14",
+    "title": "Бог, я чувствую Тебя",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Бог, я чувствую Тебя,\n[Am]В каждом дуновенье ветра\n[G]Я знаю, Ты со [F]мной\n[C]Бог, я вижу [G/H]Тебя в закатах и [Am]рассветах\n[G]Ты радость мне [F]даёшь\n[Припев]\n[C]Восхищаюсь я и [G]превозношу\n[Am]Как прекрасен Ты, Тебя я [F]славлю\n[C/E]Восхищаюсь я и [G]превозношу\n[Am]Как прекрасен Ты, Тебя я [F]славлю\n[Куплет 2]\n[C]Бог, Ты путь мне [G/H]указал,\n[Am]И даровал [G]спасенье, жизнь Свою [F]отдал\n[C]Бог, уповаю на [G/H]Тебя\n[Am]Стою на Твоём [G]слове - Ты моя [F]скала.\n[Бридж]\n[F] Ты дал мне основание\n[G]В Тебе вся сила, Бог\n[Am]Держусь обетований я\n[C]И славлю вновь и вновь"
+  },
+  {
+    "id": "s15",
+    "title": "Воду в вино превратил",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Воду в вино превратил\n[Am]Слепые [F]глаза Ты [C]открыл\n[Dm]Нет таких Бог, нет как [G]Ты\n[Am]Ты нас из [F]праха [C]поднял\n[Am]Свет твой во [F]тьме [C]воссиял\n[Dm]Нет таких Бог, нет как [G]Ты\n[Припев]\n[Am]Наш Бог Великий, Он [F]Всемогущий\n[C]Бог, Ты превыше всего, что [G]дышит\n[Am]Наш Бог целитель, Всё в Его [F]силе.\n[C]Наш Бог, Наш [G]Бог\n[Куплет]\n[Am]Ты нас из [F]праха [C]поднял\n[Am]Свет твой во тьме [F]воссиял\n[Dm]Нет таких Бог, нет как [G]Ты\n[Мост]\n[Am]И если Бог с нами, кто [F]против\nнас восстанет?\n[C]И если Бог с нами, кто [G]может\nпротив быть?\n[G#m]   [E]   Н   [F]#\n[G#m]        [E]               Н"
+  },
+  {
+    "id": "s16",
+    "title": "Возлюбил я чертоги Твои",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Возлюбил я чертоги Твои,\n[F]Там нашёл я любовь и покой\n[C]             [G]                [Am]  Благодать наполняет сердце моёAm                                          [Em]\nТвоя мудрость, Господь, и Твой мир\n[F]Да пребудут навечно со мной\n[C]       [G] Только Тебе душа поёт\n[Припев: Am Em F Святый, Святый, вся земля]\n[C]Славой Твоей наполнена, о, [G]Бог\n[Am]         [Em]               [F]                    Святый, Святый, будет петь\n[C]сердце [G]моё вечно [Am]Тебе\n[Куплет 2]\n[Am]Ты - мой воздух, Тобой я [Em]дышу\n[F]Озаряет мой путь Божий свет\n[C]            [G]                [Am]  Твой елей освящает сердце моё\n[Am]Ты дал крылья, теперь я [Em]парю\n[F]Я с Тобой, и во мне страха нет\n[C]        [G]      Только Тебе душа поёт\n[Припев 1]"
+  },
+  {
+    "id": "s17",
+    "title": "В этом городе Ты",
+    "artist": "",
+    "key": "F",
+    "lyrics": "В этом городе Ты\n[F]Твори всё, что хочешь\n[C/E]Мы – дети Твои\n[F]Мы готовы, Боже\n[Куплет]\n[Am]Мы готовы к [G/H]чудесам\n[C]И ко всем [F]знамениям\n[Am]Мы готовы к [G/H]излиянию Духа [C]Твоего\n[Am]Мы готовы [G/H]принимать\n[C]И готовы [F]отдавать\n[Am]Мы идем к [G/H]великому [C]пробуждению\n[Припев 2]\n[Am]В этом городе [G/H]Ты\n[C]твори всё, что [F]хочешь\n[Am]Мы – дети [G/H]Твои\n[C]Мы готовы, [F]Боже\n[Бридж]\n[Am]Ты изливаешь [F]Своё присутствие [C]Бог\n[Em]На этот город\n[Куплет1]"
+  },
+  {
+    "id": "s18",
+    "title": "Возьми меня, как глину",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Возьми меня, как глину,\n[D]И возьми меня, как стрелу, –\n[A]Слепи из меня всё, что хочешь,\n[E]Запусти меня в цель Свою.\n[Припев]\n[F#m]Яви Свою [D]славу, [A]яви Свою силу, [E]Иисус.\n[F#m]Яви Свою [D]славу, [A]яви Свою силу, [E]Иисус.\n[Бридж]\n[F#m]Я верю в [D]Чудеса, верю в Божии [A]Слова\n[E]Я верю в Божию любовь через Кровь,\n[F#m]Святую Кровь.\n[D]И всё изменится вокруг потому,\n[A]что Бог – мой Друг,\n[E]Потому, что Он со мной,\n[F#m]Он – мой Герой, [D]Иисус [A]– [E]Герой!\n[Куплет 1]"
+  },
+  {
+    "id": "s19",
+    "title": "В трепете ждали долгие годы",
+    "artist": "",
+    "key": "E",
+    "lyrics": "В трепете ждали долгие годы\n[E]Тебя ожидали земли все [Esus]народы\n[H]Но вдруг Ты пришёл словно свет в [C#m]темноте\n[A]В городе [H]Вифлеем\n[Припев]\n[E]О, в это время в ночь Рождества\n[A]Ангелы в небе возносят [H]Царя\n[C#m]Мир на земле и радость [E/G#]вокруг\n[A]Спаситель пришёл к [H]нам\n[E]Здесь Небеса\n[Куплет 2]\n[E]Взгляни на Иисуса, от вечности [Esus]Бога\n[E]Взгляни на Мессию, Он - в небо [Esus]дорога\n[H]О, посмотри, Он сияет так [C#m]ярко\n[A]В городе [H]Вифлеем\n[Бридж]\n[E]Хвала вся и слава\n[A]Да будет Твоя, да будет [H]Твоя\n[C#m]Склонимся пред [E/G#]Ним мы\n[A]И славим Царя, славим [H]Царя\n[Припев]\n[E]О, в это время в ночь Рождества\n[Esus]Ангелы в небе возносят [E/H]Царя\n[C#m]Мир на земле и радость [E/G#]вокруг\n[A]Спаситель пришёл к [H]нам\n[E]О, в это время в ночь Рождества\n[A]Ангелы в небе возносят [H]Царя\n[C#m]Мир на земле и радость [E/G#]вокруг\n[A]Спаситель пришёл к [H]нам\n[E]Здесь Небеса\n[A]Здесь [H]Небеса\n[E]Здесь Небеса\n[Куплет 1]"
+  },
+  {
+    "id": "s20",
+    "title": "Вся жизнь моя у ног Твоих",
+    "artist": "",
+    "key": "Am7",
+    "lyrics": "Вся жизнь моя у ног Твоих,\n[Am7]Ведь нужен мне один лишь Ты.\n[G]Зову Тебя, и Ты даёшь [F]ответ.\n[C]Поможешь в трудностях моих,\n[Am7]Всегда на первом месте Ты.\n[G]Смиряю для Тебя я жизнь [F]свою.\n[Припев]\n[C]Один путь - [G]Иисус!\n[Am7]Я живу лишь для Тебя, Господь [F]мой.\n[C]Один путь - [G]Иисус!\n[Am7]Я живу лишь для Тебя, Господь [F]мой.\n[Проигрыш]\n[Am7]2 [F]куплет:\n[C]Ты со мной всегда везде\n[Am7]Благодать Твоя во мне\n[G]Ты каждый миг во всём хранишь [F]меня\n[C]Вчера сегодня и всегда\n[Am7]Ты неизменен никогда\n[G]И будет так во веки без [F]конца\n[Припев]\n[C]Один путь - [G]Иисус!\n[Am7]Я живу лишь для Тебя, Господь [F]мой.\n[C]Один путь - [G]Иисус!\n[Am7]Я живу лишь для Тебя, Господь [F]мой.\n[Бридж]\n[C]Бог, Ты наш путь и жизнь и [G]истина\n[Am7]Живем по вере мы [F]всегда\n[Am7]Наш Бог, [G]живем мы для [F]Тебя\n[Куплет]"
+  },
+  {
+    "id": "s21",
+    "title": "Все святые и ангелы",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Все святые и ангелы\n[F]Слонились пред [G]Тобой\n[F]Сняв свои [G]венцы\n[C/E]Перед Агнцем [F]Божьим, [G]Ему [C]поют\n[Припев]\n[C]Ты достоин, Бог, всего\n[G]Ты достоин, Бог, всего\n[F]Ты начало и конец, Ты величия [G]венец\n[C]Ты достоин славы\n[Бридж]\n[C]День и ночь, ночь и день буду\n[Em]славить Тебя\n[Am]День и ночь, ночь и день буду славить [F]Тебя\n[C]День и ночь, ночь и день буду славить [G]Тебя\n[Am]День и ночь, ночь и [F]день\n[Вступление: G Em Hm]\n[Куплет 1]"
+  },
+  {
+    "id": "s22",
+    "title": "Вoт нoвый дeнь нacтaл",
+    "artist": "",
+    "key": "Em",
+    "lyrics": "Вoт нoвый дeнь нacтaл\n[Em]Кoтopый Tы coздaл\n[Hm]Я кaждый миг живу Toбoй, Ииcуc\n[G]Я знaю вepeн Tы, и буду пeть oб [Em]этoм\n[Hm]Tы вceмoгущий Бoг\n[G]Пуcть o Teбe узнaeт вecь миp\n[Припев]\n[G]Ииcуc, лишь Tы, всё, чтo мнe тaк [Em]нужнo\n[Hm]Ииcуc, Tы мoй [A]иcкупитeль\n[G]Ииcуc, любoвь Tвoя [Em]oкpыляeт\n[Hm]Любoвь Tвoя мeняeт, [A]мeняeт [G]жизнь\n[Hm]O, [A]Ииcуc O, Ииcуc [G]O, [Em]Ииcуc\n[Куплет 2]\n[G]Я дoлгo жил вo тьмe, теперь я вижу [Em]свет\n[Hm]И я cпacён чepeз cвятoй Tвoй кpecт\n[G]Tяжёлым был мoй гpex, но благодать [Em]Твоя\n[Hm]Вcё пoбeдилa и тeпepь иcкуплeн кpoвью\n[G]XpиcтaПрипев:\n[G]Ииcуc, лишь Tы, всё, чтo мнe тaк [Em]нужнo\n[Hm]Ииcуc, Tы мoй [A]иcкупитeль\n[G]Ииcуc, любoвь Tвoя [Em]oкpыляeт\n[Hm]Любoвь Tвoя мeняeт, [A]мeняeт [G]жизнь\n[Hm]O, [A]Ииcуc O, Ииcуc [G]O, [Em]Ииcуc\n[Бридж 4 р]\n[G]Буду пeть, буду пeть я о Твоей [Em]силе\n[Hm]Вocпoю, вocпoю я, о, Великий [A]Бог\n[Вступление: A F#m C#m]\n[Куплет 1]"
+  },
+  {
+    "id": "s23",
+    "title": "Говори со мной, говори",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Говори со мной, говори\n[C]Сердце мое [Em]открыто для [Am]Тебя\n[Am]Говори со мной, [F]говори\n[C]Словом Своим открой [Em]мои [Am]глаза\n[Am]Говори, Бог, как хочешь [F]Ты\n[C]Через тишину и [Em]шепот [Dm]ветра\n[Em]Открой мне [F]Себя\n[Dm]Открой мне [F]Себя\n[Бридж]\n[Am]Я [G/H]прежним не [C]буду\n[Dm]Твое присутствие меняет [Am]всё\n[G/H]Я прежним не [C]буду\n[Dm]Во мне теперь, Бог, Слово [Am]Твоё"
+  },
+  {
+    "id": "s24",
+    "title": "Добрый Отец Ты благодать излил",
+    "artist": "",
+    "key": "A",
+    "lyrics": "Добрый Отец Ты благодать излил\n[A]Вывел [E]меня из [C#m]темноты в Твой [H]мир\n[H]Ты [C#m]милосердный\n[H]моя помощь [E]в каждый [A]миг\n[A]Я могу лишь [H]петь, что [E]Ты\n[ПРИПЕВ]\n[H]Верен [A]всегда\n[H]Верен [A]вовеки будешь [E]Ты\n[H]Верен [A]всегда\n[H]Все [C#m]обещанья Твои да [A]и [E]аминь\n[H]Все [C#m]обещанья Твои да [A]и [E]аминь\n[КУПЛЕТ]\n[H]Чудный [C#m]Спаситель Ты [H]ведешь [E]меня\n[A]Вытащил из [E]пепла и [C#m]разбил всю [H]брань\n[H]Мой [C#m]Искупитель Ты меня [H]освободил\n[A]И я могу лишь [H]петь, что [E]Ты\n[БРИДЖ]\n[H]Мой [C#m]покой - [A]обещанья [E]Твои\n[H]Уверен [C#m]я в Твоей [A]верности."
+  },
+  {
+    "id": "s25",
+    "title": "День и ночь, ночь и день буду славить Тебя",
+    "artist": "",
+    "key": "Em",
+    "lyrics": "День и ночь, ночь и день буду\nславить Тебя\n[Am]День и ночь, ночь и день буду славить [F]Тебя\n[C]День и ночь, ночь и день буду славить [G]Тебя\n[Am]День и ночь, ночь и [F]день\n[Куплет]\n[F]Все святые и [G]ангелы\n[F]Слонились пред [G]Тобой\n[F]Сняв свои [G]венцы\n[C/E]Перед Агнцем [F]Божьим, [G]Ему [C]поют\n[Припев]\n[C]Ты достоин, Бог, всего\n[G]Ты достоин, Бог, всего\n[F]Ты начало и конец, Ты величия [G]венец\n[C]Ты достоин славы"
+  },
+  {
+    "id": "s26",
+    "title": "Дух Святой, пусть горит Твой огонь р",
+    "artist": "",
+    "key": "F#m7",
+    "lyrics": "Дух Святой, пусть горит Твой огонь - 2р\n[F#m7]Дух [D]Святой, [G#]пусть [F#m]горит Твой [D]огонь - [A]2р\n1 куплет:\n[F#m]Когда я славлю Бога, [D]внутри как будто [A]жар\nКогда я славлю Бога, начинается пожар\nИ раздувает ветер пламя все сильней\nСияет слава Божья на голове моей\n2 куплет:\nКогда я славлю Бога внутри так горячо\nКогда я славлю Бога в костях моих печет\nТы погружаешь сердце в Свой Святой огонь\nПереплавляешь меня в образ Твой\n[Предприпев]\n[A]Горит, горит, горит огонь внутри\n[F#m]Огонь Святого [D]Духа, огонь Твоей [A]любви\n[F#m]Горит, горит, горит [D]огонь [A]внутри\n[F#m]Огонь Святого Духа, огонь [D]Твоей [A]любви\n3 куплет:\n[F#m]Когда я славлю Бога, нет [D]больше серых [A]стен\nКогда я славлю Бога, мой светильник светит всем\nИ надо мной восходит, слава, как заря\nПусть видит мир во мне свет Божьего сияния\n[Предприпев]\n[A]Горит, горит, горит огонь внутри\n[F#m]Огонь Святого Духа, огонь [D]Твоей [A]любви\n[F#m]Горит, горит, горит [D]огонь [A]внутри\n[F#m]Огонь Святого Духа, огонь [D]Твоей [A]любви\n[Припев]\n[A]Дух [D]Святой, [A]пусть [G#]горит [F#m]Твой [D]огонь - [A]2р\n[F#m7]Дух [D]Святой, [G#]пусть [F#m]горит Твой [D]огонь - [A]2р\nПрогрыш:\n[D]Бридж:\n[D]Плавишь, Ты плавишь, [A/C#]меня, как [E]золото\n[D]Преображаешь, в [A/C#]образ [E]Христа\n[Вступление: F C G Am]\n[F]Куплет [G]1:"
+  },
+  {
+    "id": "s27",
+    "title": "Есть внутри меня надежда",
+    "artist": "",
+    "key": "Bm",
+    "lyrics": "Есть внутри меня надежда\n[Hm]Ведь Ты, [G]Господь, живёшь во [D]мне\n[Hm]Пусть буду [G]я лишь тем, кем видишь [D]меня\n[C]Хочу я [G]больше знать [D]Тебя,\n[C]Хочу я [G]больше знать [A]Тебя\n[Hm]Своим [G]присутствием [D]наполни,\n[Hm]Дай видеть [G]мне лицо [D]Твоё\n[Hm]Только б жить [G]мне вечно в объятьях [D]любви\n[C]Нужен в [G]жизни только [D]Ты,\n[C]Нужен в [G]жизни только [A]Ты\n[Припев]\n[D]Я живу лишь для Тебя [G]и вся жизнь [Hm]моя\n[A]в руках [G]Твоих\n[D]Я живу лишь для Тебя, [G]и через [Hm]меня\n[A]Ты изменишь [G]мир\n[Hm]Нужен [G]мне лишь [D]Ты\n[Мост]\n[D]Мне так нужен, [A/C#]мне так нужен Ты [Hm],\n[G]Иисус\n[Куплет]"
+  },
+  {
+    "id": "s28",
+    "title": "Есть сила в имени Иисуса",
+    "artist": "",
+    "key": "F#m",
+    "lyrics": "Есть сила в имени Иисуса\n[F#m]Есть [D]сила в имени [A]Иисуса\n[F#m]Есть [D]сила в имени [A]Иисуса\n[F#m]Цепи разбить, цепи [D]разбить, цепи [A]разбить\n[F#m]Цепи разбить, цепи [D]разбить, цепи [A]разбить\n[Куплет]\n[F#m]В жертву Себя за нас [D]отдал,\n[A]Цена велика на кресте [E]страдал\n[F#m]Нас искупил, [D]дорогу в небо [A]открыл.\n[F#m]В жертву Себя за нас [D]отдал,\n[A]Цена велика на кресте [E]страдал\n[F#m]Нас искупил, [D]дорогу в небо [A]открыл.\n[Куплет]"
+  },
+  {
+    "id": "s29",
+    "title": "Жизнь Свою отдал на кресте за мой грех",
+    "artist": "",
+    "key": "C#m",
+    "lyrics": "Жизнь Свою отдал на кресте за мой грех,\n[C#m]Кровь Свою пролил на [H]алтарь, и спас [A]всех.\n[C#m]В небе навсегда [H]записал моё [A]имя.\n[C#m]Ты для меня [H]всё, [A]Ты для меня [H]всё.\n[Припев]\n[E]Всё, что мне надо -\n[H]Знать Тебя и быть с Тобой рядом.\n[C#m]Моё сердце изменил навсегда,\n[A]Для Тебя поёт душа моя.\n[Бридж]\n[A]Я в присутствии Твоём руки [H]поднимаю.\n[C#m]Ты в сердце [G#m]моём.\n[A]Всей душой Тебя, мой Бог, [H]благословляю.\n[C#m]Ты - всё [G#m]во [H]всём.\n[Куплет]"
+  },
+  {
+    "id": "s30",
+    "title": "Жертвой Иисуса Христа",
+    "artist": "",
+    "key": "Em",
+    "lyrics": "[G]                                [D]                Жертвой Иисуса Христа\n[Em]Я спасён от [C]огня.\n[G]Ранами Иисуса [D]Христа\n[Em]Я исцелён – нет [C]сомнения!\n[G]Кровью Иисуса [D]Христа\n[Em]Я омыт от [C]греха.\n[G]Через смерть Иисуса [D]Христа\n[Em]Мне дана жизнь [C]вечная.\n[Припев]\nБлагослови душа моя Господа!\nИ вся внутренность моя –\nСвятое имя Его.\nБлагослови душа моя Господа,\nИ не забывай всех благодеяний Его!\n[Куплет 2]\nЯ верю в Голгофскую жертву,\nКровь святую Твою, в жизнь вечную.\nВ то, что имя моё записано на небесах.\nКонец:    [G] [F] [C] [Cm]    [G] [F] [C] [Cm]\n[G]Куплет [C]1:"
+  },
+  {
+    "id": "s31",
+    "title": "Здесь опять я преклоню себя",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Здесь опять я преклоню себя,\n[D]Тебе всё отдам, Тебе всё [C]отдам\n[Em]К Себе сейчас, Бог, приближай [G]меня,\n[D]Отчаянно я жажду [C]Тебя.\n[Em]Я [G]склоняюсь...\n[Куплет 2]\n[Em]Голод мой Своей благодатью, [G]Бог\n[D]Сейчас утоли, мой дух [C]напои\n[Em]Тянусь душой, верю, крик слышишь [G]мой\n[D]Прошу говори, со мной [C]говори\n[Припев]\n[Em]Я склоняюсь, я [G]склоняюсь\n[Am]Чтобы познать Тебя, ещё больше знать [C]Тебя\n[Бридж]\n[C]Сильным ветром [G]Ты во мне Иисус [D]дыши\n[Am]В жизни моей волей [Em]Своей правь [D]Ты\n[C]Словно мощный [G]шторм потряси меня, [D]Бог\n[Am]В жизни моей волей [Em]Своей правь [D]Ты"
+  },
+  {
+    "id": "s32",
+    "title": "Иисус, Ты любовь моя",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Иисус, Ты любовь моя,\n[G]Иисус, не оставлю я [A]Тебя\n[D]Из темноты Ты [A]забрал [Hm]меня,\n[G]дал мне жизнь и теперь знаю [A]я.\n[D]В Тебе я [A]нуждаюсь, я люблю [Hm]Тебя\n[G]навеки будь со [A]мной.\n[D]Спаситель, [A]мой лучший [Hm]друг,\nпрославлять Тебя\n[G]я буду вновь и [A]вновь."
+  },
+  {
+    "id": "s33",
+    "title": "Иисус, в начале Ты был Словом",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Иисус, в начале Ты был Словом,\n[F]со Всевышним [Am]был [G]Одно.\n[Am]И слава, скрытая [G/H]в [C]творении,\n[F]в Тебе явилась, [Am]наш [G]Христос.\n[Припев]\n[C]Твоё Имя прекрасно, Бог,\n[G]Твоё Имя прекрасно, Бог,\n[Am]Ты Царь [G]мой, Иисус [F]Христос.\n[C/E]Твоё Имя прекрасно, Бог,\n[G]ни с чем не сравнить Его!\n[Am]Твоё Имя прекрасно, Бог.\n[G]Иисус - Господь [F]мой!\n2 куплет:\n[C]Мечтал Ты в вечности быть с нами.\n[F]Иисус, Ты Сам [Am]спустился к [G]нам.\n[Am]Твоя любовь покрыла [G/H]грех мой [C]-\n[F]теперь мы [Am]вместе [G]навсегда!\n[Припев]\n[C]Твоё Имя чудесно, Бог,\n[G]Твоё Имя чудесно, Бог,\n[Am]Ты Царь [G]мой, Иисус [F]Христос.\n[C/E]Твоё Имя чудесно, Бог,\n[G]ни с чем не сравнить Его!\n[Am]Твоё Имя чудесно, Бог.\n[G]Иисус - Господь мой! – 2 [F]раза\n[Мост]\n[F]Из мёртвых воскрес Ты, нет больше [G]завесы!\n[Am7]Заставил умолкнуть грех и [Em7]смерть\n[F]С триумфом победы к жизни восстал [G]Ты,\n[Am7]не заглушить хвалы [G]небес.\n[F]Нет Тебе равных, Тебе нет [G]подобных,\n[Am7]сейчас и вовеки правит [Em7]Бог\n[F]Твоё, Бог, всё Царство, Твоя, Бог, вся [G]слава,\n[Am7]Твоё имя превыше всех [G]имён\n[Припев]\nВ Твоём имени сила, Бог,\nВ Твоём имени сила, Бог,\nТы Царь мой, Иисус Христос.\nВ Твоём имени сила, Бог!\nЕму покорится всё!\nВ Твоём имени сила, Бог\nИисус - Господь мой – 3 раза\nС                      [F]"
+  },
+  {
+    "id": "s34",
+    "title": "Как воздух для меня",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Как воздух для меня,\n[C]Как воздух для [F]меня\n[C]Присутствие [Am]Твоё,\n[F]что [Am]живёт во [G]мне.\nС                   [F]\nКак мой насущный хлеб,\nС                    [F]\nКак мой насущный хлеб,\n[C]Каждое [Am]слово\n[Am]из уст [G]Твоих.\n[Припев]\n[C]И [Am]я\n[F]в Тебе [C]нуждаюсь\n[C]И [Am]я\n[F]потерян без [C]Тебя"
+  },
+  {
+    "id": "s35",
+    "title": "Каждый день ищу Тебя",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Каждый день ищу Тебя,\n[F]Чтоб Ты был силой в жизни [C]моей\n[C]Я надеюсь на [A#]Тебя,\n[F]Своей любовью меня [C]согрей\n[Припев]\n[C]Будь силой моей, будь силой [A#]моей,\n[F]будь силой моей, [C]Господь!"
+  },
+  {
+    "id": "s36",
+    "title": "Когда взываю знаю, услышишь меня",
+    "artist": "",
+    "key": "Bm",
+    "lyrics": "Когда взываю,\nзнаю, услышишь меня\n[D]Когда зову я, Ты отвечаешь – вот [Hm]Я\n[D]Когда я болен, Ты исцеляешь [Hm]меня\n[D]Когда слабею, Ты подкрепляешь [Hm]меня\n[G]ПРИПЕВ:\n[D]Любовь Твоя велика\n[Hm]Любовь Твоя велика ко мне, [G]Бог\n[D]Любовь Твоя так сильна\n[Hm]Любовь Твоя привела меня к [G]Тебе\n[МОСТ]\n[D]Ты поднимаешь, любишь, ценишь\n[Em]Ты восстановишь, [Hm]лечишь, [G]правишь\n[D]Ты поднимаешь, любишь, ценишь\n[Em]Ты восстановишь, [Hm]лечишь, [G]правишь"
+  },
+  {
+    "id": "s37",
+    "title": "Кто тьму разрушил, греха проклятье?",
+    "artist": "",
+    "key": "Eb",
+    "lyrics": "Кто тьму разрушил, греха проклятье?\n[Eb]Кто любит вечно, Кто не оставит?\n[Gm]Господь, Царь [F]славы\n[Eb]и Царь для всех царей.\n[B]Кто громом славы мир сотрясает\n[Eb]Пред Кем трепещет душа живая\n[Gm]Господь, Царь [F]славы\n[Eb]и Царь для всех царей.\n[ПРИПЕВ]\n[B]О, эта благодать. О, вечная [Eb]любовь.\n[Gm]Ты принял на себя мой крест и мой [F]позор\n[B]Ты Свою жизнь отдал меня [Eb]освободил\n[Gm]Иисус, я буду петь [F]о Твоей [B]любви.\n2  КУПЛЕТ:\nКто убирает из жизни хаос?\nКто стал Отцом нам, назвал сынами\nГосподь, Царь славы. Господь, Царь славы.\nКто правит миром в суде и правде\nИ ярче солнца свет Его славы?\nГосподь, Царь славы и Царь для всех царей.\n[БРИДЖ]\n[B]Агнец Божий заклан за нас.\n[Eb]Агнец Божий славу достоин принять.\n[B]Агнец Божий заклан за нас.\n[Eb]Агнец Божий славу достоин принять.\n[B]Агнец Божий заклан за нас.\n[Eb]Агнец Божий славу достоин принять.\n[Gm]Агнец Божий заклан за нас. Он [B]достоин.\n[Eb]Достоин. Достоин Он.\n[B]1 [Eb]КУПЛЕТ:"
+  },
+  {
+    "id": "s38",
+    "title": "Кто же я, что Всевышний Царь",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Кто же я, что Всевышний Царь\n[Am]Меня [G]призвал\n[C]Я блуждал, но любовь Твоя\n[Am]Меня [G]нашла, О, [Am]меня [G]нашла\n[Припев]\n[C]Дал свободу мне Иисус [G]навек\n[Am]Я [G]дитя [F]Царя, знаю [C]я\n[C]В доме есть всегда место для [G]меня\n[Am]Я [G]дитя [F]Царя, знаю [C]я\n[Куплет 2]\n[C]Я свободен, искуплен Им, Он [Am]милостив\n[C]Был я в рабстве греха, но Ты\n[Am]Жизнью [G]заплатил, [Am]за мои [G]грехи\n[Припев]\n[Мост]\n[Am]Богом избран, не [G/H]оставлен\n[C]Я знаю, кто я в [F]Тебе\n[Am]Твоим другом был я [G/H]назван\n[C]Я знаю, кто я в [F]Тебе\n[Am]Я знаю, [G/H]кто я в [F]Тебе"
+  },
+  {
+    "id": "s39",
+    "title": "Мой Господь Ты моё дыхание",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Мой Господь - Ты моё дыхание\n[Am]Без Тебя я не [F]могу\n[C]Мой Господь – [G/H]надежда упование [Am]моё\n[F]Без Тебя я не могу\n[Предприпев]\n[Dm]Превозносить не перестану Имя Твоё [F]Господь!\n[Припев]\n[C]Поклонюсь Тебе! Ты достоин [G]Славы\n[Am]всей!\n[F]О Осанна Вышних! Я в руке [C]Твоей\n[Бридж]\n[Am]На моих устах хвала [F]Тебе!\n[C]Господь Святой! Господь [G]Святой!\n[E]Аллилуйя!"
+  },
+  {
+    "id": "s40",
+    "title": "Меняю печали, меняю болезни",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Меняю печали, меняю болезни,\n[C]Я избавляюсь от [F]них, ради радости [Am]в\n[G]Господе!\n[C]Меняю [F]позор [G]свой, [C]меняю всю [Am]боль,\n[C]Я избавляюсь от [F]них, ради радости [Am]в\n[G]Господе!\n[Припев]\n[C]Да, Бог, [F]да, Бог, [Am]да, да [G]Бог\n[C]Аминь!\n[Мост]\n[C]Я подавлен в борьбе, [F]но [Am]не [G]сокрушен,\n[C]На войне как на [F]войне, но [Am]я не [G]забыт.\n[C]            [F]      [Am]        [G]  Я повержен вниз, но не поражен,\n[C]                [F]        [Am]        [G] Я знаю радость во Христе победит,      GИ все, что Иисус обещал устоит,\n[Ab]                                FЕго радость будет силой моей.\n[C]Да, Бог, [F]да, Бог, [Am]да, да [G]Бог\n[D]Да, Бог, [G]да, Бог, [Hm]да, да [A]Бог\n[E]Да, Бог, [A]да, Бог, [C#m]да, да [H]Бог\n[Куплет 1]"
+  },
+  {
+    "id": "s41",
+    "title": "Мне так спокойно, ведь Ты со мной",
+    "artist": "",
+    "key": "Bm",
+    "lyrics": "Мне так спокойно, ведь Ты со мной\n[Hm]Твоя [A]любовь [D]никогда [Hm]не [A]перестаёт\n[A]В сердце [D]моём.\n[Припев]\n[Hm]Так [G]близко, я верю, [A]Ты держишь [D]меня\n[Hm]В Твоих [G]руках [A]я буду [D]всегда.\n[Куплет 2]\n[Hm]Ты [A]отдал [D]жизнь из-за [Hm]вечной [A]любви.\n[Hm]Освободил, [D]указал [A]путь [G]мне – [A]найден [D]я.\n[Мост]\n[G/H]Всю мою жизнь Ты был рядом со [D]мною,\n[F#m]Даже когда не видел [Hm]Тебя.\n[G]Все эти годы [D]Ты открывал мне [C]Себя,\n[A]Больше Себя.\n[Куплет]"
+  },
+  {
+    "id": "s42",
+    "title": "Мой возлюбленный",
+    "artist": "",
+    "key": "B",
+    "lyrics": "Мой возлюбленный\n[B]Как прекрасен Ты\n[F]Среди тысяч и [C/E]тысяч\n[Припев]\n[B]Иешу-у-у-а\n[Бридж 1]\n[B]Здесь твоё [B/A]Царство\n[B]Здесь Твоя [C]сила\n[Dm]Здесь Твоя слава\n[Am]Навеки Аминь\n[Бридж 2]\n[B]Здесь небеса\n[C]Здесь [Dm]небеса\n[B]Здесь небеса\n[C]Здесь [Dm]небеса\n[Куплет]"
+  },
+  {
+    "id": "s43",
+    "title": "Мы идём нe oдни",
+    "artist": "",
+    "key": "Em",
+    "lyrics": "Мы идём нe oдни,\n[Em]Вeдёт нac к жизни Бoг [A]любви.\n[D]Oднoй ceмьeй мы [A]cтaли вo [Hm]Xриcтe.\n[Em]Пуcть мир любoвь\n[A]Увидит в [A7]пoлнoтe.\n[D]Будeм [A]вмecтe дo [Hm]кoнцa,\n[Em]Гoрят любoвью в нac [A]ceрдцa.\n[D]Дaй руку [A]мнe,\n[Hm]Пуcть мир увидит [Hm/A]внoвь\n[G]Кaк вeликa [A]Xриcтa [D]любoвь.\n[Припев]\n[D]Мы вo Xриcтe - oднa [G]ceмья,\nEгo любoвь здecь вижу я.\n[D]Мы вмecтe мoжeм мнoгo,\n[E]Вoзлюбим жe друг другa,\n[G]Мы вo Xриcтe [A]- oднa [D]ceмья!\nС"
+  },
+  {
+    "id": "s44",
+    "title": "Наш Бог так Бог так велик, пой со мной",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Наш Бог так Бог так велик, пой со мной\n[Am]Наш Бог так велик, пусть видят все\n[F]Наш Бог, [G]наш Бог так [C]велик\n[Мост 1]\n[C]Аллилуйя, [Am]аллилуйя, [F]аллилуйя, [G]правит [C]Бог\n[Мост 2]\nС\nТвоё имя выше всех\n[Am]Ты достоин славы всей\n[F]И душа поёт – наш [G]Бог так [C]велик"
+  },
+  {
+    "id": "s45",
+    "title": "На кресте распятый Божий Сын",
+    "artist": "",
+    "key": "C",
+    "lyrics": "На кресте распятый Божий Сын\n[C]страдал за наши [G]грехи.\n[Dm]Своей смертью смерть [Am]победил,\n[C]сокрушив силы [G]тьмы.\n[Dm]И на третий [Am]день воскрес, [C]нас [G]оправдал\n[Dm]И из смерти в вечную [Am]жизнь\n[C]путь нам [G]показал!\n[Припев]\n[Dm]Ибо [Am]благ [C]Господь, милость Его [G]вовек!\n[Dm]Ибо благ [Am]Господь, милость Его [G]вовек!\n[Куплет 2]\n[Dm]Благодать на [Am]благодать,\n[C]Иисус нам [G]дал\n[Dm]И из смерти в вечную [Am]жизнь\n[C]Путь нам [G]показал!\n[Бридж]\n[Dm]Благ наш [Am]Господь! [C]Благ наш [G]Господь!\n[Dm]Благ наш [Am]Господь! [C]Милость Его [G]вовек!\nС        [G]     [Am]        [F]"
+  },
+  {
+    "id": "s46",
+    "title": "Наш Бог благ и милостив",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Наш Бог благ и милостив,\nС        [G]            [Am]     [F]\nНаш Бог всемогущий!\nС        [G]        [Am]                   [F]\nГосподь творит всё, что хочет\nС            [G]            [Am]     [F]\nНа небе и на земле.\n[Am]У меня есть [F]Бог, сотворивший [G]меня,\nПохожим на Себя\n[Am]У меня есть [F]Бог, который может [G]всё,\nВезде и всегда.\nС\nОн любит радовать меня,\n[G]Он любит удивлять меня,\nОн любит каждый день новое творить.\n[Am]Он любит всех людей, Он любит и [F]тебя,\n[G]                                                            С\nОн разрешает делать всё, кроме греха.\nС                                   [Am]"
+  },
+  {
+    "id": "s47",
+    "title": "На коленях перед троном",
+    "artist": "",
+    "key": "F",
+    "lyrics": "На коленях перед троном\nС                      [Am]\nЯ нашел любовь свою\nС                    [Am]\nНа коленях перед троном\n[F]Мне [G]вернули жизнь [C]мою\n[Куплет 1]\n[C]Сколько было дорог, что вели в [Am]никуда\n[C]Сколько было тревог - всё оставил здесь [Am]я\n[Куплет 2]\n[C]Сколько было друзей, но никто не [Am]помог\n[C]Сколько было идей, только что я [Am]смог?\n[Куплет 3]\n[C]Сколько дней пройдет, пронесутся [Am]года\n[C]Этот мир прейдёт, ноя буду [Am]всегда…\nС  [F]\n1 куплет:\nС                       [F]               [G]"
+  },
+  {
+    "id": "s48",
+    "title": "Нам в этот день рожден Спаситель",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Нам в этот день рожден\nСпаситель\nС           [F]             [G]           [F]         [C] [F] [G] [F]\nС Неба положен в дар в яслях Он\n[C]Дал людям [F]всей [G]земли надежду [F]Он\n[C]Радуется [F]весь [G]мир [F]на [C]Рождество\n[Припев]\n[C]Все громко сейчас [F]поем мы, что Он [G]–\n[F]родился\n[C]Царь нам рожден, мы [F]славим Его [G]–\n[F]родился\nС        [F]     [G]            [F]\nРадуйся и пой – родился\nС         [F]              [G]            [F]\nПрославляй со мной – родился\nС  [F]\n2 куплет:    [C]  [F]  [G]  [F]\nБлаговоление в Нем мир и покой\nРадуется весь мир на Рождество\n[Припев]\n[Куплет 1]"
+  },
+  {
+    "id": "s49",
+    "title": "Навсегда страх из жизни ушёл",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Навсегда страх  из  жизни  ушёл,\n[C]Ты позвал - я [D]пошёл.\n[Em7]Руки свои [G]возношу в [Dsus4]молитве [D]я.\n[Em7]Есть все причины, чтобы здесь [G]стоять,\n[C]Любовь Отца влечёт [D]меня.\n[Em7]Мои глаза так [G]хотят видеть [Dsus4]лишь [D]Тебя.\n[Припев]\n[Am7]Нужен мне лишь [C]Ты.\n[G]Нужен мне лишь Ты, Бог,\n[D]Лишь Ты, Бог.\n[Куплет 2]\n[Em7]Новый день - он опять [G]другой\n[C]Песню дал мне Дух [D]Святой\n[Em7]Вновь голос Твой [G]направляет [Dsus4]каждый [D]шаг\n[Em7]Где бы могла быть моя [G]душа\n[C]Если б Сын весь мир не [D]спас?\n[Em7]Знаю теперь - [G]я всегда в [Dsus4]Твоих [D]руках\n[Мост]\n[C]Твоя [G]Вселенная\n[C]И [G]всё на земле [D]Твоё."
+  },
+  {
+    "id": "s50",
+    "title": "О, Господь, как Ты благ",
+    "artist": "",
+    "key": "F",
+    "lyrics": "О,  Господь,        как Ты благ,\n[F]Как велика [G]Твоя милость к [C]нам,\n[C]О Господь, [Em]как Ты [Am]благ,\n[F7]Как велика [G]Твоя милость к [C]нам!\n[КУПЛЕТ 1]\n[Am7]И если сгущается тьма надо [D]мною,\n[Am7]И в страхе сжимается сердце [D]моё,\n[Am7]К Тебе одному, Господь, я [D]взываю,\n[F]Ты отвечаешь мне, и я пою [G]Тебе!\n[КУПЛЕТ 2]\n[Am7]Вся моя жизнь, Господь, пред [D]Тобою\n[Am7]Твоими путями я буду [D]ходить\n[Am7]На слово Твоё, Господь, [D]уповаю\n[F]                              GТы отвечаешь мне и я пою Тебе"
+  },
+  {
+    "id": "s51",
+    "title": "О, Иисус, как прекрасен Ты",
+    "artist": "",
+    "key": "C/E",
+    "lyrics": "О,  Иисус, как прекрасен Ты,\n[C/E]Как [F]велика [G/H]милость [C]Твоя\n[C/E]Ты со [F]мной во [G/H]все дни [C]мои,\n[C/E]Спаситель мой, [F]Тебе [G/H]хвала\n[Предприпев]\n[F/D]В жизни моей Ты сделал так [C/E]много\n[F/D]Я двери сердца распахнул,\n[G]Когда стоял Ты у порога\n[Припев]\n[C]Иисус, [F2]Иисус, [G]Иисус\n[F2]Ты живёшь во мне – 4 [C]р."
+  },
+  {
+    "id": "s52",
+    "title": "Объяснить Тебя – слов нет",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Объяснить Тебя – слов нет\n[D]Замирает дух во [A]мне.\n[Hm7]Всей душой [G]возглашаю,\n[D]что Ты Святой [A]Бог.\n[Hm7]Когда увижу я Твой [G]свет,\n[D]вдруг проблемы уйдут [A]все\n[Hm7]Я пленён Твоей [G]славой,\n[D]ведь Ты Святой [A]Бог\n[ПРЕДПРИПЕВ]\n[Hm7]Ты [A/C#]Святой [G]Бог\n[Hm7]Ты Святой [A/C#]Господь\n[ПРИПЕВ]\n[D]                                                  [A]                     Всей душой стремлюсь ещё сильней\n[G]жизнью [Hm7]всей являть Божью [A]славу.\n[D]В трудный миг я буду всё [A]сильней\n[G]жизнью [Hm7]всей являть Божью [A]славу\n[ПРОИГРЫШ 1: Hm7 | G | D | A]\n[КУПЛЕТ + ПРИПЕВ]\n[ПРОИГРАШ 2]\n[Hm7] | [G] | [D] | [A]  - 4 раза\n[Hm7] | [A/C]# | [G]  - 8 разБРИДЖ:\n[Em]Небеса [G]открой, пусть благодать [D]сойдёт,\n[Em]Открывай сердца [G]и нас [D]наполни\n[Em]Небеса [G]открой, пусть благодать [D]сойдёт,\n[Em]Открывай сердца, [G]открывай [A]сердца"
+  },
+  {
+    "id": "s53",
+    "title": "О, Иисус, Тебе хвала",
+    "artist": "",
+    "key": "D",
+    "lyrics": "О, Иисус, Тебе хвала\n[D]Прославляю [G]Твоё [A]Имя\n[D]Ты [G]сказал, что [A]никогда\n[D]Не [G]оставишь, не [A]покинешь\n[Припев]\n[D]На землю с [G]неба Ты [A]сошёл,\n[G]Путь [D]указать\n[D]От земли [G]на крест [A]взошёл\n[G]За грехи [D]страдать\n[D]Со креста [G]вошёл во [A]гроб,\n[Hm]А из гроба [A]в [G]небеса\n[A]О, Иисус, [D]Тебе [G]хвала"
+  },
+  {
+    "id": "s54",
+    "title": "Одно моё желанье величать Тебя",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Одно моё желанье величать Тебя\n[Am]Сердцем моим, [C]Господь, славлю [B]Тебя\n[C]Господь, всё во [Am]мне [Dm]воздаёт хвалу [G]Тебе\n[Am]Любовь [C]моя только [B]Тебе\n[Припев 1]\n[C]Сердце отдаю Тебе [G]и душу [Dm]мою\n[F]Лишь [G]одному [C]служу\n[C]В каждом шаге [G]моём\n[Dm]быть хочу с Тобой вдвоём\n[F]Да будет Твоя [G]воля во [Am]всём\n[Припев 2]\n[C]Сердце отдаю Тебе [G]и душу [Dm]мою\n[F]Лишь [G]одному [C]служу\n[C]В каждом шаге [G]моём\n[Dm]быть хочу с Тобой вдвоём\n[F]Да будет Твоя [G]воля во [C]всём"
+  },
+  {
+    "id": "s55",
+    "title": "О, благодать! Спасён Тобой",
+    "artist": "",
+    "key": "F#m",
+    "lyrics": "О, благодать! Спасён Тобой\n[F#m]Я из [H]пучины [E]бед.\n[A]Был мёртв - [A7]и чудом [D]стал [A]живой.\n[F#m]Был слеп [E]- и вижу [D]свет\n[Куплет 2]\nСперва внушила сердцу страх\nЗатем дала покой\nЯ скорбь души излил в слезах\nТвой мир течёт рекой\n[Припев]\n[A]Теперь [D]свобода мне [A]дана\n[D]В крови Христа я чистым [A]стал\n[D]И как река течет [F#m]всегда\n[E]Твоя любовь и [D]благодать\n[Куплет 3]\nСловам Господним верю я.\nМоя вся крепость в них:\nОн - верный щит. Он - часть моя\nВо всех путях моих\n[Куплет 4]\nПройдут десятки тысяч лет.\nЗабудем смерти тень,\nА Богу так же будем петь.\nКак в самый первый день.\n[Припев]\nТеперь свобода мне дана\nВ крови Христа я чистым стал\nИ как река течет всегда\nТвоя любовь и благодать\n[Куплет]"
+  },
+  {
+    "id": "s56",
+    "title": "О, Господь, Ты моя защита",
+    "artist": "",
+    "key": "F",
+    "lyrics": "О, Господь, Ты моя защита\n[F]Моя слава [G]и спасение [C]моё\n[Припев]\n[C]Пой Аллилуйя, [G6]Аллилуйя\n[F]Аллилуйя, [Dm]Ты спасение [F]моё"
+  },
+  {
+    "id": "s57",
+    "title": "Пою я «Аллилуйя!» Пою я «Аллилуйя!» В присутствии враго",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Пою я: «Аллилуйя!»[C]                                    Csus4Пою я: «Аллилуйя!» В присутствии врагов моих!     [C]                         Csus4Пою я: «Аллилуйя!» Вижу я как тьма бежит! [C]                             Csus4Пою я: «Аллилуйя!» Моё оружие - хвала! [C]                                Csus4Пою я: «Аллилуйя!» За нас воюют небеса!\n[ПРИПЕВ]\n[F]                                  CЯ буду петь среди шторма и волн!   [Am]                                      GГромче и громче - хвалу мою услышь, Господь!          [F]                           CВоспряла из пепла надежда моя!  [Am]                                   [Gsus4]       Ты победил смерть, воскресший наш GЦарь!\n2 КУПЛЕТ:\n[C]                                    FПою я: «Аллилуйя!»  Всем, что есть внутри меня.      [Am]                              GПою я: «Аллилуйя!» И прочь уйдут сомнения!   [C]                                    FПою я: «Аллилуйя!» Я знаю, что придёт ответ!     [Am]                               GПою я: «Аллилуйя!» У страха власти больше нет!\n[БРИДЖ]\nCБуду петь я громче!\n[G]Буду петь я громче!\n[Am]Буду петь я громче!\n[F]Буду петь я громче!\n[C]Буду петь я громче!\nВ присутствии врагов моих!\n[G]Буду петь я громче!\nВижу я, как тьма бежит!\n[Am]Буду петь я громче!\nМоё оружие - хвала!\n[F]Буду петь я громче!\nЗа нас воюют небеса!"
+  },
+  {
+    "id": "s58",
+    "title": "Пою я «Аллилуйя!»",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Пою я: «Аллилуйя!»\n[D]Пою я: «Аллилуйя!» В присутствии врагов [Dsus4]моих!\n[D]Пою я: «Аллилуйя!» Вижу я как тьма [Dsus4]бежит!\n[D]Пою я: «Аллилуйя!» Моё оружие - [Dsus4]хвала!\n[D]Пою я: «Аллилуйя!» За нас воюют [Dsus4]небеса!\n[ПРИПЕВ]\n[G]Я буду петь среди шторма и [D]волн!\n[Hm]Громче и громче - хвалу мою услышь, [A]Господь!\n[G]Воспряла из пепла надежда [D]моя!\n[Hm]Ты победил смерть, воскресший [Asus4]наш\n[A]Царь!\n2 КУПЛЕТ:\n[D]Пою я: «Аллилуйя!» Всем, что есть внутри [G]меня.\n[Hm]Пою я: «Аллилуйя!» И прочь уйдут [A]сомнения!\n[D]Пою я: «Аллилуйя!» Я знаю, что придёт [G]ответ!\n[Hm]Пою я: «Аллилуйя!» У страха власти больше [A]нет!\n[БРИДЖ]\n[D]Буду петь я громче!\n[A]Буду петь я громче!\n[Hm]Буду петь я громче!\n[G]Буду петь я громче!\n[D]Буду петь я громче!\nВ присутствии врагов моих!\n[A]Буду петь я громче!\nВижу я, как тьма бежит!\n[Hm]Буду петь я громче!\nМоё оружие - хвала!\n[G]Буду петь я громче!\nЗа нас воюют небеса!\nС"
+  },
+  {
+    "id": "s59",
+    "title": "Прошлый день нам не исправить",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Прошлый день нам не исправить,\nС\nДень грядущий не во власти у нас.\nС\nНо знаю я, Ты обещаешь\nС\nРядом быть с нами здесь и сейчас\n[Припев]\n[C]Опустошён я без [G]Тебя\n[Am]Жажду быть с Тобою [F]вновь\n[C]В Тебе одном нуждаюсь [G]я\n[Am]Жажду быть с Тобою [F]вновь\n2 куплет\n[G]На [Am]пути через [F]долину\n[G]Пусть любовь [Am]Твоя страх [F]победит.\n[G]Словно [Am]свет тень [F]проявляет,\n[G]В моей [Am]слабости славу [F]яви!\n[Бридж: C G/H Am G F]\n[C]Ни на минуту Ты не [G/H]оставил,\n[G]Господь, сейчас Ты [Am]здесь!\n[F]Господь, сейчас Ты здесь!\n[C]Духом святым, Бог, мой пробуди [G/H]дух,\n[Am]Господь, сейчас Ты здесь!\n[G]Господь, сейчас Ты [F]здесь!\n[Куплет 1]"
+  },
+  {
+    "id": "s60",
+    "title": "Прихожу к Тебе я с хвалою",
+    "artist": "",
+    "key": "B",
+    "lyrics": "Прихожу к Тебе я с хвалою\n[B]Чудеса Твои велики\n[C]И любовь Твоя сильна\n[Припев]\n[F]Ты велик, Ты прекрасен и [Dm]велик\n[B]И другого нет, как Ты\n[C]И другого нет, как Ты\n[F]Ты велик, Ты прекрасен и [Dm]велик\n[B]И другого нет, как Ты\n[C]И другого нет, как [F]Ты\n[Куплет 2]\n[F]Буду петь Тебе я [Dm]вечно\n[B]Про Твою любовь милость,\n[C]Что Ты даришь нам с небес"
+  },
+  {
+    "id": "s61",
+    "title": "Преклонюсь пред Тобой",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Преклонюсь пред Тобой\n[C]Вознесу Тебе [D]хвалу\n[Am]Ты великий, Бог [G]мой,\n[C]Честь Тебе я [D]воздаю\n[Am]Твоя слава [G]беспредельна\n[C]Твоей силе нет [D]конца\n[Am]Твое слово живо и [G]верно\n[C]Твоя жизнь наполняет [D]меня.\nАнгелы поют на небесах\nЯ прославляю здесь Тебя\nКак Ты велик, Святой Бог\nЯ люблю, я люблю, я люблю Тебя."
+  },
+  {
+    "id": "s62",
+    "title": "Предложу Тебе я жизнь в духе истине",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Предложу Тебе я жизнь в духе,\nистине\n[D]Изолью елей любви [G]в поклоненье [A4]Тебе.\n[D]Без [G]остатка отдаю всё, [A]что есть [Hm]внутри\n[G]Сокрушённое сердце [A4]в жертву [D]прими.\n[G]Иисус, что [A]же скажу, что я [D]спою?\n[G]Такому другу, [A]как Ты, такому [D]Царю.\n[G]Иисус, [A]что принесу, что [D]подарю\n[G]В благодарность [A]Тебе за жертву [D]Твою.\n[Em7]В мире нет таких слов, чтоб [D/F#]смогли\n[G]передать\n[Em7]Долг [D/F#]любви, что я [G]так хочу [A]Тебе\n[D]отдать.\nКаждый вздох для Тебя,\nТы его заслужил.\nЖизнь отдал на кресте,\nВсё сполна заплатил.\nКровью смыл мой позор\nИ разрушил мой грех,\nК Богу путь проложил,\nДверь открыта для всех.\n[C]Куплет:"
+  },
+  {
+    "id": "s63",
+    "title": "Потерян был и так далёк",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Потерян был и так далёк,\n[C]Но Ты пришёл и явил мне Свою [F]любовь\n[C]Не мог подумать, был [F]равнодушен,\n[C]Но любовь Твоя дала всё, что [F]нужно.\n[Припев]\n[C]Я влюблен, прошлое забыто,\n[G]Не имеет смысла все, что раньше было,\n[Am]Твоя любовь пленила,\n[F]Спасла, освободила.\n[C]Иисус, спас Ты моё сердце\n[G]Всё во мне - теперь Твоё навечно\n[Am]Твоя любовь пленила,\n[F]Спасла, освободила.\n[Бридж]\n[C]Ты спас моё [G]сердце\n[Am]И я теперь навеки [F]Твой!\n[D]Куплет:"
+  },
+  {
+    "id": "s64",
+    "title": "Пред Тобой здесь на коленях вновь",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Пред Тобой здесь на коленях вновь,\n[D]Всё отдаю, всё [C]отдаю.\n[Em]Привлеки ближе Господь к [G]Себе,\n[D]Голоден я жажду [C]Тебя.\n[Em]Преклоняюсь...\n[Куплет 2]\n[Em]Пропитай Духом Своим [G]меня,\n[D]Голоден я, жажду [C]Тебя,\n[Em]Сердцем я, слышать хочу [G]Тебя,\n[D]Заговори со мною [C]Ты.\n[Припев]\n[Em]Преклоняюсь, [G]преклоняюсь\n[Am]Хочу я знать Тебя, больше познать [C]Тебя\n[Бридж]\n[C]Словно ветер [G]вдруг вдохнови мой [D]дух\n[Am]Как хочешь Ты, как хочешь [Em]Ты, [D]Господь\n[C]Словно сильный [G]шторм пробуди дух [D]мой\n[Am]Как хочешь Ты, как хочешь [Em]Ты, [D]Господь\n[Куплет 1]"
+  },
+  {
+    "id": "s65",
+    "title": "Позови, я услышу",
+    "artist": "",
+    "key": "Em",
+    "lyrics": "Позови, я услышу\n[Em]Позови, я [D]пойду\n[C]За Тобой, [G]мой Бог, до края [Em]земли\n[Em]Навсегда [C]в моём [G]сердце\n[Em]Ты [C]зажёг Свой [D]огонь\n[C]Я хочу, мой [G]Бог, идти за [Em]Тобой\n[Припев]\nС         [G]          [D]\nВеди меня, мой Бог, Ты знаешь\nС                          [G]    [D]\nБыть хочу там, где Ты пребываешь\nС              [Em]      [C]    [D]\nЯ так люблю Тебя\n[Куплет 1]"
+  },
+  {
+    "id": "s66",
+    "title": "Пред Тобой здесь стою я",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Пред Тобой здесь стою я\n[C]Где любовь [C/E]неотступна\n[F]Ею Ты сразил [G]меня\n[C]И в объятиях [C/E]небесных\n[C]Обрету покой [C/E]навеки\n[F]Погружусь я в [G]благодать\n[Припев]\n[Dm]Мой взгляд к [Am]Себе [C]благостью Ты [G]влечёшь\n[Dm]Всё во [Am]мне - [G]Твоё\n[Dm]Весь [Am]страх ушёл [C]дышу Тобой, влечёт [G]меня\n[F]Любовь, любовь\n[Куплет 2]\n[C]Заблужусь - Ты [C/E]отыщешь\n[C]Озаришь Своею [C/E]славой\n[F]Бог всего прекрасен [G]так\n[C]На Твое лицо [C/E]взирая\n[C]Его блеском [C/E]восхищаясь\n[F]Здесь в Тебе укроюсь [G]я\n[Припев]\n[Dm]Мой взгляд к [Am]Себе [C]благостью Ты [G]влечёшь\n[Dm]Всё во [Am]мне - [G]Твоё\n[Dm]Весь [Am]страх ушёл [C]дышу Тобой, влечёт [G]меня\n[F]Любовь, любовь\n[Бридж]\n[C]Поток любви Ты на меня [Dm7]излил\n[Am]Лицо Своё явил, Ты для меня - вся [F]жизнь\n[C]Иисус Христос, лишь Ты - любовь [Dm7]моя\n[Am]Прошу мне силы дай Тебя всей жизнью [F]знать"
+  },
+  {
+    "id": "s67",
+    "title": "С Радуйтесь, люди, празднуйте победуAm GПридите, придите в ВифлеемC См",
+    "artist": "",
+    "key": "G",
+    "lyrics": "[Куплет 1: С G F Радуйтесь, люди, празднуйте]\nпобедуAm                [G]        [F]    GПридите, придите в ВифлеемC                       [F]       [Dm]                    Смотрите, там в яслях Царь царей\n[G]родилсяCПридите и прославьте!\n[C]Придите и прославьте!\n[F]Придите и [Dm]прославьте [G]Иисуса [F]Христа!\n[Куплет 2]\nСлава, слава, слава Богу в вышних\nСлаву воспойте все небеса.\nВесть о спасенье вся земля услышит\nПридите и прославьте!\nПридите и прославьте!\nПридите и прославьте Иисуса Христа.\n[Куплет 3]\nЧесть и хвалу мы поём Иисусу\nПусть превозносят Его все уста\nВсю Ему славу дал Отец Небесный.\nПридите и прославьте!\nПридите и прославьте!\nПридите и прославьте Иисуса Христа."
+  },
+  {
+    "id": "s68",
+    "title": "Радуйся, мир, в эту ночь с небесамиBb EbЭммануил Бог наш с нами! Беден",
+    "artist": "",
+    "key": "Eb",
+    "lyrics": "|[Bb] |[Eb] |[Gm7] |[Eb] |1 Куплет:[Bb]              [Dm7]         [Gm7]          Радуйся, мир, в эту ночь с\nнебесамиBb     [Dm7]  EbЭммануил - Бог наш с нами![Bb]          [Dm7]           [Gm7]             Беден? Богат? О, пойдём,\nпреклонимся,[Bb]                 [Dm7]          EbМир в Нём найдём - Христос родился!Припев:[Bb]                           [Eb2]                        Пойте, все люди - Господь всесильный\nЦарь![Gm7]                           [Eb2]   [Fsus4] [F]           Пой, всё творение - хвалу Ему воздай!                   [Eb2]                  [F] О, как Он благ, как же Он благ!\n[Bb/D]                   Eb2Он родился смерть победить,[Eb2]                             [F4]                Свет в этот мир в ночь Рождества\n[Bb]явить\n2 Куплет:[Bb]                    [Dm7]                 [Gm7]    Звёзд яркий свет сквозь моря и\nпустыни.    [Bb]         [Dm7]               EbНадежда была, хоть во тьме мы жили -[Bb]                 [Dm7]   EbВот к нам пришёл Иисус Спаситель!\n[Припев:Bb Eb2 Пойте, все люди - Господь всесильный]\nЦарь![Gm7]                           [Eb2]   [Fsus4] [F]           Пой, всё творение - хвалу Ему воздай!                   [Eb2]                  [F] О, как Он благ, как же Он благ!\n[Bb/D]                   Eb2Он родился смерть победить,[Eb2]                             [F4]                Свет в этот мир в ночь Рождества\n[Bb]явить\n[Бридж:Bb Cm7По земле всей мы провозгласим,Gm7 Eb2Что Господь - наш Бог, всесильный Царь!Bb Cm7Вечно с нами Бог Эммануил,Gm7 Eb2]\nОн Господь, наш Бог, всесильный Царь!\nнебесамиA     [Dbm7]  [Gbm]       Эммануил - Бог наш с нами![A]            [Dbm7]       [Gbm7]           Беден? Богат? О, пойдём,\nпреклонимся,[A]              [Dbm7]       [Gbm7]    Мир в Нём найдём - Христос родился!Припев:[A]                              [D2]                        Пойте, все люди - Господь всесильный\nЦарь![Gbm7]                         [D2]      [E] [Esus]       Пой, всё творение - хвалу Ему воздай!                   [D2]                  [E] О, как Он благ, как же Он благ!\n[A/Db]                    D2Он родился смерть победить,[D2]                             [E4]                Свет в этот мир в ночь Рождества\n[A]явить\n2 Куплет:[A]               [Dbm7]         [Gbm7]        Звёзд яркий свет сквозь моря и\nпустыни.     [A]            [Dbm7]        [Gbm7]    Надежда была, хоть во тьме мы жили -[A]                 [E]           DВот к нам пришёл Иисус Спаситель!\n[Припев:A D2 Пойте, все люди - Господь всесильный]\nЦарь![Gbm7]                         [D2]      [E] [Esus]       Пой, всё творение - хвалу Ему воздай!                   [D2]                  [E] О, как Он благ, как же Он благ!\n[A/Db]                    D2Он родился смерть победить,[D2]                             [E4]                Свет в этот мир в ночь Рождества\n[A]явить\n[Бридж:A Hm7По земле всей мы провозгласим,Gbm7 D2Что Господь - наш Бог, всесильный Царь!A Hm7Вечно с нами Бог Эммануил,Gbm7 D2]\nОн Господь, наш Бог, всесильный Царь!"
+  },
+  {
+    "id": "s69",
+    "title": "С ангелами в небе мы славим",
+    "artist": "",
+    "key": "F",
+    "lyrics": "С ангелами в небе мы славим\n[F]Твое имя прославляем\n[Am]Со всем творением мы [C]славим\n[F]Твое имя прославляем\n[Припев]\n[Am]Святый Бог, Святый [C]Бог, Святый [F]Бог.\n[Am]Святый Бог, Святый [C]Бог, Святый [F]Бог.\nЗапев:\n[F]О, о-о, [G]о-о, [Am]о-о, [C]о.\n[Бридж]\n[F]Ты есть Альфа, Ты — Омега,\n[G]Ты — Начало и Конец\n[Am]Ты — Великий, Всемогущий,\n[C]Вседержитель и Творец\n[F]Ты — Скала, Бог, наша сила,\n[G]Повелитель всех времен\n[Am]Мы возносим Твое Имя,\n[C]Имя выше всех имен\n[Куплет]\n[F]С ангелами в небе мы [G]славим\n[Am]Твое имя [C]прославляем\n[F]Со всем творением мы [G]славим\n[Am]Твое имя [C]прославляем\n[Бридж]\n[F]Ты есть Альфа, Ты — Омега,\n[G]Ты — Начало и Конец\n[Am]Ты — великий, всемогущий,\n[C]вседержитель и Творец\n[F]Ты — Скала, Бог, наша сила,\n[G]повелитель всех времен\n[Am]Мы возносим Твое имя,\n[C]имя выше всех имен\nЗапев:\n[F]Имя выше всех имен,\n[G]Имя выше всех имен,\n[Am]Имя выше всех имен,\n[C]Имя выше всех имен"
+  },
+  {
+    "id": "s70",
+    "title": "С неба на землю течёт",
+    "artist": "",
+    "key": "E",
+    "lyrics": "С неба на землю течёт,\n[E]Боже, слава [A]Твоя\n[A]Это [D]от [A]Бога [D]огонь сходит [E]на [A]меня\n[Куплет 1]\n[E]Сила Твоя меня [D]возвышает\n[A]над всеми заботами\n[E]И через горы проблем и [D]несчастий\n[E]проносит меня\n[Куплет 2]\n[E]Пламя горит и жар [D]от него меня [A]зажигает\n[E]Этот огонь уже не [D]погасит ничто [E]никогда\n[Куплет 3]\n[E]И жизнь моя наполнилась [D]смыслом,\n[A]наполнилась радостью\n[E]Ты изменил течение жизни [D]моей\n[E]навсегда\n[Куплет]"
+  },
+  {
+    "id": "s71",
+    "title": "Спаситель Искупитель",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Спаситель Искупитель\n[C]Из болота извлёк [Csus4]меня\n[C]Бог крепкий, [Csus4]вовеки [C]Изменён я [Csus4]навсегда.\n[Предприпев]\n[Am]Ведь Ты пришёл Из вечности [F]далёкой.\n[C]В мир, где мы живём, Любимый,\n[G]Божий Сын\n[Припев]\n[C]Ты прошёл жизнь и [G/H]смерть\n[F/A]И на третий день [G]воскрес.\n[C]Ты открыл миру [G/H]путь\n[F/A]Как нам жизнь опять [G]вернуть\n[F]Аллилуйя, [G]за всё, мой [C]Бог.\n[Проигрыш 1: Am F C G]\n[Предприпев]\n[Припев]\n[Проигрыш 2: F/С G/H F/A G]\n[F]/С    [G/H]             [F/A]     [G]\nАллилуйя,    за всё, мой Бог\n[Интро]\n[C]1 [G/D]куплет:"
+  },
+  {
+    "id": "s72",
+    "title": "Скрой меня Своим крылом",
+    "artist": "",
+    "key": "G/B",
+    "lyrics": "Скрой меня      Своим крылом\n[G/H]Сохрани [C]под [Am]сильною [Dsus]рукой\n[Припев]\n[G/H]Пусть бушует [C]шторм и [D]гром [Gsus]гремит\n[G/H]Над бурей [C]буду я [D]с Тобой [Em]парить\n[G/H]Мой Отец, Ты [C]Царь над [D]всей [Gsus]землей\n[D/F#]Я не [Em]боюсь - мой [D]Бог со [C]мной\n2 куплет:\n[G]Найду [Em]пооо-кой [C]в [A/C#]Тебе, [Dsus]Христос\n[G/H]Верю [C]я в [Am]могущество [Dsus]Твоё\n[Куплет]"
+  },
+  {
+    "id": "s73",
+    "title": "Сердце моё, такое как есть",
+    "artist": "",
+    "key": "Am7",
+    "lyrics": "Сердце моё, такое как есть\n[Am7]Сейчас пред [C2]Тобой,\n[F7]Благослови [E7]меня, [Am7]мой [C2]Бог.\n[F7]Много дорог, много [Em7]путей,\n[Am7]Но верный путь – это [C2]Ты,\n[F7]Я хочу идти каждый [Em7]день\n[Am7]За Тобой, мой [C2]Бог.\n[Припев]\n[F7]О, я хочу быть в Тебе,\n[Am7]Помазание Твоё пусть пребудет на мне\n[F7]О, я хочу быть в Тебе,\n[Am7]Помазание Твоё пусть пребудет на мне\n[F7]О, я хочу быть в Тебе,\n[Am7]Помазание Твоё пусть пребудет на мне\n[F7]О, я хочу быть в Тебе,\n[Am7]Помазание [Em7]Твоё пусть пребудет на [F7]мне\n[F7]Куплет:"
+  },
+  {
+    "id": "s74",
+    "title": "Сад внутри тебя",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Сад внутри тебя\n[G]и нечего не [C]надо [Dm]больше,\n[C]Сам [Dm]Господь [F]ходит [G]посреди [C]него.\n[C]Благодать [Dm]Его [G]изливается не [C]мерой,\n[C]Сам [Dm]Господь [G]напояет [C]его!\n[Припев]\n[C]Благодать, [F]от Его [G]любви,\n[C]Благодать [F]от Его [G]реки,\n[C]Благодать [F]от [G]Его [F]полноты.\n[C]Благодать, [F]Он так [G]захотел,\n[C]Благодать [F]– это твой [G]удел.\n[C]Благодать [F]не от [G]дел [F]твоих.\n[Куплет 2]\n[C]Иисус прекрасней [Dm]всех\n[G]И нечего не [C]надо [Dm]больше.\n[C]От полноты [Dm]Его [G]принимаем [C]мы.\n[C]Благодать [Dm]Его [G]изливается не [C]мерой\n[C]Дух [Dm]Святой [F]напояет [C]меня.\n[Куплет 1]"
+  },
+  {
+    "id": "s75",
+    "title": "Спаситель родился, ликуй вся земля",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Спаситель родился, ликуй вся земля\nВо чреве Марии зачат был младенец\n[D]Иисус Христос, [F#m]Иисус [E]Христос\n[A]Весь мир с нетерпеньем Его ожидал\nИ вот Он родился – прекрасный\n[D]                   [F#m]   младенец Иисус Христос, Иисус\n[E]Христос\n[Припев]\n[D]Небеса [E]славят Всевышнего Бога [C#m]Отца\n[D]Ангелы [E]воспевают [A]Ему\n[D]                  [E]                              Иисус Христос родился не зря\n[C#m]Это случилось для [F#m]тебя,\n[D]Чтобы ты имел [E]жизнь вечную [A]всегда\n[Куплет 2]\nРодился Сын Божий и дали Ему имя Иисус\nЭто дитя от Бога – посмотри, как прекрасен Он\nЭто спаситель мира, мира, в котором ты живешь\nОн родился сегодня для каждого из нас\n[Куплет 1]"
+  },
+  {
+    "id": "s76",
+    "title": "Стeны я oбoйду знaю, oни пaдут",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Стeны я oбoйду знaю, oни пaдут\n[C]Tы никoгдa нe [G]пoдвoдил\n[C]Пуcть битвы eщe идут жду пepeмeн [G/H]вoкpуг\n[C]Tы никoгдa нe [G]пoдвoдил\n[Припев]\n[C]Чтo [D]oбeщaл\n[G]Знaю, иcпoлнишь Tы, в [C]вepнocти\n[C]В Tвoиx pукax [D]я\n[G]Нe пoдвeдeшь [C]мeня [G/H]увepeн [C]в [G/H]этoм [C]я\n[Куплет 2]\n[C]Этoт путь я пpoйду, в нoвый ceзoн [G/H]вoйду\n[C]Сepдцeм вoздaм Teбe [G]xвaлу\n[C]Вepeн вoвeки Tы, дepжишь в Свoeй [G/H]любви\n[C]Бoг, Tы дocтoин вceй [G]xвaлы\n[G/H]Бридж:\n[G/H]Я [C]видeл Tы [G/H]Сдвигaeшь [D/F#]гopы\n[D/F#]И вepю [G]я увижу cнoвa [G/H]пpopыв\n[G/H]Пpoлoжишь [C]путь Гдe [D/F#]нeт [G]дopoги\n[D/F#]И вepю я увижу cнoвa [G]пpopыв\n[Куплет 1]"
+  },
+  {
+    "id": "s77",
+    "title": "Славь, душа, Господа, Славь, душа",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Славь, душа, Господа, Славь, душа,\n[F]Имя Святое [C]Его.\n[F]Пой Ему, как [Am]никогда, [F]пой, [G]душа,\n[F]Благослови [G]Господа.\n[Куплет 1]\n[F]Солнце [C]встаёт, новый [G]день [Am]приходит,\n[F]Время [C]опять хвалу [G]воздать\n[F]За всё, что Ты мне [C]дал,\n[G]и за каждый новый [Am]вдох [Am/G]мой\n[F2]Я буду [C]петь и на [G2]закате [C]дня.\n[Куплет 2]\n[F]Велик в любви, [C]и даёшь [G]мне [Am]милость,\n[F]Ты справедлив [C]и так [G]благ ко [Am]мне,\n[F]За все Твои [C]дела [G]я хочу [Am]прославить\n[F2]Чтоб петь [C]Тебе, есть 10 [G2]тысяч [C]причин.\n[Припев]\n[C]Славь, душа, [F]Господа, [C]Славь, [G/H]душа,\n[F]Имя Святое [C]Его.\n[F]Пой Ему, как [Am]никогда, [F]пой, [G]душа,\n[F]Благослови [G]Господа.\n[Куплет 3]\n[F]И когда [C]мои [G]силы [Am]иссякнут\n[F]На закате [C]дней, когда [G]время [Am]придёт,\n[F]Душа [C]моя Тебя да [G]будет [Am]славить\n[F2]Больше, чем даже [C]10 [G2]тысяч [C]лет."
+  },
+  {
+    "id": "s78",
+    "title": "Ты пришелD GТы пришел и подарил нам жизнь навечно",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Ты пришелD         [D/F]#       [Hm]       GТы пришел и подарил нам жизнь навечно\n[D]        [D/F]#          [Hm]      Мы теперь живем в свободе  Gбесконечной\n[ПРЕДПРИПЕВ]\n[A]                                             [Hm]                  Путь к спасению нам проложен был             Gиз любви\nБог — Ты жизнь\n[ПРИПЕВ]\n[D]                             [D/F]# Спаситель в Твоем свете живу яHm             GИ в Твоих объятьях танцуюD                    [D/F]# С хвалою по воде вновь иду яHm             GБог — Ты жизнь во мне живи\n2 КУПЛЕТ:\n[D]         [D/F]#         [Hm]       GИз темноты к жизни яркой Ты призвал насВ мир пришел и вечным светом Ты осиял нас\nПОСТПРИПЕВ:\n[D]         [D/F]#       [Hm]       GЖизнь отдаю Тебе яЛюбовь лишь Твоя нужна мнеБог — Ты жизнь, Бог — Ты жизньВо мне живи"
+  },
+  {
+    "id": "s79",
+    "title": "Ты пришелE AТы пришел и подарил нам жизнь навечно",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Ты пришелE         [E/G]#       [C#m]       AТы пришел и подарил нам жизнь навечно\n[E]        [E/G]#          [C#m]      Мы теперь живем в свободе  Aбесконечной\n[ПРЕДПРИПЕВ]\n[H]            [C#m]                           AПуть к спасению нам проложен был из любви\nБог — Ты жизнь\n[ПРИПЕВ]\n[E]                             [E/G]# Спаситель в Твоем свете живу яC#m             AИ в Твоих объятьях танцуюE                    [E/G]# С хвалою по воде вновь иду яC#m             AБог — Ты жизнь во мне живи\n2 КУПЛЕТ:\n[E]   [E/G]#  [C#m]  AИз темноты к жизни яркой Ты призвал насВ мир пришел и вечным светом Ты осиял нас\nПОСТПРИПЕВ:\n[E]  [E/G]#  [C#m]  AЖизнь отдаю Тебе яЛюбовь лишь Твоя нужна мнеБог — Ты жизнь, Бог — Ты жизньВо мне живи\n[C#m]         Пусть мир найдет Твою любовь     [A]                                      EИ пусть увидят все что Ты Господь                                [G#]mИисуса возносим мы\n[C#]mВселенная в руках Твоих         [A]                                             EТак пусть в сердцах вовек Хвала звучит                                    [G#]mБудь вознесен лишь Ты"
+  },
+  {
+    "id": "s80",
+    "title": "Ты мира свет спустился во тьму",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Ты - мира свет спустился во тьму,\n[D]открыл мне [A]глаза, вижу [G]я\n[D]Ту красоту, что [A]сердце [Em]восхищает,\n[D]надежду [A]вложил Ты в [G]сердца.\n[D]Я здесь, чтоб поклониться,\n[A]Пред Тобой склониться,\n[Hm]                              [G]                            Здесь, чтобы сказать, что Ты – мой Бог.\n[D]Ты один прекрасен,\n[A]Ты один достоин,\n[Hm]Ты один чудесен для [G]меня.\n[D]                    [A]              [Em]                                   Царь всех царей, высоко вознесённый,\n[D]слава Твоя [A]в [G]небесах.\n[D]Кротко пришёл [A]в мир, [Em]Тобой\n[D]сотворённый, [A]ради нас [G]обнищал."
+  },
+  {
+    "id": "s81",
+    "title": "Ты Чудный Царь, Великий Бог",
+    "artist": "",
+    "key": "Cm",
+    "lyrics": "Ты Чудный Царь, Великий Бог!\n[Cm]Нет для меня других [A]богов!\n[E]Иисус, [H]Иисус, хвала [A]Тебе!\n[E]Ты мой Герой, мой лучший [H]Друг,\n[Cm]И лишь с Тобой я быть [A]хочу!\n[E]Иисус, Иисус, [H]хвала [A]Тебе!\n[E]Я не забуду никогда [H]всё,\n[Cm]что Ты сделал для [A]меня,\n[E]Мою жизнь Ты [H]искупил,\n[A]дал взамен Свою!\n[E]Теперь навеки я с [H]Тобой,\n[Cm]Меня ведёшь Ты за [A]Собой,\n[E]Как драгоценна для [H]меня Твоя [A]любовь!\nТы мой Господь, люблю Тебя!\nИ лишь в Тебе вся жизнь моя\nИисус, Иисус, хвала Тебе!\nТы Пастырь мой, Ты мой покой,\nТвоя любовь всегда со мной.\nИисус, Иисус, хвала Тебе!\n[E]Я буду петь [H]всегда\n[A]О Твоей чудесной [E]силе\n[Cm]О том, как [H]любишь Ты [A]меня!\n[E]Я буду петь [H]всегда,\n[A]И пусть узнают все на [E]свете,\n[Cm]Что нет [H]подобного [A]Царя!"
+  },
+  {
+    "id": "s82",
+    "title": "Ты любовь Свою излил",
+    "artist": "",
+    "key": "A",
+    "lyrics": "Ты любовь Свою излил,\n[A]Мне спасенье подарил\n[Hm]В Твоих объятьях нахожу я покой и [A]мир.\n[Hm]Как благодарить Тебя за всё, что\n[A]Сделал для меня\n[Hm]Моё сердце отдаю я лишь [A]Тебе.\n[ПРИПЕВ]\n[D]Спаси-и-ибо, [A]спасибо, [Hm]Господь\n[D]Спасибо, мой Господь, [A]Иисус.\n[Hm]2) На кресте Ты жизнь отдал,\n[A]за нас жертвою Ты стал\n[Hm]Умерев, жизнь вечную нам [A]даровал.\n[Hm]Благодаря Твоей крови\n[A]могу к престолу я придти,\n[Hm]Могу уверенно стоять я пред [A]Тобой.\n[МОСТ]\n[D]Спасибо за жизнь, спасибо за [A]кровь\n[Em]Спасибо за милость Твою и [Hm]любовь\n[D]Спасибо за жизнь, спасибо за [A]кровь\n[G]Спасибо за милость Твою и любовь"
+  },
+  {
+    "id": "s83",
+    "title": "Только Ты один",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Только Ты один,\n[F]Так коснулся сердца [G]моего\n[C]Твоя [G]милость, как живая [Am]река\n[C]К вечности [G]течёт.\n[Припев]\n[C]Слава, [Am]слава [F]Тебе, [C]за [F]Голгофу и за [G]кровь.\n[C]Слава, [Am]слава [F]Тебе, [C]за жизнь [G]Твою,\n[C]Иисус Христос!\n[Куплет 2]\n[C]Только [G]Ты [Am]один\n[F]На Голгофе жизнь отдал за [G]меня\n[C]И [G]стекает драгоценная [Am]кровь\n[C]           [G]      CАгнца Божьего.\n[Куплет 3]\n[C]            [G]       AmТолько Ты один\n[F]Мне отдал сокровища [G]Свои.\n[C]Небеса [G]открыты предо [Am]мной:\n[C]Я пришёл [G]домой.\n[Куплет 1]"
+  },
+  {
+    "id": "s84",
+    "title": "Тщетно искал, чем сердце наполнить",
+    "artist": "",
+    "key": "Em",
+    "lyrics": "Тщетно искал, чем сердце наполнить\n[Em]Звоном монет и славой [D]побед,\n[C]Что тают как сон\n[G]Тогда Ты [C/G]пришёл собрав осколки [G]жизни\n[Em]Всё что нужно мне с избытком в [D]Тебе\n[C]Навек приобрёл\n[Припев]\n[G]В этом мире нет ничего\n[Em]Что сравнится с Тобою мой Бог\n[C]Не сравнится ничто в этом мире [G]с [C/G]Тобой\n2 куплет:\n[C]Избран Тобой [G]пусть [C/G]несовершенен\n[Em]Ошибки мои увидел все [D]Ты\n[C]Но назвал меня друг\n[G]Ведь Ты рядом [C/G]в победах и в [G]поражениях\n[Em]Нет таких мест где милость и [D]крест\n[C]Не нашли бы меня\n1 Бридж:\n[G]Слёзы в смех [C]обращаешь\n[G]В красоту серый [C]пепел\n[G]Смыл позор Своей славой\n[Em]Это можешь [C]только [G]Ты\n2 Бридж:\n[G]Строить сад из [C]развалин\n[G]Из костей делать [C]воинов\n[G]Разделить словом море\n[Em]Это можешь [C]только [G]Ты\n[Em]Это можешь [C]только [G]Ты\n[Припев]\n[G]В этом мире нет ничего\n[Em]Что сравнится с Тобою мой Бог\n[C]Не сравнится ничто в этом мире с [G]Тобой\n[Вступление]\n[A]1 [A]куплет:"
+  },
+  {
+    "id": "s85",
+    "title": "Тщетно искал чем сердце наполнить",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Тщетно искал чем сердце наполнить\n[Am]Звоном монет и славой побед, что тают [G]как\n[F]сон\n[C]Тогда Ты [F/C]пришёл собрав осколки [C]жизни\n[Am]Всё что нужно мне с избытком в Тебе [G]навек\n[F]приобрёл\n[Припев]\n[C]В этом мире нет ничего\n[Am]Что сравнится с Тобою мой Бог\n[F]Не сравнится ничто в этом мире [C]с [F/C]Тобой\n2 куплет:\n[F]Избран Тобой [C]пусть [F/C]несовершенен\n[Am]Ошибки мои увидел все Ты но назвал [G]меня\n[F]друг\n[C]Ведь Ты [F/C]рядом в победах и в [C]поражениях\n[Am]Нет таких мест где милость и крест [G]не\n[F]нашли бы меня\n1 Бридж:\n[C]Слёзы в смех [F]обращаешь\n[C]В красоту серый [F]пепел\n[C]Смыл позор Своей славой\n[Am]Это можешь [F]только [C]Ты\n2 Бридж:\n[C]Строить сад из [F]развалин\n[C]Из костей делать [F]воинов\n[C]Разделить словом море\n[Am]Это можешь [F]только [C]Ты\n[Am]Это можешь [F]только [C]Ты\n[Припев]\n[C]В этом мире нет ничего\n[Am]Что сравнится с Тобою мой Бог\n[F]Не сравнится ничто в этом мире [C]с [F/C]Тобой\n[Куплет 1]"
+  },
+  {
+    "id": "s86",
+    "title": "Тебе, Господь, мой Царь",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Тебе, Господь, мой Царь,\n[F]Я сердце отдаю\n[Am]                                    И всё, что есть во мне\n[G/H]Я посвятить хочу [C]Тебе.\n[C]Хочу отдать [G]свои надежды и [F]мечты.\n[Am]Смириться пред Тобой,\n[G/H]Твою жизнь [C]приобрести.\n[Припев]\n[Am7]Я [G/H]преклоняюсь пред [F]Тобой,\n[Am]Пред [G]Тобой\n[Am7]Я [G/H]преклоняюсь пред [F]Тобой,\n[Am]Пред [G]Тобой\n[Куплет 2]\n[C]Всегда хочу я [G]петь\n[F]Тебе, мой Бог Святой,\n[Am]И всё, что в мире есть считаю [G/H]суетой.\n[C]Приблизиться к [G]Тебе,\n[F]Познать Твою любовь,\n[Am]И радость испытать\n[G/H]От общения с [C]Тобой.\n[Куплет 1]"
+  },
+  {
+    "id": "s87",
+    "title": "Ты искупил мир от греха",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Ты искупил мир от греха\n[G]Ты дал ему любовь и [F]свет\n[Dm]               [G]                                    Зажёг потухшие сердца\n[G7]И дал надежду.\n[C]Мы пред [G/H]Тобою [Am]предстоим\n[G]И каждый дорог для [F]Тебя\n[Dm]За всё, Отец, [G]благодарим\n[G7]И превозносим\n[Припев]\n[C]Слава Тебе и [G/H]величье,\n[Am]Слава в веках и [Em]народах\n[F]Сила Твоя [C/E]безгранична\n[F]                                     [G]  (переход +[C] )\nМилость Твоя во все роды\n[Куплет 2]\nЯ больше не во власти зла,\nИ не служу иным богам.\nТвой свет дорогу указал\nИ дал надежду.\nК престолу славы прихожу\nИ не стыжусь поднять глаза,\nИисус меня от смерти спас\nИ дал свободу.\n[Куплет 1]"
+  },
+  {
+    "id": "s88",
+    "title": "Тихая ночь, дивная ночь",
+    "artist": "",
+    "key": "C",
+    "lyrics": "Тихая ночь, дивная ночь.\n[C]Дремлет [F]все, лишь не [F/G]спит\n[B]        [B/G]            [F]           В благоговенье святая чета,\n[B]Чудным младенцем [B/G]полны их [F]сердца,\n[C]                    [C/A]            [Dm] [Dm]/GРадость в душе     их горит.\n[F]Радость в душе [C]их [F]горит.\n[Куплет 2]\n[F]  Тихая ночь, дивная ночь.\n[C]Глас с [F]небес [F/G]возвестил:\n[B]              [B/G]            [F]    Радуйтесь, ныне родился Христос,\n[B]           [B/G]            [F]    Мир и спасение всем Он принес,\n[C]                    [C/A]            [Dm] [Dm]/GСвыше вас Свет посетил\n[F]Свыше вас [C]Свет [F]посетил\n[Куплет 3]\n[F]    Тихая ночь, дивная ночь.\n[C]К небу [F]нас Бог [F/G]призвал,\n[B]            [B/G]          [F]      О, да откроются наши сердца,\n[B]             [B/G]          [F]      И да прославят Его все уста\n[C]                    [C/A]            [Dm] [Dm]/GОн нам Спасителя дал.\n[F]Он нам [C]Спасителя [F]дал\n[Куплет 1]"
+  },
+  {
+    "id": "s89",
+    "title": "Ты нужен мне больше, чем вчера",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Ты нужен мне больше, чем вчера\n[G]Нуждаюсь в Тебе, не могут [F]выразить\n[C]слова\n[Am]Нуждаюсь в Тебе, Господь, как [Dm]никогда\n[C]Ты нужен мне, Ты нужен [C]мне\n[Припев]\n[F]Больше, чем жизнь моя\n[C]Больше дыхания\n[F]Больше служения\n[C]Больше всего\n[F]Господь, Ты нужен мне\n[Am]Нет жизни без Тебя\n[F]Всей своей душой ищу [C]Тебя\n[G]Ты нужен мне\n[Куплет]"
+  },
+  {
+    "id": "s90",
+    "title": "Ты даёшь силу мне",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Ты даёшь силу мне,\n[G]Если я утомлён\n[G]Если потух огонь, Ты со мной, [Hm]Бог\n[Hm]Ты даёшь крепость [A]мне,\nЕсли я  изнемог                               [G]                            HmЕсли нет силы встать,Ты со мной, Бог\n[Припев]\n[Hm]Я надеюсь на [A]Тебя,\n[G]Поднимаю я крылья вновь\n[G]Побегу и не устану,\n[Hm]Я пойду и не утомлюсь\n[Мост]\n[G]Расправив крылья я\n[A]Парю без тени страха\n[Hm]Покоюсь я в Твоих [F#m]обетованьях\n[G]Ты мир во мне хранишь\n[A]Ты силы обновляешьHm\nТы бог ЭммануилF#m                       [G] [A] [Hm] [F#m]\nВсё в руках Твоих\n[Куплет]"
+  },
+  {
+    "id": "s91",
+    "title": "Только Ты",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Только Ты\n[G]Можешь утолить мою [Am]жажду\n[C]Можешь исцелить моё [F]сердце\n[G]И в твоих руках [Am]оживаю [C]я\n[Припев]\n[F]Оживаю [G]я в [Am]руках [C]Твоих\n[F]Оживаю [G]я, когда [Am]рядом [C]Ты\n[Куплет]"
+  },
+  {
+    "id": "s92",
+    "title": "Удивительный Бог, Ты реальней всего",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Удивительный Бог, Ты реальней всего\nКто сравнится с Тобой\n[D]Люблю я Твое присутствие [G]Бог\n[D]В Твоей нежной любви тает сердце [G]моё\n[D]И меняюсь внутри, знаю это Твое\n[G]Присутствие Бог\n[Припев]\n[D]Дух Святой как жажду я Тебя\n[G]Наполни все, дай видеть [Em]Небеса\n[D]Огонь любви теперь горит во мне\n[G]Бог святых небес, Твоя слава [Em]здесь\n[D]Бридж:\n[D]Дай мне познать еще больше Твою Славу\nДай насладиться мне Твоею благодатью\n[G]Дай мне [D/F#]познать еще [Em]больше Твою [D/F#]Славу\n[G]Дай насладиться [D/F#]мне Твоею [Em]благодатью\n[Проигрыш]\n[E]Куплет:"
+  },
+  {
+    "id": "s93",
+    "title": "Хочу я быть ближе, ближе к Тебе",
+    "artist": "",
+    "key": "G",
+    "lyrics": "Хочу я быть ближе, ближе к Тебе.\n[G]Пусть [Am7]Небо реальностью [D]станет [Em]моей.\n[Em]Хочу я [Am7]услышать [D]песни [G]небес,\n[G]Где ангелы [Am7]вторят:\n[Припев 1]\n[D]Аллилуйя, [Em]Святый, [C]Святый,\n[G]Всемогущий, Ты [D]велик!\n[Em]Кто достоин, Кто [C]сравнится\n[G]С Тобою, Царь наш, Ты [D]велик!\n[Припев 2]\n[D]Аллилуйя, [Em]Святый, [C]Святый,\n[G]Всемогущий, Ты [D]велик!\n[Em]Кто достоин, Кто [C]сравнится\n[G]С Тобою, Царь наш, Ты [D]велик!\n[D]Ты [Em]велик!\n[Бридж]\n[Em]Как воск, растают горы\nперед Лицом Его.\n[C]Силы тьмы трепещут\nперед Именем Того,\n[G]Кто вознесен над всеми,\nКто умер, но воскрес!\n[D]Кто сможет устоять\n[Em]Перед Его величием, [C]величием,\n[G]Величием\n[Em]Величием, [C]величием,\n[G]Величием\n[Припев 3]\n[D]Аллилуйя, [Em]Святый, [C]Святый,\n[G]Всемогущий, Ты [D]велик!\n[Em]Кто достоин, Кто [C]сравнится\n[G]С Тобою, Царь наш, Ты [D]велик!\n[D]Ты [Em]велик!\n[Куплет]"
+  },
+  {
+    "id": "s94",
+    "title": "Хочу я прокричать с высоких гор вершин",
+    "artist": "",
+    "key": "A",
+    "lyrics": "Хочу я прокричать с высоких гор вершин\n[A]Что доброта Твоя безмерно велика\n[C#m]Милость и благодать Ты в жизнь мою [H/D#]явил,\n[A]Любовь Свою [H]излил\n[ПРИПЕВ]\n[E]Буду петь Тебе, ведь Ты так благ, буду танцевать, ведь Ты так благ\n[A]Буду восклицать, ведь Ты так благ, Ты так благ ко мне\n2 КУПЛЕТ:\n[E]Нет никого кто б смог подобным быть Тебе\n[A]Величие Твоё видно в творениях всех\n[C#m]И в темноту мою Ты яркий свет [H/D#]явил,\n[A]Любовь Свою [H]излил\n[БРИДЖ]\n[F#m7]Прославляя вновь, сердце воспоёт [A]-\n[E]Ты так благ, Ты так благ\n[F#m7]В дождь и зной, летом и зимой, Ты [A]так\n[E]благ, Ты так [H]благ\n[КУПЛЕТ]"
+  },
+  {
+    "id": "s95",
+    "title": "Хвала, Тебе, наш Господь",
+    "artist": "",
+    "key": "Bm",
+    "lyrics": "Хвала, Тебе, наш Господь\n[Hm]Хвала, Тебе, Бог [F#m]Святой\n[G]Хвала за [D]Иисуса - Сына [C]Твоего\n[ПРИПЕВ]\n[F#m]Теперь слабый [Hm]скажет - я [Em]силён\n[A7]Бедный скажет - я [D]богат\n[Hm]Благодаря Тому, [C]что Бог нам [A7]дал\n[КУПЛЕТ]"
+  },
+  {
+    "id": "s96",
+    "title": "Через моря и горы",
+    "artist": "",
+    "key": "Dm",
+    "lyrics": "Через моря и горы\n[Dm]Течёт ко мне Твоя [F]река,\n[G]Река любви освободит\n[C]Сердца от боли и обид.\n[Dm]Я счастлив в истине Твоей,\n[F]И руки вознесу к Тебе\nИ о любви Твоей\n[G]Вовеки буду [C]петь.\n[Припев]\n[C]О Твоей [Dm]любви буду [F]петь\n[F]О твоей любви [G]буду [C]петь."
+  },
+  {
+    "id": "s97",
+    "title": "Через поколенья мы слышим Твой призыв",
+    "artist": "",
+    "key": "E",
+    "lyrics": "Через поколенья мы слышим Твой призыв\n[E]Жатвы много, жатвы [G#m]много\n[C#m]В сердце голос Бога: кто пойдет за [A]нас?\n[E]Жатвы много, жатвы [G#m]много.\n[Предприпев]\n[F#m]Мы принимаем этот [E/G#]вызов\n[A]В нашем поколении.\n[F#m]Мы отдаем Тебе, [E/G#]Всевышний,\n[A]Без остатка нашу жизнь.\n[Припев]\n[C#m]Вот он я, возьми меня, [A]Бог.\n[E]Вот он я, возьми меня, [G#m]Бог.\n[C#m]Вот он я, возьми меня, [A]Бог.\n[E]Используй для Царства [G#m]Твоего.\n[Бридж]\n[A]И трепещет тьма,\n[H]Когда слышит наши голоса.\n[C#m]И не устоит пред Тобою ни [E/G#]одна стена.\n[A]Пробуждает мир\n[H]Тот огонь, что в нас сейчас горит.\n[C#m]Нам не удержать голос [E/G#]изнутри\n[Куплет]"
+  },
+  {
+    "id": "s98",
+    "title": "Что сказать, Бог –",
+    "artist": "",
+    "key": "D",
+    "lyrics": "Что сказать, Бог –\n[D]Ты, Кто дал мне жизнь [C]Свою\n[G]Как сказать [Em]мне,\n[D]Как много значишь для [C]меня\n[G]Спас меня [Em]Ты,\n[D]Тебе всю жизнь я [C]отдаю,\n[G]Чтоб [Em]сиять мог [D]я во [C]славу [G]Твою.\n[C]Каждый [G]день [Em]буду\n[D]В Слове я Твоём [C]стоять\n[G]И молиться, чтоб [Em]я мог\n[D]Больше Тебя [C]знать\n[G]Чтобы Ты [Em]смог\n[D]Каждый шаг мой [C]направлять\n[G]Каждый день [Em]я\n[D]Светом мог Твоим [G]сиять.\n[Припев]\n[G]Каждый [C]день я для [Em]Тебя [D]живу,\n[C]Каждый [Em]день я за [D]Тобой [G]иду,\n[C]Каждый день [Em]я лишь с [D]Тобой, [G]Господь.\n[Бридж]\n[G]Живу с [C]Тобой [Em]я каждый [D]день."
+  },
+  {
+    "id": "s99",
+    "title": "Эту песню неба ангелы поют",
+    "artist": "",
+    "key": "F",
+    "lyrics": "Эту песню неба ангелы поют,\n[F]слава Агнцу [G]Божьему\n[C]Эту песню неба ангелы [Am]поют,\n[F]слава Агнцу [G]Божьему\n[F]Аллилуйя, [Am]аллилуйя,\n[F]аллилуйя, [C]слава [G]Тебе!\n[Модуляция]"
+  },
+  {
+    "id": "s100",
+    "title": "Этот день буду помнить я",
+    "artist": "",
+    "key": "B",
+    "lyrics": "Этот день буду помнить я\n[B]В этот день, мой Бог, Ты спас [Dm]меня\n[Dm]Мы поем Иисус [B]живой\n[F]Пуста могила, крест пустой\n[B]В этот день Ты победил, Бог [Dm]мой\n[Dm]Мы поем, Иисус живой! [B]Он [C]живой\n[Припев]\n[F/A]О, этот [B]день, счастливый [Dm]день\n[C]Когда искупил меня\n[F/A]О, этот [B]день, счастливый [Dm]день\n[C/E]Жизнь мою Бог [F]изменил\n[Куплет 2]\nВоздаю Тебе хвалу\nСвободен я и мы лицом к лицу\nЯ весь Твой, Иисус Ты мой\nЭту радость и Твой покой\nЗемля увидит наконец, Бог мой\nПрославляй, Иисус живой\nОн живой\n[Бридж]\n[Dm]Через святую [C]кровь в имени [B]Твоём\n[F]Спасён был я"
+  },
+  {
+    "id": "s101",
+    "title": "Яви Себя во славе Великий Дух Святой",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Яви Себя во славе Великий Дух Святой\n[Am]И здесь пред [F]небесами\n[C]желаем быть с [G]Тобой\n[ПРИПЕВ]\n[F]Действуй через нас, Господь, сейчас\n[C]Излей благодать Свою на нас\n[Am]Действуй через нас, Господь, сейчас,\n[G]наш Царь\n[КУПЛЕТ 2]\n[C]Приди, Господь, к нам явно,\n[G]являя чудеса\n[Am]Хотим в Твоём [F]присутствии\n[G]мы пребывать всегда\n[ПРИПЕВ]\n[F]Действуй через нас, Господь, сейчас\n[C]Излей благодать Свою на нас\n[Am]Действуй через нас, Господь, сейчас,\n[G]наш Царь\n[МОСТ]\n[F]Навсегда забрал мой грех, я прощён навек [C]Тобою\n[Am]Жизнь моя в Твоей руке, Ты достиг меня [G]любовью\n[Куплет]"
+  },
+  {
+    "id": "s102",
+    "title": "Я знаю, спас Он меня",
+    "artist": "",
+    "key": "C7",
+    "lyrics": "Я знаю, спас Он меня,\n[C7]кровь Его омыла мой [F7]грех\n[C7]Верю [F7]я, верю [C7]я,\n[C7]Бог снял с меня мой [F7]позор,\n[C7]исцелил Он мою [F7]боль\n[C7]Верю [F7]я, верю [C7]я,\n[Предприпев]\n[G]Подниму я знамя,\n[F]ведь мой Господь победил грех и смерть\n[Припев]\n[C]Искупитель [F]жив! Искупитель [Am7]жив!\n[C]Искупитель [F]жив! Искупитель [Am7]жив!\n[Бридж]\n[A#]Меня поднял Ты и посадил с [F/A]Собой\n[C/G]Танцую я на вершинах [Dm7]гор, [C/E]царство\n[G]Твоё грядёт\n[Куплет]"
+  },
+  {
+    "id": "s103",
+    "title": "Я славлю в долинах, хвалю на вершинах",
+    "artist": "",
+    "key": "A",
+    "lyrics": "Я славлю в долинах, хвалю на\nвершинах\n[E]Когда я [D]уверен и сомненьем [A]томимый\n[A]Врагом окруженный, я воздам [D]славу [A]Богу\n[E]Хвала - это [D]воды, враги в них [A]утонут!\n[Предприпев]\n[E]Пока есть дыхание, есть [D]основанье\n[Припев]\n[F#m]Прославь, [A]душа, [E]Господа!\n[F#m]Славь, [D]душа, [A]Господа!\n[Куплет 2]\n[A]В порыве эмоций, и когда [D]я [A]спокоен\n[E]Я славлю, ведь знаю, что всё [D]под\n[A]контролем\n[A]Хвалой я сражаюсь - это больше, [D]чем\n[A]звук\n[E]Хвалой стены [D]пусть Иерихона [A]падут\n[Предприпев]\n[Припев]\n[Бридж 1]\n[F#m]Я буду кричать: \"Жив Бог, чтоб [D]спасать\"\n[A]Внутри это не [E]удержать\n[F#m]Давай, [D]прославь, [A]душа, [E]Господа!\n[Проигрыш:,]\n[F#m]Бридж [A]2:\n[A]Ты Царь всей вселенной, Ты в силе [D/A]грядёшь\n[E/A]Ты смерть победил и Ты в славу [D/A]ведёшь\n[A]Ты верен вовеки, Ты истинный [D/A]Бог\n[E/A]Сильнее Тебя в мире нет [D/A]никого\n[Бридж 2-2]\n[A]Ты Царь всей вселенной, Ты в силе [Hm]грядёшь\n[F#m]Ты смерть победил и Ты в славу [D]ведёшь\n[A/E]Ты верен вовеки, Ты истинный [Hm]Бог\n[F#m]Сильнее Тебя в мире нет [D]никого\n[Припев]\n[Бридж 1: 3 раза]\n[Проигрыш:,]\n[F#m]Куплет:"
+  },
+  {
+    "id": "s104",
+    "title": "Яхве, Рафа",
+    "artist": "",
+    "key": "E",
+    "lyrics": "Яхве, Рафа,\n[E]Элохим, [Am]Эль-Шаддай\n[F]Ире, [G]Адонай,\n[Am]Проявляй Себя\n[Куплет]\n[F]Здесь твоё [F/E]Царство\n[F]Здесь Твоя [G]сила\n[Am]Здесь Твоя слава\n[Em]Навеки Аминь\n[Куплет]\n[F]Иешу-у-у-а\n[Куплет]"
+  },
+  {
+    "id": "s105",
+    "title": "Я смотрю в небеса",
+    "artist": "",
+    "key": "Bm",
+    "lyrics": "Я смотрю в небеса,\n[Hm]Откуда придёт помощь [F#m]моя\n[A]Помощь моя [E]от [Hm]Господа\n[A]Не оставит без [E]сил, не погибнешь во [Hm]тьме\n[F#m]Не дремлет хранящий тебя\n[A]Не дремлет, не [E]спит хранящий [Hm]Израиля\n[Припев]\n[A]Господь, Хранитель мой\n[Hm]Сень с правой руки [E]моей\n[A]Он царствует над землёй\n[Hm]До самых последних [E]дней\n[Hm]Днём солнце не [E]поразит [Hm]меня\n[E]Ни ночью луна\n[A]Господь охраняет [F#m]меня от [D]всякого [E]зла.\n[Куплет 1]"
+  },
+  {
+    "id": "s106",
+    "title": "Я вижу, как Царь славы",
+    "artist": "",
+    "key": "Am",
+    "lyrics": "Я вижу, как Царь славы,\n[Am]В облаках идёт с огнём\n[Dm7]                 [G]      [Am]  Трепещет всё, трепещет всё\n[C]Я вижу, как любовью\n[Am]Все грехи покроет Он\n[Dm7]Земля поёт, земля [G]поёт\n[Припев]\n[C/E]Осанна, [G]осанна, [F]осанна Богу в [Am7]вышних\n[C/E]Осанна, [G]осанна, [F]осанна Богу [G]в [C]вышних\n[Куплет 2]\n[C]Я вижу поколенье с верой искренней [Am]встаёт\n[Dm7]Занять свой пост, занять свой [G]пост\n[C]Я вижу как с молитвой\n[Am]Пробужденье к нам придёт\n[Dm7]Склонимся вновь, склонимся [G]вновь\n[Бридж]\n[F]Сердце исцели, [G]омой\n[C]В мир невидимый мне глаза [Am]открой\n[F]Научи любить как Ты [G]всех [Am]любищь\n[F]Сделай боль Свою - [G]моей\n[C]Царствию отдам всё, что есть во [Am]мне\n[F]Так пройду свой путь земной [G]я к [F]вечности.\n[Припев]\n[C/E]Осанна, [G]осанна, [F]осанна Богу в [Am7]вышних\n[C/E]Осанна, [G]осанна, [F]осанна Богу [G]в [C]вышних\n[C/E]Осанна, [G]осанна, [F]осанна Богу в [Am7]вышних\n[C/E]Осанна, [G]осанна, [F]осанна Богу [G]в [Am]вышних\n[F]Осанна Богу в [G]вышних\n[C]Куплет [F]1:"
+  },
+  {
+    "id": "s107",
+    "title": "В этот зимний вечер зажигайте свечи",
+    "artist": "",
+    "key": "Dm",
+    "lyrics": "В этот зимний вечер зажигайте свечи\n[Dm]Наступает [Am]Рождество, [G]о-о-о-о\n[Am]Мы с друзьями будем, всё плохое [C]позабудем\n[Dm]Наступает [Am]Рождество, [G]о-о-о-о\n[Припев]\n[C]Ночь в Рождество - это песни [G]и [C]танцы\n[C]Ночь в Рождество - это [G]время [C]чудес\n[C]Нам сообщил о рождении [G]Младенца\n[C]Яркой звезды свет, [G]сошедший с [C]небес\n[C]Куплет [F]2:\n[Am]Пусть красив и ярок будет ваш [C]подарок\n[Dm]Наступает [Am]Рождество, [G]о-о-о-о\n[Am]В гости нас встречайте, приглашайте, [C]приглашайте\n[Dm]Наступает [Am]Рождество, [G]о-о-о-о\n[Припев]\n[C]Ночь в Рождество - это песни [G]и [C]танцы\n[C]Ночь в Рождество - это [G]время [C]чудес\n[C]Нам сообщил о рождении [G]Младенца\n[C]Яркой звезды свет, [G]сошедший с [C]небес\n[Мост]\n[Am]Пусть в ваших сердцах [Em]будет мир и [F]покой\n[C]Мы вам желаем счастья\n[Am]Пусть радость надолго придёт к [Em]вам\n[F]домой\n[C]Припев:"
+  }
+];
 
-async function seedIfEmpty(){return; // DB already seeded
-  
+async function seedIfEmpty(){
   try{
     const snap=await getDocs(collection(db,'songs'));
     if(snap.size===0){
@@ -2561,8 +2700,7 @@ async function seedIfEmpty(){return; // DB already seeded
       }
       showToast('Загружено '+SEED_SONGS.length+' песен!');
     }
-  }catch(e){
-}
+  }catch(e){console.error('Seed error:',e);}
 }
 
 // ── FIRESTORE REALTIME ─────────────────────────────────────────────────────
@@ -2592,22 +2730,5 @@ loadRepOrder().then(()=>{
 seedIfEmpty();
 </script>
 </div><!-- /app-wrap -->
-<!-- BOTTOM NAV (mobile) -->
-<nav class="bottom-nav" id="bottomNav">
-  <button class="bottom-nav-btn active" id="bnSongs" onclick="navTo('songs')">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span>Песни</span>
-  </button>
-  <button class="bottom-nav-btn" id="bnFav" onclick="navTo('favorites')">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Избранное</span>
-  </button>
-  <button class="bottom-nav-btn" id="bnReps" onclick="navTo('repertoires')">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Репертуары</span>
-  </button>
-  <button class="bottom-nav-btn" id="bnProfile" onclick="navTo('profile')">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Профиль</span>
-  </button>
-</nav>
-</div><!-- /main-area -->
-</div><!-- /layout -->
 </body>
 </html>
