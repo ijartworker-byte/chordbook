@@ -243,7 +243,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
 @media(min-width:1200px){
   body{background:#edeef0}
-  .fab{right:calc(50% - 600px + 20px)}
+  .fab{right:20px;bottom:24px}
   .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px);background:#fff}
   .toast{bottom:90px}
   .modal-overlay .modal:not(.song-modal-desktop){max-width:480px;border-radius:20px 20px 0 0}
@@ -320,7 +320,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .rep-key-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--accent);background:none;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .rep-key-btn:active{background:rgba(0,111,185,.1)}
 
-.song-view{display:none;padding:16px 16px 100px}
+.song-view{display:none;padding-top:52px;padding:52px 16px 100px}
 .song-view.has-nav{padding-bottom:110px}
 .song-nav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;bottom:0;left:0;right:0;padding:12px 16px 28px;background:var(--bg);border-top:1px solid var(--border);z-index:150}
 .nav-arrow{flex:1;padding:12px 0;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-family:var(--font-head);font-size:13px;cursor:pointer;transition:all .15s;text-align:center;font-weight:600}
@@ -464,7 +464,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .confirm-text{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:22px}
 .confirm-name{color:var(--accent2)}
 
-.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
+.fab{position:fixed;bottom:calc(56px + env(safe-area-inset-bottom,20px) + 16px);right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,111,185,.25);z-index:150;transition:all .15s}
 .fab svg{display:block}
 .fab:active{transform:scale(.93)}
 
@@ -483,7 +483,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .back-btn{display:flex;align-items:center;gap:8px;font-family:var(--font-head);font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;margin-bottom:16px;padding:0}
 .back-btn:active{color:var(--accent)}
 
-.rep-page{display:none;padding:16px 16px 100px}
+.rep-page{display:none;padding:52px 16px 100px}
 .rep-page-title{font-family:var(--font-head);font-size:20px;margin-bottom:6px}
 .rep-page-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
 .rep-page-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .15s}
@@ -1453,7 +1453,7 @@ window.openSongView=function(id){
   navSongList=buildNavList();navIndex=navSongList.indexOf(id);
   currentSongId=id;currentTranspose=0;
   renderSongView(id);
-  document.getElementById('mainContent').style.display='none';
+  document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='block';
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
@@ -1565,6 +1565,7 @@ window.closeSongView=function(){
   releaseWakeLock();
   currentSongId=null;
   document.getElementById('songView').style.display='none';
+  document.getElementById('mainLayout').style.display='';
   document.getElementById('songNavBar').style.display='none';
   document.getElementById('tabsWrap').style.display='';
   document.getElementById('mainContent').style.display='';
@@ -1940,7 +1941,7 @@ document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
 
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
-  document.getElementById('mainContent').style.display='none';
+  document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='block';
   document.getElementById('tabsWrap').style.display='none';
@@ -1952,6 +1953,7 @@ window.openRepPage=function(){
 };
 window.closeRepPage=function(){
   document.getElementById('repPage').style.display='none';
+  document.getElementById('mainLayout').style.display='';
   document.getElementById('tabsWrap').style.display='';
   if(isUser)document.getElementById('fabBtn').style.display='';
   switchTab(currentTab);
@@ -2039,7 +2041,7 @@ window.openSongFromRep=function(songId,repId){
   navIndex=navSongList.indexOf(songId);
   currentSongId=songId;currentTranspose=0;
   renderSongView(songId);
-  document.getElementById('mainContent').style.display='none';
+  document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='block';
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
