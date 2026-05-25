@@ -32,7 +32,12 @@ body{
   color:var(--text);
   font-family:var(--font-head);
   min-height:100vh;
+  overflow-x:hidden;
+  scrollbar-width:none;
 }
+body::-webkit-scrollbar{display:none}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none}
 
 /* ── ШАПКА — 100% ширины, sticky ────────────────────────────── */
 .site-header{
@@ -549,6 +554,28 @@ select.form-input option{background:var(--surface)}
 .fav-btn.active{color:#e53935}
 .fav-btn.active svg{fill:#e53935;stroke:#e53935}
 
+
+/* ── SONG CARD MOBILE MENU ───────────────────────────────────── */
+.song-more-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;color:var(--muted);border-radius:6px;flex-shrink:0}
+.song-more-btn:active{background:var(--surface2)}
+.song-dropdown{position:fixed;background:var(--surface);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:400;min-width:200px;overflow:hidden;display:none}
+.song-dropdown.open{display:block}
+.song-dropdown-item{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;font-family:var(--font-head);font-size:14px;color:var(--text);border:none;background:none;width:100%;text-align:left;transition:background .1s}
+.song-dropdown-item:active{background:var(--surface2)}
+.song-dropdown-item.danger{color:var(--accent2)}
+.song-dropdown-overlay{position:fixed;inset:0;z-index:399;display:none}
+.song-dropdown-overlay.open{display:block}
+/* On desktop - hide more btn, show all action btns */
+@media(min-width:768px){
+  .song-more-btn{display:none}
+  .song-action-btn{display:flex}
+}
+/* On mobile - hide action btns, show more btn */
+@media(max-width:767px){
+  .song-action-btn{display:none}
+  .song-more-btn{display:flex}
+}
+
 </style>
 </head>
 <body>
@@ -906,6 +933,7 @@ select.form-input option{background:var(--surface)}
     <div class="modal-handle"></div>
     <div class="modal-title">Добавить песни в репертуар</div>
     <input class="pick-search" id="pickSearch" placeholder="Поиск…" oninput="renderPickList()">
+    <div class="alpha-nav" id="pickAlphaNav" style="margin:0 -20px;padding:4px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:10;flex-wrap:wrap;gap:3px;display:none"></div>
     <div id="pickSongList" class="pick-song-list-scroll"></div>
     <div class="pick-modal-btns">
       <button class="btn btn-secondary" onclick="closeModal('pickSongsModal')">Отмена</button>
@@ -1361,34 +1389,50 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 let alphaObserver=null;
+
+function getHeaderHeight(){
+  const sh=document.querySelector('.site-header');
+  const tw=document.getElementById('tabsWrap');
+  const shH=sh?sh.getBoundingClientRect().height:52;
+  const twH=(tw&&tw.style.display!=='none')?tw.getBoundingClientRect().height:0;
+  return shH+twH;
+}
+
 function initAlphaObserver(){
-  // Set sticky top dynamically
   const alphaNav=document.getElementById('alphaNav');
-  if(alphaNav){
-    const siteHeader=document.querySelector('.site-header');
-    const headerH=siteHeader?siteHeader.offsetHeight:0;
-    alphaNav.style.top=headerH+'px';
-  }
+  if(!alphaNav) return;
+  // Stick right below header+tabs
+  const hh=getHeaderHeight();
+  alphaNav.style.top=hh+'px';
+  // Update scroll-margin on sections
+  const alphaH=alphaNav.offsetHeight||36;
+  document.querySelectorAll('.alpha-section').forEach(s=>{
+    s.style.scrollMarginTop=(hh+alphaH+4)+'px';
+  });
   if(alphaObserver) alphaObserver.disconnect();
   const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
   if(!sections.length) return;
   alphaObserver=new IntersectionObserver((entries)=>{
-    // find topmost visible section
-    let topmost=null;
-    let topmostY=Infinity;
+    let best=null; let bestY=Infinity;
     entries.forEach(e=>{
-      if(e.isIntersecting){
-        const y=e.boundingClientRect.top;
-        if(y<topmostY){topmostY=y;topmost=e.target;}
-      }
+      const y=e.boundingClientRect.top;
+      if(y>=0&&y<bestY){bestY=y;best=e.target;}
     });
-    if(topmost){
-      const letter=topmost.id.replace('alpha-','');
-      document.querySelectorAll('.alpha-btn').forEach(b=>{
-        b.classList.toggle('current',b.textContent===letter);
+    if(!best){
+      // find closest to top (scrolled past)
+      let minAbs=Infinity;
+      entries.forEach(e=>{
+        const abs=Math.abs(e.boundingClientRect.top);
+        if(abs<minAbs){minAbs=abs;best=e.target;}
       });
     }
-  },{threshold:0,rootMargin:'-60px 0px -60% 0px'});
+    if(best){
+      const letter=best.id.replace('alpha-','');
+      document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
+        b.classList.toggle('current',b.textContent.trim()===letter);
+      });
+    }
+  },{threshold:0,rootMargin:`-${hh+alphaH+2}px 0px -50% 0px`});
   sections.forEach(s=>alphaObserver.observe(s));
 }
 
@@ -1467,6 +1511,7 @@ function renderSongList(){
           ${isEditor?`<button class="song-action-btn" onclick="openEditSong('${s.id}')" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" onclick="openAddToRepModal('${s.id}')" title="В репертуар"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></button>`:''}
           ${isEditor?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmDeleteSong('${s.id}')" title="Удалить песню"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`:''}
+          ${(isEditor||isUser)?`<button class="song-more-btn" onclick="openSongDropdown('${s.id}',event)" title="Ещё"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>`:''}
         </div>
       </div>`;}).join('')}
       </div>`).join('');
@@ -1870,15 +1915,90 @@ window.openPickSongsModal=function(){
 window.renderPickList=function(){
   const q=(document.getElementById('pickSearch').value||'').toLowerCase();
   let arr=[...songs].sort((a,b)=>a.title.localeCompare(b.title,'ru'));
-  if(q)arr=arr.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q));
-  document.getElementById('pickSongList').innerHTML=arr.map(s=>{
-    const sel=pickedSongs.has(s.id);
-    return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
-      <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
-      <div class="pick-check">${sel?'✓':''}</div>
-    </div>`;
-  }).join('');
+  if(q) arr=arr.filter(s=>s.title.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q));
+
+  const pickAlphaNav=document.getElementById('pickAlphaNav');
+  const pickSongList=document.getElementById('pickSongList');
+
+  if(q){
+    // No grouping when searching
+    if(pickAlphaNav) pickAlphaNav.style.display='none';
+    pickSongList.innerHTML=arr.map(s=>{
+      const sel=pickedSongs.has(s.id);
+      return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
+        <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
+        <div class="pick-check">${sel?'✓':''}</div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  // Group by first letter
+  const groups={};
+  for(const s of arr){const l=s.title[0].toUpperCase();(groups[l]=groups[l]||[]).push(s);}
+  const letters=Object.keys(groups).sort();
+
+  // Render alpha nav
+  if(pickAlphaNav){
+    pickAlphaNav.style.display='flex';
+    pickAlphaNav.innerHTML=letters.map(l=>
+      `<button class="alpha-btn" onclick="scrollPickToLetter('${l}')">${l}</button>`
+    ).join('');
+  }
+
+  // Render grouped list with alpha sections
+  pickSongList.innerHTML=letters.map(l=>`
+    <div class="alpha-section" id="pick-alpha-${l}" style="scroll-margin-top:50px">
+      <div class="alpha-label">${l}</div>
+      ${groups[l].map(s=>{
+        const sel=pickedSongs.has(s.id);
+        return`<div class="pick-song-item${sel?' selected':''}" onclick="togglePick('${s.id}',this)">
+          <div><div class="pick-title">${esc(s.title)}</div><div class="pick-artist">${esc(s.artist)} · ${esc(s.key)}</div></div>
+          <div class="pick-check">${sel?'✓':''}</div>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+
+  // Init observer for pick list
+  requestAnimationFrame(()=>initPickAlphaObserver());
 };
+
+window.scrollPickToLetter=function(l){
+  const el=document.getElementById('pick-alpha-'+l);
+  const list=document.getElementById('pickSongList');
+  if(el&&list) list.scrollTo({top:el.offsetTop,behavior:'smooth'});
+};
+
+let pickAlphaObserver=null;
+function initPickAlphaObserver(){
+  const nav=document.getElementById('pickAlphaNav');
+  const list=document.getElementById('pickSongList');
+  if(!nav||!list) return;
+  if(pickAlphaObserver) pickAlphaObserver.disconnect();
+  const sections=list.querySelectorAll('.alpha-section[id^="pick-alpha-"]');
+  if(!sections.length) return;
+  pickAlphaObserver=new IntersectionObserver((entries)=>{
+    let best=null; let bestY=Infinity;
+    entries.forEach(e=>{
+      const y=e.boundingClientRect.top;
+      if(y>=0&&y<bestY){bestY=y;best=e.target;}
+    });
+    if(!best){
+      let minAbs=Infinity;
+      entries.forEach(e=>{
+        const abs=Math.abs(e.boundingClientRect.top);
+        if(abs<minAbs){minAbs=abs;best=e.target;}
+      });
+    }
+    if(best){
+      const letter=best.id.replace('pick-alpha-','');
+      nav.querySelectorAll('.alpha-btn').forEach(b=>{
+        b.classList.toggle('current',b.textContent.trim()===letter);
+      });
+    }
+  },{root:list,threshold:0,rootMargin:'-40px 0px -60% 0px'});
+  sections.forEach(s=>pickAlphaObserver.observe(s));
+}
 window.togglePick=function(id,el){
   if(pickedSongs.has(id)){pickedSongs.delete(id);el.classList.remove('selected');el.querySelector('.pick-check').textContent='';}
   else{pickedSongs.add(id);el.classList.add('selected');el.querySelector('.pick-check').textContent='✓';}
@@ -1919,6 +2039,8 @@ window.saveRepertoire=async function(){
     await saveRepOrder();
     closeModal('addRepModal');
     switchTab(id);
+    // Сразу открываем окно добавления песен
+    setTimeout(()=>openPickSongsModal(), 300);
   }catch(e){showToast('Ошибка сохранения');}
 };
 
@@ -2448,6 +2570,37 @@ function renderFavoritesPage(){
     </div>`).join('');
 }
 
+
+// ── SONG DROPDOWN ──────────────────────────────────────────────
+window._ddSongId=null;
+window.openSongDropdown=function(songId,e){
+  e.stopPropagation();
+  window._ddSongId=songId;
+  const dd=document.getElementById('songDropdown');
+  const ov=document.getElementById('songDropdownOverlay');
+  const btn=e.currentTarget;
+  const rect=btn.getBoundingClientRect();
+  // Show admin-only items
+  const showAdmin=isEditor;
+  document.getElementById('ddEdit').style.display=showAdmin?'flex':'none';
+  document.getElementById('ddDelete').style.display=showAdmin?'flex':'none';
+  document.getElementById('ddAddToRep').style.display=isUser?'flex':'none';
+  // Position dropdown
+  const ddW=220;
+  let left=rect.right-ddW;
+  if(left<8) left=8;
+  let top=rect.bottom+6;
+  if(top+200>window.innerHeight) top=rect.top-210;
+  dd.style.left=left+'px';
+  dd.style.top=top+'px';
+  dd.classList.add('open');
+  ov.classList.add('open');
+};
+window.closeSongDropdown=function(){
+  document.getElementById('songDropdown').classList.remove('open');
+  document.getElementById('songDropdownOverlay').classList.remove('open');
+};
+
 </script>
 
 
@@ -2470,6 +2623,24 @@ function renderFavoritesPage(){
     <span>Профиль</span>
   </button>
 </nav>
+
+
+<!-- SONG DROPDOWN MENU -->
+<div class="song-dropdown-overlay" id="songDropdownOverlay" onclick="closeSongDropdown()"></div>
+<div class="song-dropdown" id="songDropdown">
+  <button class="song-dropdown-item" id="ddEdit" onclick="closeSongDropdown();openEditSong(window._ddSongId)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Редактировать
+  </button>
+  <button class="song-dropdown-item" id="ddAddToRep" onclick="closeSongDropdown();openAddToRepModal(window._ddSongId)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+    В репертуар
+  </button>
+  <button class="song-dropdown-item danger" id="ddDelete" onclick="closeSongDropdown();openConfirmDeleteSong(window._ddSongId)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    Удалить
+  </button>
+</div>
 
 </body>
 </html>
