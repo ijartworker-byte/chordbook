@@ -57,6 +57,8 @@ body{
   align-items:center;
   gap:12px;
 }
+.site-header.show-back .logo{display:none}
+.site-header.show-back .back-in-header{display:flex!important}
 .logo{
   font-weight:700;
   font-size:16px;
@@ -240,7 +242,7 @@ body{
 }
 body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
 
-.site-header .app-header,.site-header .rep-header{background:transparent;border-bottom:none;position:static;max-width:1200px;margin:0 auto}
+.site-header .app-header,.site-header .rep-header{background:var(--surface)}
 .app-wrap{max-width:1200px;margin:0 auto;position:relative;min-height:100vh}
 @media(min-width:1200px){
   body{background:#edeef0}
@@ -272,7 +274,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 .login-btn{font-family:var(--font-head);font-size:11px;color:var(--muted);border:1px solid var(--border);background:none;padding:0 12px;border-radius:8px;cursor:pointer;white-space:nowrap;height:36px;display:inline-flex;align-items:center;gap:6px}
 .login-btn:active{background:var(--surface2)}
 
-.rep-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:var(--bg)}
+.rep-header{display:flex;align-items:center;padding:0;height:52px;width:100%;background:var(--surface);border-bottom:1px solid var(--border)}
 .rep-header-title{font-family:var(--font-head);font-size:15px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .15s}
 .rep-header-title:hover{background:var(--surface2)}
 .rep-header-title.readonly{cursor:default}
@@ -548,6 +550,7 @@ select.form-input option{background:var(--surface)}
 <!-- ═══ ШАПКА ═══ -->
 <header class="site-header" id="mainHeader">
   <div class="header-inner">
+    <button class="back-in-header" id="headerBackBtn" style="display:none;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:var(--font-head);font-size:13px;color:var(--muted);width:148px;flex-shrink:0;padding:0" onclick="headerBackAction()"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Назад</button>
     <div class="logo" onclick="navTo('songs')" style="cursor:pointer"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg0IiBoZWlnaHQ9IjI4NCIgdmlld0JveD0iMCAwIDI4NCAyODQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNDIgMjg0QzIyMC40MjQgMjg0IDI4NCAyMjAuNDI0IDI4NCAxNDJDMjg0IDYzLjU3NTYgMjIwLjQyNCAwIDE0MiAwQzYzLjU3NTYgMCAwIDYzLjU3NTYgMCAxNDJDMCAyMjAuNDI0IDYzLjU3NTYgMjg0IDE0MiAyODRaIiBmaWxsPSIjMDA2RkI5Ii8+CjxwYXRoIGQ9Ik0xMTIuNjY2IDIzMC42NDRDMTUzLjc0MSAyNDUuNjE5IDE5Ny44NzIgMjI4LjExOCAyMTEuMjM2IDE5MS41NTVDMjI0LjUzIDE1NS4xODQgMTk4LjY2OSAxMTkuNjUyIDE5NC4zOTggODQuMTIyNEMxODcuMDY0IDkyLjU3NTcgMTgxLjA5OSAxMDMuOTQ5IDE3OC42NzIgMTE4LjU3MkMxNzUuMDc1IDE0MC4yMzYgMTg1LjI5IDE1OC4zMzUgMTc4LjY3MiAxNzYuOTU3QzE3Mi4wNTMgMTk1LjU3OSAxNTAuNzMxIDIwNy43NjQgMTI1LjI0MyAxOTguNzI5QzEwMS42MDYgMTkwLjM0OSA4OS4xODA3IDE2OC40OTUgOTQuMzg3MSAxNDguOTMzQzEwMi40NjcgMTE4LjU3MiAxNDcuNSAxMTcgMTY0LjA4NCAxNDUuMjc3QzE1My41IDkxIDE2Ni4wODQgNTYuNjU5OCAxODEuMDk5IDMzQzE0Ni41IDM4LjUgMTE5IDcyLjUgMTEyLjY2NiAxMTEuNUMxMDQgMTAwLjUgMTA2IDc4IDExMi41NjIgNjZDNzkgNzkuNSA1OCAxMTQuNjc0IDU4IDE0OC45MzNDNTggMTgzLjE5MyA3NS4yNDI5IDIxNyAxMTIuNjY2IDIzMC42NDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="logo" style="width:28px;height:28px;margin-right:4px;vertical-align:middle;border-radius:6px">Chord<span>Book</span></div>
     <input class="header-search" placeholder="Поиск по названию или автору…" id="desktopSearchInput" oninput="onDesktopSearch(this.value)" style="display:none">
     <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
@@ -559,11 +562,7 @@ select.form-input option{background:var(--surface)}
   <div class="search-wrap" id="searchWrap" style="display:none">
     <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
   </div>
-<header class="rep-header" id="repHeader" style="display:none">
-  <div class="header-inner">
-    <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
-  </div>
-</header>
+<div id="repHeader" style="display:none"></div>
 </header>
 
 <!-- ═══ LAYOUT ═══ -->
@@ -633,7 +632,6 @@ select.form-input option{background:var(--surface)}
 
 <!-- SONG VIEW -->
 <div class="song-view" id="songView">
-  <button class="back-btn" onclick="closeSongView()">← Назад</button>
   <div class="song-view-title" id="viewTitle"></div>
   <div class="song-view-artist" id="viewArtist"></div>
   <div class="key-bar">
@@ -673,7 +671,6 @@ select.form-input option{background:var(--surface)}
 
 <!-- REPERTOIRES PAGE -->
 <div class="rep-page" id="repPage">
-  <button class="back-btn" onclick="closeRepPage()">← Назад</button>
   <div class="rep-page-title">Репертуары</div>
   <div class="rep-page-sub">Все созданные сборники</div>
   <div id="repPageList"></div>
@@ -1473,6 +1470,7 @@ window.openSongView=function(id){
   renderSongView(id);
   document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='block';
+  showHeaderBack(()=>closeSongView());
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsWrap').style.display='none';
@@ -1580,6 +1578,7 @@ window.navSong=function(dir){
   renderSongView(currentSongId);window.scrollTo(0,0);
 };
 window.closeSongView=function(){
+  hideHeaderBack();
   releaseWakeLock();
   currentSongId=null;
   document.getElementById('songView').style.display='none';
@@ -1639,6 +1638,7 @@ function updateHeaders(){
   }
 }
 window.switchTab=function(id){
+  if(id==='all') hideHeaderBack();
   currentTab=id;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
   document.getElementById('mainContent').style.display='';
@@ -1974,6 +1974,7 @@ document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
 
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
+  showHeaderBack(()=>closeRepPage());
   document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='block';
@@ -1985,6 +1986,7 @@ window.openRepPage=function(){
   requestAnimationFrame(()=>initRepSortable());
 };
 window.closeRepPage=function(){
+  hideHeaderBack();
   document.getElementById('repPage').style.display='none';
   document.getElementById('mainLayout').style.display='';
   document.getElementById('tabsWrap').style.display='';
@@ -2076,6 +2078,7 @@ window.openSongFromRep=function(songId,repId){
   renderSongView(songId);
   document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='block';
+  showHeaderBack(()=>closeSongView());
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsWrap').style.display='none';
@@ -2262,6 +2265,20 @@ loadRepOrder().then(()=>{
   renderRepPage();
 });
 seedIfEmpty();
+
+// ── HEADER BACK BUTTON ────────────────────────────────────────────
+let _headerBackFn=null;
+function showHeaderBack(fn){
+  _headerBackFn=fn;
+  document.querySelector('.site-header').classList.add('show-back');
+  document.getElementById('headerBackBtn').style.display='flex';
+}
+function hideHeaderBack(){
+  _headerBackFn=null;
+  document.querySelector('.site-header').classList.remove('show-back');
+  document.getElementById('headerBackBtn').style.display='none';
+}
+window.headerBackAction=function(){if(_headerBackFn)_headerBackFn();};
 
 // ── SIDEBAR + BOTTOM NAV ─────────────────────────────────────────
 const NAV_SECTIONS=['songs','favorites','repertoires','profile'];
