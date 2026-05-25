@@ -559,15 +559,8 @@ select.form-input option{background:var(--surface)}
     <input class="search-input" id="searchInput" placeholder="Поиск по названию или автору…" oninput="renderSongList()">
   </div>
 <header class="rep-header" id="repHeader" style="display:none">
-  <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
-  <div class="rep-header-title" id="repHeaderTitle" onclick="openEditRepName()" title="Нажмите чтобы переименовать"></div>
-  <div class="hdr-btns">
-    <div class="toggle-wrap" id="repActiveWrap" onclick="toggleActiveRep()" title="Актуальный репертуар">
-      <span class="toggle-label" id="repActiveLabel">Актуальный</span>
-      <div class="toggle" id="repActiveToggle"></div>
-    </div>
-    <button class="icon-btn" id="repDeleteBtn" onclick="window.openConfirmDeleteRep(window._currentTab())" title="Удалить репертуар" style="display:none;color:var(--accent2)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
-    <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+  <div class="header-inner">
+    <button class="back-btn" style="margin:0" onclick="switchTab('all')">←</button>
   </div>
 </header>
 </header>
@@ -587,7 +580,7 @@ select.form-input option{background:var(--surface)}
         Избранное
       </button>
       <button class="sidebar-btn" id="sideNavReps" onclick="navTo('repertoires')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
         Репертуары
       </button>
       <button class="sidebar-btn" id="sideNavProfile" onclick="navTo('profile')">
@@ -606,6 +599,26 @@ select.form-input option{background:var(--surface)}
         <button class="add-tab-btn" id="addTabBtn" onclick="openAddRepertoireModal()" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
       </div>
     </div>
+    <!-- REP INFO BLOCK -->
+    <div id="repInfoBlock" style="display:none;padding:12px 16px 8px">
+      <!-- Title + author -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+        <div>
+          <div id="repInfoTitle" style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--text)"></div>
+          <div id="repInfoAuthor" style="font-size:13px;color:var(--muted);margin-top:2px"></div>
+        </div>
+        <!-- Controls -->
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <div class="toggle-wrap" id="repActiveWrap" onclick="toggleActiveRep()" title="Актуальный репертуар" style="display:none">
+            <span class="toggle-label" id="repActiveLabel">Актуальный</span>
+            <div class="toggle" id="repActiveToggle"></div>
+          </div>
+          <button class="icon-btn" id="repDeleteBtn" onclick="window.openConfirmDeleteRep(window._currentTab())" title="Удалить репертуар" style="display:none;color:var(--accent2)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+          <button class="icon-btn" id="repAddSongsBtn" onclick="openPickSongsModal()" title="Добавить песни" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+      </div>
+    </div>
+
     <div id="activeRepBlock" style="display:none" class="active-rep-block">
       <div class="active-rep-label">⚡ АКТУАЛЬНЫЙ РЕПЕРТУАР</div>
       <div class="active-rep-name" id="activeRepName" onclick="goToActiveRep()"></div>
@@ -1584,24 +1597,39 @@ window.closeSongView=function(){
 // ── HEADERS & TABS ─────────────────────────────────────────────────────────
 function updateHeaders(){
   const isRep=currentTab!=='all';
-  // In new layout mainHeader (site-header) is always visible
-  // Only toggle repHeader inside it
   const rh=document.getElementById('repHeader');
   if(rh) rh.style.display=isRep?'flex':'none';
+
+  const rib=document.getElementById('repInfoBlock');
+  if(rib) rib.style.display=isRep?'block':'none';
+
   if(isRep){
     const rep=repertoires.find(r=>r.id===currentTab);
-    const authorStr=rep&&rep.authorName?' · '+rep.authorName:'';
-    document.getElementById('repHeaderTitle').textContent=rep?rep.name+authorStr:'';
     const canEdit=canEditRep(currentTab);
-    document.getElementById('repActiveWrap').style.display=isEditor?'flex':'none';
-    document.getElementById('repAddSongsBtn').style.display=canEdit?'':'none';
-    const delBtn=document.getElementById('repDeleteBtn');
-    if(delBtn)delBtn.style.display=canEdit?'flex':'none';
-    const titleEl=document.getElementById('repHeaderTitle');
+
+    // Title - clickable only if canEdit
+    const titleEl=document.getElementById('repInfoTitle');
     if(titleEl){
-      if(canEdit)titleEl.classList.remove('readonly');
-      else titleEl.classList.add('readonly');
+      titleEl.textContent=rep?rep.name:'';
+      titleEl.style.cursor=canEdit?'pointer':'default';
+      titleEl.title=canEdit?'Нажмите чтобы переименовать':'';
+      titleEl.onclick=canEdit?()=>openEditRepName():null;
     }
+    // Author
+    const authorEl=document.getElementById('repInfoAuthor');
+    if(authorEl) authorEl.textContent=rep&&rep.authorName?rep.authorName:'';
+
+    // Controls - visible only if canEdit/isEditor
+    const activeWrap=document.getElementById('repActiveWrap');
+    if(activeWrap) activeWrap.style.display=isEditor?'flex':'none';
+    const delBtn=document.getElementById('repDeleteBtn');
+    if(delBtn) delBtn.style.display=canEdit?'flex':'none';
+    const addBtn=document.getElementById('repAddSongsBtn');
+    if(addBtn) addBtn.style.display=canEdit?'':'none';
+
+    // Keep repHeaderTitle in sync
+    const repTitle=document.getElementById('repHeaderTitle');
+    if(repTitle) repTitle.textContent=rep?rep.name:'';
   }
   if(isRep&&searchVisible){
     searchVisible=false;
