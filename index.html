@@ -256,6 +256,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
     margin-left:calc((100vw - 1020px) / 2 + 160px);
     max-width:860px;
   }
+  .rep-page{
+    margin-left:calc((100vw - 1020px) / 2 + 160px);
+    max-width:860px;
+  }
   .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px);background:#fff}
   .toast{bottom:90px}
   .modal-overlay .modal:not(.song-modal-desktop){max-width:480px;border-radius:20px 20px 0 0}
@@ -334,7 +338,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 
 .song-view{display:none;padding-top:52px;padding:52px 16px 100px}
 .song-view.has-nav{padding-bottom:110px}
-.song-nav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;bottom:0;left:0;right:0;padding:12px 16px 28px;background:var(--bg);border-top:1px solid var(--border);z-index:150}
+.song-nav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(56px + env(safe-area-inset-bottom,16px) + 8px);background:var(--bg);border-top:1px solid var(--border);z-index:250}
 .nav-arrow{flex:1;padding:12px 0;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-family:var(--font-head);font-size:13px;cursor:pointer;transition:all .15s;text-align:center;font-weight:600}
 .nav-arrow:disabled{background:var(--surface2);border-color:var(--border);color:var(--muted);cursor:default;font-weight:400}
 .nav-arrow:not(:disabled):active{background:#005a96;border-color:#005a96;color:#fff}
@@ -570,10 +574,11 @@ select.form-input option{background:var(--surface)}
   .song-more-btn{display:none}
   .song-action-btn{display:flex}
 }
-/* On mobile - hide action btns, show more btn */
+/* On mobile - hide action btns in song list, show more btn */
 @media(max-width:767px){
   .song-action-btn{display:none}
   .song-more-btn{display:flex}
+  .rep-action-btn{display:flex!important}
 }
 
 </style>
@@ -1484,8 +1489,8 @@ function renderSongList(){
             ${metaStr?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(metaStr)}</div>`:''}
           </div>
           <div class="song-actions" onclick="event.stopPropagation()">
-            ${canEditRep(currentTab)?`<button class="rep-key-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>`:''}
-            ${canEditRep(currentTab)?`<button class="song-action-btn" style="color:var(--accent2)" onclick="openConfirmRemoveRep('${s.id}')" title="Убрать из репертуара"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
+            ${canEditRep(currentTab)?`<button class="rep-key-btn rep-action-btn" onclick="openRepKeyModal('${s.id}')" title="Изменить тональность"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>`:''}
+            ${canEditRep(currentTab)?`<button class="song-action-btn rep-action-btn" style="color:var(--accent2)" onclick="openConfirmRemoveRep('${s.id}')" title="Убрать из репертуара"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`:''}
           </div>
         </div>
       </div>`;
