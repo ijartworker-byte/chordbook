@@ -338,7 +338,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
 
 .song-view{display:none;padding-top:52px;padding:52px 16px 100px}
 .song-view.has-nav{padding-bottom:110px}
-.song-nav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(56px + env(safe-area-inset-bottom,16px) + 8px);background:var(--bg);border-top:1px solid var(--border);z-index:250}
+.song-nav-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(env(safe-area-inset-bottom,16px) + 8px);background:var(--bg);border-top:1px solid var(--border);z-index:250}
 .nav-arrow{flex:1;padding:12px 0;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-family:var(--font-head);font-size:13px;cursor:pointer;transition:all .15s;text-align:center;font-weight:600}
 .nav-arrow:disabled{background:var(--surface2);border-color:var(--border);color:var(--muted);cursor:default;font-weight:400}
 .nav-arrow:not(:disabled):active{background:#005a96;border-color:#005a96;color:#fff}
@@ -1374,7 +1374,23 @@ function renderAlphaNav(songArr){
   const letters=[...new Set(songArr.map(s=>s.title[0].toUpperCase()))].sort();
   nav.innerHTML=letters.length<3?'':letters.map(l=>`<button class="alpha-btn" onclick="scrollToLetter('${l}')">${l}</button>`).join('');
 }
-window.scrollToLetter=function(l){const el=document.getElementById('alpha-'+l);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
+window.scrollToLetter=function(l){
+  const el=document.getElementById('alpha-'+l);
+  if(!el) return;
+  // Highlight button immediately
+  document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
+    b.classList.toggle('current', b.textContent.trim()===l);
+  });
+  // Scroll letter button into view in alpha nav
+  const btn=document.querySelector(`#alphaNav .alpha-btn.current`);
+  if(btn) btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  // Scroll to section accounting for sticky header
+  const hh=getHeaderHeight();
+  const alphaNav=document.getElementById('alphaNav');
+  const alphaH=alphaNav?alphaNav.offsetHeight:36;
+  const top=el.getBoundingClientRect().top+window.scrollY-(hh+alphaH+4);
+  window.scrollTo({top,behavior:'smooth'});
+};
 
 // ── WAKE LOCK ─────────────────────────────────────────────────────────────
 let wakeLock=null;
@@ -1394,6 +1410,7 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 let alphaObserver=null;
+let alphaScrollTimer=null;
 
 function getHeaderHeight(){
   const sh=document.querySelector('.site-header');
@@ -1406,39 +1423,42 @@ function getHeaderHeight(){
 function initAlphaObserver(){
   const alphaNav=document.getElementById('alphaNav');
   if(!alphaNav) return;
-  // Stick right below header+tabs
   const hh=getHeaderHeight();
   alphaNav.style.top=hh+'px';
-  // Update scroll-margin on sections
   const alphaH=alphaNav.offsetHeight||36;
   document.querySelectorAll('.alpha-section').forEach(s=>{
     s.style.scrollMarginTop=(hh+alphaH+4)+'px';
   });
   if(alphaObserver) alphaObserver.disconnect();
-  const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
-  if(!sections.length) return;
-  alphaObserver=new IntersectionObserver((entries)=>{
-    let best=null; let bestY=Infinity;
-    entries.forEach(e=>{
-      const y=e.boundingClientRect.top;
-      if(y>=0&&y<bestY){bestY=y;best=e.target;}
+  // Use scroll event for stable highlighting
+  const updateActiveLetter=()=>{
+    const sections=document.querySelectorAll('.alpha-section[id^="alpha-"]');
+    if(!sections.length) return;
+    const offset=hh+alphaH+8;
+    let active=null;
+    sections.forEach(s=>{
+      const y=s.getBoundingClientRect().top;
+      if(y<=offset) active=s;
     });
-    if(!best){
-      // find closest to top (scrolled past)
-      let minAbs=Infinity;
-      entries.forEach(e=>{
-        const abs=Math.abs(e.boundingClientRect.top);
-        if(abs<minAbs){minAbs=abs;best=e.target;}
-      });
-    }
-    if(best){
-      const letter=best.id.replace('alpha-','');
+    if(!active) active=sections[0];
+    if(active){
+      const letter=active.id.replace('alpha-','');
       document.querySelectorAll('#alphaNav .alpha-btn').forEach(b=>{
-        b.classList.toggle('current',b.textContent.trim()===letter);
+        const isCurrent=b.textContent.trim()===letter;
+        b.classList.toggle('current',isCurrent);
+        if(isCurrent) b.scrollIntoView({block:'nearest',inline:'center'});
       });
     }
-  },{threshold:0,rootMargin:`-${hh+alphaH+2}px 0px -50% 0px`});
-  sections.forEach(s=>alphaObserver.observe(s));
+  };
+  // Debounced scroll listener
+  const onScroll=()=>{
+    clearTimeout(alphaScrollTimer);
+    alphaScrollTimer=setTimeout(updateActiveLetter,50);
+  };
+  window.removeEventListener('scroll',window._alphaScrollHandler);
+  window._alphaScrollHandler=onScroll;
+  window.addEventListener('scroll',onScroll,{passive:true});
+  updateActiveLetter();
 }
 
 // ── SONG LIST ──────────────────────────────────────────────────────────────
@@ -1538,6 +1558,7 @@ window.openSongView=function(id){
   renderSongView(id);
   document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='block';
+  document.getElementById('bottomNav').style.display='none';
   showHeaderBack(()=>closeSongView());
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
@@ -1648,6 +1669,7 @@ window.navSong=function(dir){
 window.closeSongView=function(){
   hideHeaderBack();
   releaseWakeLock();
+  document.getElementById('bottomNav').style.display='';
   currentSongId=null;
   document.getElementById('songView').style.display='none';
   document.getElementById('mainLayout').style.display='';
@@ -2230,6 +2252,7 @@ window.openSongFromRep=function(songId,repId){
   renderSongView(songId);
   document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='block';
+  document.getElementById('bottomNav').style.display='none';
   showHeaderBack(()=>closeSongView());
   document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
