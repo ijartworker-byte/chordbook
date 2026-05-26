@@ -2152,6 +2152,7 @@ document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
 
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
+  console.log('openRepPage called, mainLayout:', document.getElementById('mainLayout')?.style.display, 'sidebar:', window.getComputedStyle(document.querySelector('.sidebar'))?.display);
   // Keep mainLayout visible (sidebar needs to show on desktop)
   document.getElementById('mainContent').style.display='none';
   document.getElementById('songView').style.display='none';
