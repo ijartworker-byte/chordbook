@@ -2521,8 +2521,14 @@ window.navTo=function(section){
   const rp=document.getElementById('repPage');
   const tw=document.getElementById('tabsWrap');
   const fab=document.getElementById('fabBtn');
+  const bn=document.getElementById('bottomNav');
 
-  // Hide all first
+  // Always close repPage and songView first
+  if(rp) rp.style.display='none';
+  if(sv) sv.style.display='none';
+  if(bn) bn.style.display='';
+  hideHeaderBack();
+  document.getElementById('mainLayout').style.display='';
   if(sv) sv.style.display='none';
   if(fab) fab.style.display='none';
 
