@@ -254,7 +254,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
   .fab{right:20px;bottom:24px}
   .song-view{
     inset:52px 0 0 0;
-    padding:26px calc((100vw - 1080px) / 2) 100px;
+    padding:26px 0 100px;
+  }
+  .song-view-inner{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 16px;
   }
   .rep-page{padding-top:16px}
   .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px);background:#fff}
@@ -2766,6 +2771,7 @@ function updateSidebarUser(){
 
 <!-- SONG VIEW -->
 <div class="song-view" id="songView">
+  <div class="song-view-inner">
   <div class="song-view-title" id="viewTitle"></div>
   <div class="song-view-artist" id="viewArtist"></div>
   <div class="key-bar">
@@ -2800,6 +2806,7 @@ function updateSidebarUser(){
   </div>
   <div class="song-meta" id="viewMeta" style="display:none"></div>
   <div class="lyrics-block" id="viewLyrics"></div>
+  </div><!-- /song-view-inner -->
 </div>
 
 
