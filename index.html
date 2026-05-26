@@ -2198,7 +2198,6 @@ document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
 
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
-  showHeaderBack(()=>closeRepPage());
   document.getElementById('mainLayout').style.display='none';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='block';
@@ -2210,7 +2209,6 @@ window.openRepPage=function(){
   requestAnimationFrame(()=>initRepSortable());
 };
 window.closeRepPage=function(){
-  hideHeaderBack();
   document.getElementById('repPage').style.display='none';
   document.getElementById('mainLayout').style.display='';
   document.getElementById('tabsWrap').style.display='';
@@ -2564,6 +2562,7 @@ window.navTo=function(section){
     if(mc) mc.style.display='none';
     if(tw) tw.style.display='none';
     if(isUser&&fab) fab.style.display='';
+    hideHeaderBack();
     openRepPage();
   } else if(section==='profile'){
     if(mc) mc.style.display='';
