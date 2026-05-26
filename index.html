@@ -1558,11 +1558,11 @@ window.openSongView=function(id){
   navSongList=buildNavList();navIndex=navSongList.indexOf(id);
   currentSongId=id;currentTranspose=0;
   renderSongView(id);
-  document.getElementById('mainLayout').style.display='none';
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('repPage').style.display='none';
   document.getElementById('songView').style.display='block';
   document.getElementById('bottomNav').style.display='none';
   showHeaderBack(()=>closeSongView());
-  document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsWrap').style.display='none';
   document.getElementById('repAddSongsBtn').style.display='none';
@@ -1674,7 +1674,7 @@ window.closeSongView=function(){
   document.getElementById('bottomNav').style.display='';
   currentSongId=null;
   document.getElementById('songView').style.display='none';
-  document.getElementById('mainLayout').style.display='';
+  document.getElementById('mainContent').style.display='';
   document.getElementById('songNavBar').style.display='none';
   document.getElementById('tabsWrap').style.display='';
   document.getElementById('mainContent').style.display='';
@@ -2152,8 +2152,6 @@ document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
 
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
-  console.log('openRepPage called, mainLayout:', document.getElementById('mainLayout')?.style.display, 'sidebar:', window.getComputedStyle(document.querySelector('.sidebar'))?.display);
-  // Keep mainLayout visible (sidebar needs to show on desktop)
   document.getElementById('mainContent').style.display='none';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='block';
@@ -2253,11 +2251,11 @@ window.openSongFromRep=function(songId,repId){
   navIndex=navSongList.indexOf(songId);
   currentSongId=songId;currentTranspose=0;
   renderSongView(songId);
-  document.getElementById('mainLayout').style.display='none';
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('repPage').style.display='none';
   document.getElementById('songView').style.display='block';
   document.getElementById('bottomNav').style.display='none';
   showHeaderBack(()=>closeSongView());
-  document.getElementById('repPage').style.display='none';
   document.getElementById('fabBtn').style.display='none';
   document.getElementById('tabsWrap').style.display='none';
   document.getElementById('repAddSongsBtn').style.display='none';
@@ -2483,7 +2481,6 @@ window.navTo=function(section){
   if(sv) sv.style.display='none';
   if(bn) bn.style.display='';
   hideHeaderBack();
-  document.getElementById('mainLayout').style.display='';
   if(sv) sv.style.display='none';
   if(fab) fab.style.display='none';
 
