@@ -257,8 +257,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-hei
     max-width:1080px;
   }
   .rep-page{
-    margin-left:calc((100vw - 1240px) / 2 + 160px);
-    max-width:1080px;
+    max-width:none;
+    margin-left:0;
   }
   .song-nav-bar{left:calc(50% - 600px);right:calc(50% - 600px);background:#fff}
   .toast{bottom:90px}
@@ -716,50 +716,7 @@ select.form-input option{background:var(--surface)}
     </div>
     <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
   </main>
-
-</div><!-- /layout -->
-
-<!-- SONG VIEW -->
-<div class="song-view" id="songView">
-  <div class="song-view-title" id="viewTitle"></div>
-  <div class="song-view-artist" id="viewArtist"></div>
-  <div class="key-bar">
-    <select class="key-select" id="viewKeySelect" onchange="transposeToKey(this.value)">
-      <option>C</option><option>Cm</option>
-      <option>C#/Db</option><option>C#m/Dbm</option>
-      <option>D</option><option>Dm</option>
-      <option>D#/Eb</option><option>D#m/Ebm</option>
-      <option>E</option><option>Em</option>
-      <option>F</option><option>Fm</option>
-      <option>F#/Gb</option><option>F#m/Gbm</option>
-      <option>G</option><option>Gm</option>
-      <option>G#/Ab</option><option>G#m/Abm</option>
-      <option>A</option><option>Am</option>
-      <option>A#/Bb</option><option>A#m/Bbm</option>
-      <option>B</option><option>Bm</option>
-      <option>H</option><option>Hm</option>
-    </select>
-    <span class="pedal-badge" id="viewPedalBadge" style="display:none"></span>
-    <div class="key-divider"></div>
-    <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
-    <span class="size-display" id="sizeDisplay">22px</span>
-    <button class="key-btn" onclick="changeFontSize(2)">А+</button>
-    <div class="key-divider" id="metaDivider" style="display:none"></div>
-    <div class="key-meta-col" id="keyMetaCol" style="display:none">
-      <span class="key-meta" id="viewTempo"></span>
-      <span class="key-meta" id="viewMeter"></span>
-      <span class="key-meta" id="viewPedal"></span>
-    </div>
-    <div style="flex:1"></div>
-    <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-  </div>
-  <div class="song-meta" id="viewMeta" style="display:none"></div>
-  <div class="lyrics-block" id="viewLyrics"></div>
-</div>
-
-
-<!-- REPERTOIRES PAGE -->
-<div class="rep-page" id="repPage">
+  <div class="rep-page" id="repPage">
   <div class="rep-page-title">Репертуары</div>
   <div class="rep-page-sub">Все созданные сборники</div>
   <div id="repPageList"></div>
@@ -2198,11 +2155,11 @@ document.getElementById('confirmSongOverlay').addEventListener('click',e=>{
 
 // ── REPERTOIRE PAGE ────────────────────────────────────────────────────────
 window.openRepPage=function(){
-  document.getElementById('mainLayout').style.display='none';
+  // Keep mainLayout visible (sidebar needs to show on desktop)
+  document.getElementById('mainContent').style.display='none';
   document.getElementById('songView').style.display='none';
   document.getElementById('repPage').style.display='block';
   document.getElementById('tabsWrap').style.display='none';
-  /* mainHeader always visible in new layout */
   const _rh2=document.getElementById('repHeader');if(_rh2)_rh2.style.display='none';
   document.getElementById('fabBtn').style.display='none';
   renderRepPage();
@@ -2210,7 +2167,7 @@ window.openRepPage=function(){
 };
 window.closeRepPage=function(){
   document.getElementById('repPage').style.display='none';
-  document.getElementById('mainLayout').style.display='';
+  document.getElementById('mainContent').style.display='';
   document.getElementById('tabsWrap').style.display='';
   if(isUser)document.getElementById('fabBtn').style.display='';
   switchTab(currentTab);
@@ -2810,7 +2767,48 @@ function updateSidebarUser(){
   </button>
 </nav>
 
+</div><!-- /layout -->
 
+<!-- SONG VIEW -->
+<div class="song-view" id="songView">
+  <div class="song-view-title" id="viewTitle"></div>
+  <div class="song-view-artist" id="viewArtist"></div>
+  <div class="key-bar">
+    <select class="key-select" id="viewKeySelect" onchange="transposeToKey(this.value)">
+      <option>C</option><option>Cm</option>
+      <option>C#/Db</option><option>C#m/Dbm</option>
+      <option>D</option><option>Dm</option>
+      <option>D#/Eb</option><option>D#m/Ebm</option>
+      <option>E</option><option>Em</option>
+      <option>F</option><option>Fm</option>
+      <option>F#/Gb</option><option>F#m/Gbm</option>
+      <option>G</option><option>Gm</option>
+      <option>G#/Ab</option><option>G#m/Abm</option>
+      <option>A</option><option>Am</option>
+      <option>A#/Bb</option><option>A#m/Bbm</option>
+      <option>B</option><option>Bm</option>
+      <option>H</option><option>Hm</option>
+    </select>
+    <span class="pedal-badge" id="viewPedalBadge" style="display:none"></span>
+    <div class="key-divider"></div>
+    <button class="key-btn" onclick="changeFontSize(-2)">А−</button>
+    <span class="size-display" id="sizeDisplay">22px</span>
+    <button class="key-btn" onclick="changeFontSize(2)">А+</button>
+    <div class="key-divider" id="metaDivider" style="display:none"></div>
+    <div class="key-meta-col" id="keyMetaCol" style="display:none">
+      <span class="key-meta" id="viewTempo"></span>
+      <span class="key-meta" id="viewMeter"></span>
+      <span class="key-meta" id="viewPedal"></span>
+    </div>
+    <div style="flex:1"></div>
+    <button class="song-action-btn" id="editSongBtn" onclick="window._editCurrentSong()" title="Редактировать" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+  </div>
+  <div class="song-meta" id="viewMeta" style="display:none"></div>
+  <div class="lyrics-block" id="viewLyrics"></div>
+</div>
+
+
+<!-- REPERTOIRES PAGE -->
 <!-- SONG DROPDOWN MENU -->
 <div class="song-dropdown-overlay" id="songDropdownOverlay" onclick="closeSongDropdown()"></div>
 <div class="song-dropdown" id="songDropdown">
