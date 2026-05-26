@@ -1781,7 +1781,9 @@ window.switchTab=function(id){
   if(id==='all') hideHeaderBack();
   currentTab=id;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
-  // Reset favorites page when switching tabs
+  // Reset other pages when switching tabs
+  const pp3=document.getElementById('profilePage');
+  if(pp3) pp3.style.display='none';
   const favPage=document.getElementById('favoritesPage');
   if(favPage) favPage.style.display='none';
   const songList=document.getElementById('songList');
@@ -2532,11 +2534,13 @@ window.navTo=function(section){
     if(tw) tw.style.display='';
     if(isUser&&fab) fab.style.display='';
     currentTab='all';
-    // Hide favorites page, show song list
+    // Hide other pages, show song list
     const fp=document.getElementById('favoritesPage');
+    const pp=document.getElementById('profilePage');
     const sl=document.getElementById('songList');
     const an=document.getElementById('alphaNav');
     if(fp) fp.style.display='none';
+    if(pp) pp.style.display='none';
     if(sl) sl.style.display='';
     renderSongList();
     renderTabsNav();
@@ -2550,7 +2554,9 @@ window.navTo=function(section){
     const fp=document.getElementById('favoritesPage');
     const sl=document.getElementById('songList');
     const an=document.getElementById('alphaNav');
+    const pp2=document.getElementById('profilePage');
     if(fp) fp.style.display='';
+    if(pp2) pp2.style.display='none';
     if(sl) sl.style.display='none';
     if(an) an.style.display='none';
     renderFavoritesPage();
