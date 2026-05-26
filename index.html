@@ -666,6 +666,54 @@ select.form-input option{background:var(--surface)}
     </div>
     <div class="alpha-nav" id="alphaNav"></div>
     <div id="favoritesPage" style="display:none;padding:8px 16px 100px"></div>
+
+    <!-- PROFILE PAGE -->
+    <div id="profilePage" style="display:none;padding:16px 16px 100px;max-width:480px">
+
+      <!-- Avatar + info -->
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+        <div id="profileAvatar" style="width:64px;height:64px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:26px;font-weight:700;color:#fff;flex-shrink:0">?</div>
+        <div>
+          <div id="profileName" style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--text)">Войдите в аккаунт</div>
+          <div id="profileEmail" style="font-size:13px;color:var(--muted);margin-top:2px"></div>
+          <div id="profileRole" style="display:inline-block;margin-top:4px;padding:2px 10px;border-radius:20px;font-size:11px;font-family:var(--font-head);background:var(--accent);color:#fff;display:none"></div>
+        </div>
+      </div>
+
+      <!-- Edit form (hidden by default) -->
+      <div id="profileEditForm" style="display:none;background:var(--surface);border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid var(--border)">
+        <div style="font-family:var(--font-head);font-size:15px;font-weight:700;margin-bottom:16px">Редактировать профиль</div>
+        <div style="display:flex;gap:12px">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Имя</label>
+            <input class="form-input" id="editFirstName" placeholder="Имя">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Фамилия</label>
+            <input class="form-input" id="editLastName" placeholder="Фамилия">
+          </div>
+        </div>
+        <div id="profileSaveError" style="font-size:12px;color:var(--accent2);display:none;margin-bottom:8px"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="toggleProfileEdit(false)">Отмена</button>
+          <button class="btn btn-primary" onclick="saveProfile()">Сохранить</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div id="profileActions">
+        <button class="btn btn-secondary" id="editProfileBtn" style="display:none;width:100%;margin-bottom:10px" onclick="toggleProfileEdit(true)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Редактировать профиль
+        </button>
+        <button class="btn btn-secondary" id="profileLogoutBtn" style="display:none;width:100%;color:var(--accent2)" onclick="onAuthBtnClick()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Выйти
+        </button>
+        <button class="btn btn-primary" id="profileLoginBtn" style="width:100%" onclick="onAuthBtnClick()">Войти / Зарегистрироваться</button>
+      </div>
+
+    </div>
     <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
   </main>
 
@@ -2512,9 +2560,21 @@ window.navTo=function(section){
     if(isUser&&fab) fab.style.display='';
     openRepPage();
   } else if(section==='profile'){
-    if(mc) mc.style.display='none';
+    if(mc) mc.style.display='';
     if(rp) rp.style.display='none';
     if(tw) tw.style.display='none';
+    if(fab) fab.style.display='none';
+    const fp=document.getElementById('favoritesPage');
+    const pp=document.getElementById('profilePage');
+    const sl=document.getElementById('songList');
+    const an=document.getElementById('alphaNav');
+    const rib=document.getElementById('repInfoBlock');
+    if(fp) fp.style.display='none';
+    if(pp) pp.style.display='block';
+    if(sl) sl.style.display='none';
+    if(an) an.style.display='none';
+    if(rib) rib.style.display='none';
+    renderProfilePage();
   }
 };
 
@@ -2628,6 +2688,93 @@ window.closeSongDropdown=function(){
   document.getElementById('songDropdown').classList.remove('open');
   document.getElementById('songDropdownOverlay').classList.remove('open');
 };
+
+
+// ── PROFILE ───────────────────────────────────────────────────────
+function renderProfilePage(){
+  const avatarEl=document.getElementById('profileAvatar');
+  const nameEl=document.getElementById('profileName');
+  const emailEl=document.getElementById('profileEmail');
+  const roleEl=document.getElementById('profileRole');
+  const editBtn=document.getElementById('editProfileBtn');
+  const logoutBtn=document.getElementById('profileLogoutBtn');
+  const loginBtn=document.getElementById('profileLoginBtn');
+
+  if(currentUser){
+    const name=currentUserName||currentUser.email.split('@')[0];
+    if(avatarEl) avatarEl.textContent=name[0].toUpperCase();
+    if(nameEl) nameEl.textContent=name;
+    if(emailEl) emailEl.textContent=currentUser.email;
+    if(roleEl){
+      roleEl.textContent=isEditor?'Администратор':'Пользователь';
+      roleEl.style.background=isEditor?'var(--accent)':'var(--muted)';
+      roleEl.style.display='inline-block';
+    }
+    if(editBtn) editBtn.style.display='flex';
+    if(logoutBtn) logoutBtn.style.display='flex';
+    if(loginBtn) loginBtn.style.display='none';
+  } else {
+    if(avatarEl) avatarEl.textContent='?';
+    if(nameEl) nameEl.textContent='Войдите в аккаунт';
+    if(emailEl) emailEl.textContent='';
+    if(roleEl) roleEl.style.display='none';
+    if(editBtn) editBtn.style.display='none';
+    if(logoutBtn) logoutBtn.style.display='none';
+    if(loginBtn) loginBtn.style.display='flex';
+    toggleProfileEdit(false);
+  }
+}
+
+window.toggleProfileEdit=function(show){
+  const form=document.getElementById('profileEditForm');
+  const actions=document.getElementById('profileActions');
+  if(form) form.style.display=show?'block':'none';
+  if(actions) actions.style.display=show?'none':'block';
+  if(show&&currentUser){
+    const parts=(currentUserName||'').split(' ');
+    const fn=document.getElementById('editFirstName');
+    const ln=document.getElementById('editLastName');
+    if(fn) fn.value=parts[0]||'';
+    if(ln) ln.value=parts.slice(1).join(' ')||'';
+    setTimeout(()=>document.getElementById('editFirstName')&&document.getElementById('editFirstName').focus(),100);
+  }
+};
+
+window.saveProfile=async function(){
+  const firstName=(document.getElementById('editFirstName').value||'').trim();
+  const lastName=(document.getElementById('editLastName').value||'').trim();
+  const errEl=document.getElementById('profileSaveError');
+  errEl.style.display='none';
+  if(!firstName||!lastName){errEl.textContent='Введите имя и фамилию';errEl.style.display='block';return;}
+  try{
+    await setDoc(doc(db,'users',currentUser.uid),{
+      role:userRole||'user',firstName,lastName,email:currentUser.email
+    });
+    currentUserName=firstName+' '+lastName;
+    toggleProfileEdit(false);
+    renderProfilePage();
+    updateSidebarUser();
+    showToast('Профиль сохранён');
+  }catch(e){errEl.textContent='Ошибка сохранения';errEl.style.display='block';}
+};
+
+function updateSidebarUser(){
+  // Update auth button in header
+  const authBtn=document.getElementById('authBtn');
+  if(!authBtn) return;
+  if(currentUser){
+    const name=currentUserName||currentUser.email.split('@')[0];
+    authBtn.className='editor-badge';
+    authBtn.style.background=isEditor?'var(--accent)':'var(--surface2)';
+    authBtn.style.color=isEditor?'#fff':'var(--text)';
+    authBtn.style.border=isEditor?'none':'1px solid var(--border)';
+    authBtn.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ${name} · Выйти`;
+  } else {
+    authBtn.className='login-btn';
+    authBtn.style.background='';authBtn.style.color='';authBtn.style.border='';
+    authBtn.innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Войти`;
+  }
+}
 
 </script>
 
