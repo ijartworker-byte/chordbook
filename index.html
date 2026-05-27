@@ -1319,8 +1319,8 @@ window.changeFontSize=function(delta){
 };
 function applyFontSize(){
   const lb=document.getElementById('viewLyrics');if(!lb)return;
-  lb.querySelectorAll('.lyric-row').forEach(el=>el.style.fontSize=fontSize+'px');
-  lb.querySelectorAll('.chord-row').forEach(el=>el.style.fontSize=(fontSize+4)+'px');
+  lb.querySelectorAll('.lyric-row').forEach(el=>{el.style.fontSize=fontSize+'px';el.style.lineHeight='1.2';});
+  lb.querySelectorAll('.chord-row').forEach(el=>{el.style.fontSize=(fontSize+4)+'px';el.style.lineHeight='1.1';el.style.marginTop='2px';});
 }
 
 // ── RENDER LYRICS ──────────────────────────────────────────────────────────
