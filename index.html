@@ -2409,21 +2409,6 @@ window.onDragEnd=function(){};
 window.onTouchStart=function(){};
 window.onTouchMove=function(){};
 window.onTouchEnd=function(){};
-const SEED_SONGS=[];
-
-
-async function seedIfEmpty(){
-  try{
-    const snap=await getDocs(collection(db,'songs'));
-    if(snap.size===0){
-      showToast('Первый запуск: загружаем песни...');
-      for(const s of SEED_SONGS){
-        await setDoc(doc(db,'songs',s.id),{title:s.title,artist:s.artist||'',key:s.key,lyrics:s.lyrics||''});
-      }
-      showToast('Загружено '+SEED_SONGS.length+' песен!');
-    }
-  }catch(e){console.error('Seed error:',e);}
-}
 
 // ── FIRESTORE REALTIME ─────────────────────────────────────────────────────
 onSnapshot(collection(db,'songs'),snap=>{
@@ -2449,7 +2434,6 @@ loadRepOrder().then(()=>{
   renderTabsNav();
   renderRepPage();
 });
-seedIfEmpty();
 
 // ── HEADER BACK BUTTON ────────────────────────────────────────────
 let _headerBackFn=null;
