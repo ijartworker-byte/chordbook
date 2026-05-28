@@ -719,8 +719,13 @@ select.form-input option{background:var(--surface)}
     <div class="song-list" id="songList"><div class="loading"><div class="spinner"></div>Загрузка…</div></div>
   </main>
   <div class="rep-page" id="repPage">
-  <div class="rep-page-title">Репертуары</div>
-  <div class="rep-page-sub">Все созданные сборники</div>
+  <!-- Rep page tabs -->
+  <div class="tabs-wrap" style="margin:0 -16px">
+    <nav class="tabs-nav" id="repPageTabs">
+      <button class="tab-btn active" id="repTabAll" onclick="setRepPageTab('all')">Все репертуары</button>
+      <button class="tab-btn" id="repTabMine" onclick="setRepPageTab('mine')">Мои</button>
+    </nav>
+  </div>
   <div id="repPageList"></div>
 </div>
 
@@ -2177,11 +2182,28 @@ window.closeRepPage=function(){
   if(isUser)document.getElementById('fabBtn').style.display='';
   switchTab(currentTab);
 };
+let repPageFilter='all';
+
+window.setRepPageTab=function(filter){
+  repPageFilter=filter;
+  document.getElementById('repTabAll').classList.toggle('active', filter==='all');
+  document.getElementById('repTabMine').classList.toggle('active', filter==='mine');
+  renderRepPage();
+};
+
 function renderRepPage(){
   const list=document.getElementById('repPageList');
-  const sorted=getSortedReps();
+  let sorted=getSortedReps();
+  // Apply filter
+  if(repPageFilter==='mine'){
+    if(!currentUser){
+      list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Войдите чтобы видеть свои репертуары</div></div>';
+      return;
+    }
+    sorted=sorted.filter(r=>r.authorId===currentUser.uid);
+  }
   if(!sorted.length){
-    list.innerHTML=`<div class="empty"><div class="empty-icon">📂</div><div class="empty-text">Нет репертуаров.<br>Создайте через вкладку ＋</div></div>`;
+    list.innerHTML=`<div class="empty"><div class="empty-icon">📂</div><div class="empty-text">${repPageFilter==='mine'?'У вас нет репертуаров.<br>Нажмите + чтобы создать':'Нет репертуаров.'}</div></div>`;
     return;
   }
   let html='';
