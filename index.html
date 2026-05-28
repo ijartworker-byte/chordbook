@@ -1319,6 +1319,9 @@ window.changeFontSize=function(delta){
 };
 function applyFontSize(){
   const lb=document.getElementById('viewLyrics');if(!lb)return;
+  const chords=lb.querySelectorAll('.chord-row');
+  const lyrics=lb.querySelectorAll('.lyric-row');
+  console.log('applyFontSize: chords='+chords.length+' lyrics='+lyrics.length+' fontSize='+fontSize);
   lb.style.lineHeight='1';
   lb.querySelectorAll('.lyric-row').forEach(el=>{el.style.fontSize=fontSize+'px';el.style.lineHeight='1.15';el.style.marginBottom='0';});
   lb.querySelectorAll('.chord-row').forEach(el=>{el.style.fontSize=(fontSize+4)+'px';el.style.lineHeight='1.1';el.style.marginTop='2px';el.style.marginBottom='0';});
