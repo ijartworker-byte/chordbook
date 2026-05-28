@@ -875,6 +875,10 @@ select.form-input option{background:var(--surface)}
           <label class="form-label">Педаль</label>
           <input class="form-input" id="songPedal" placeholder="Например: E, A, D…">
         </div>
+        <div class="form-group">
+          <label class="form-label">SoundCloud</label>
+          <input class="form-input" id="songSoundcloud" placeholder="https://soundcloud.com/...">
+        </div>
       </div>
       <!-- COL 2: editor -->
       <div class="song-col song-col-editor">
@@ -1594,7 +1598,8 @@ window.openSongView=function(id){
 };
 function renderSongView(id){
   const s=songs.find(x=>x.id===id);if(!s)return;
-  document.getElementById('viewTitle').textContent=s.title;
+  const vtt=document.getElementById('viewTitleText');if(vtt)vtt.textContent=s.title;
+  initScPlayer(s.soundcloud||'');
   document.getElementById('viewArtist').textContent=s.artist;
 
   // Calculate transpose: if in repertoire and has custom key, auto-transpose
@@ -1813,7 +1818,7 @@ document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key
 window.openAddSongModal=function openAddSongModal(){
   editingSongId=null;
   document.getElementById('songModalTitle').textContent='Новая песня';
-  ['songTitle','songArtist','songLyrics','songTempo','songPedal'].forEach(id=>{
+  ['songTitle','songArtist','songLyrics','songTempo','songPedal','songSoundcloud'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
   document.getElementById('songKey').value='Am';
@@ -1853,6 +1858,7 @@ window.openEditSong=function(id){
   const meterEl=document.getElementById('songMeter');if(meterEl)meterEl.value=s.meter||'';
   document.getElementById('songLyrics').value=s.lyrics||'';
   const pedalEl=document.getElementById('songPedal');if(pedalEl)pedalEl.value=s.pedal||'';
+  const scEl=document.getElementById('songSoundcloud');if(scEl)scEl.value=s.soundcloud||'';
   openModal('addSongModal');
   setTimeout(()=>window.updateLyricsPreview(),50);
 };
@@ -2754,6 +2760,41 @@ function updateSidebarUser(){
   }
 }
 
+
+// ── SOUNDCLOUD PLAYER ─────────────────────────────────────────────
+let scPlayerOpen=false;
+window.toggleScPlayer=function(){
+  scPlayerOpen=!scPlayerOpen;
+  const wrap=document.getElementById('scPlayerWrap');
+  const icon=document.getElementById('scPlayIcon');
+  if(wrap) wrap.style.display=scPlayerOpen?'block':'none';
+  if(icon){
+    if(scPlayerOpen){
+      icon.innerHTML='<circle cx="12" cy="12" r="12" fill="rgba(0,111,185,.12)"/><rect x="9" y="8" width="2.5" height="8" rx="1" fill="var(--accent)"/><rect x="12.5" y="8" width="2.5" height="8" rx="1" fill="var(--accent)"/>';
+    } else {
+      icon.innerHTML='<circle cx="12" cy="12" r="12" fill="rgba(0,111,185,.12)"/><polygon points="10,8 16,12 10,16" fill="var(--accent)"/>';
+    }
+  }
+};
+
+function initScPlayer(url){
+  scPlayerOpen=false;
+  const btn=document.getElementById('scPlayBtn');
+  const wrap=document.getElementById('scPlayerWrap');
+  const iframe=document.getElementById('scIframe');
+  const icon=document.getElementById('scPlayIcon');
+  if(!url){
+    if(btn) btn.style.display='none';
+    if(wrap) wrap.style.display='none';
+    return;
+  }
+  const embedUrl='https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&color=%23006fb9&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false';
+  if(iframe) iframe.src=embedUrl;
+  if(btn) btn.style.display='flex';
+  if(wrap) wrap.style.display='none';
+  if(icon) icon.innerHTML='<circle cx="12" cy="12" r="12" fill="rgba(0,111,185,.12)"/><polygon points="10,8 16,12 10,16" fill="var(--accent)"/>';
+}
+
 </script>
 
 
@@ -2782,7 +2823,17 @@ function updateSidebarUser(){
 <!-- SONG VIEW -->
 <div class="song-view" id="songView">
   <div class="song-view-inner">
-  <div class="song-view-title" id="viewTitle"></div>
+  <!-- SoundCloud player -->
+  <div id="scPlayerWrap" style="display:none;margin-bottom:12px">
+    <iframe id="scIframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
+      style="border-radius:10px;display:block"></iframe>
+  </div>
+  <div class="song-view-title" id="viewTitle" style="display:flex;align-items:center;gap:10px">
+    <button id="scPlayBtn" onclick="toggleScPlayer()" style="display:none;background:none;border:none;cursor:pointer;color:var(--accent);flex-shrink:0;padding:0;line-height:1">
+      <svg id="scPlayIcon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="var(--accent)" stroke="none"><circle cx="12" cy="12" r="12" fill="rgba(0,111,185,.12)"/><polygon points="10,8 16,12 10,16" fill="var(--accent)"/></svg>
+    </button>
+    <span id="viewTitleText"></span>
+  </div>
   <div class="song-view-artist" id="viewArtist"></div>
   <div class="key-bar">
     <select class="key-select" id="viewKeySelect" onchange="transposeToKey(this.value)">
