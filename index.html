@@ -1328,9 +1328,6 @@ window.changeFontSize=function(delta){
 };
 function applyFontSize(){
   const lb=document.getElementById('viewLyrics');if(!lb)return;
-  const chords=lb.querySelectorAll('.chord-row');
-  const lyrics=lb.querySelectorAll('.lyric-row');
-  console.log('applyFontSize: chords='+chords.length+' lyrics='+lyrics.length+' fontSize='+fontSize);
   lb.style.lineHeight='1';
   lb.querySelectorAll('.lyric-row').forEach(el=>{el.style.fontSize=fontSize+'px';el.style.lineHeight='1.15';el.style.marginBottom='0';});
   lb.querySelectorAll('.chord-row').forEach(el=>{el.style.fontSize=(fontSize+4)+'px';el.style.lineHeight='0.7';el.style.marginTop='2px';el.style.marginBottom='0';});
@@ -1871,13 +1868,15 @@ window.saveSong=async function(){
   const tempoEl=document.getElementById('songTempo');
   const meterEl=document.getElementById('songMeter');
   const pedalEl=document.getElementById('songPedal');
+  const scEl=document.getElementById('songSoundcloud');
   const tempo=tempoEl?(tempoEl.value||'').trim():'';
   const meter=meterEl?meterEl.value:'';
   const pedal=pedalEl?(pedalEl.value||'').trim():'';
+  const soundcloud=scEl?(scEl.value||'').trim():'';
   if(!title)return;
   const id=editingSongId||'s'+Date.now();
   try{
-    await setDoc(doc(db,'songs',id),{title,artist,key,lyrics,tempo:tempo||'',meter:meter||'',pedal:pedal||''});
+    await setDoc(doc(db,'songs',id),{title,artist,key,lyrics,tempo:tempo||'',meter:meter||'',pedal:pedal||'',soundcloud:soundcloud||''});
     closeModal('addSongModal');
   }catch(e){showToast('Ошибка сохранения: '+e.message);}
 };
